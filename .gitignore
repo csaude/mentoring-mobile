@@ -1,3 +1,14 @@
+.gradle
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+.DS_Store
+/build
+/captures
+.name
+vcs.xml
+.idea*
+
 # Built application files
 *.apk
 *.ap_

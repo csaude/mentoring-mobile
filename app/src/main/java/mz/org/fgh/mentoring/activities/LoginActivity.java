@@ -1,10 +1,10 @@
 package mz.org.fgh.mentoring.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import mz.org.fgh.mentoring.R;
 
@@ -27,6 +27,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     @Override
     public void onClick(View view) {
-        Toast.makeText(this, "Logado com Sucesso! !" + usernane.getText(), Toast.LENGTH_SHORT).show();
+        application.getAuth().getUser().setIsLogged(true);
+        startActivity(new Intent(this, MainActivity.class));
+        finish();
     }
 }

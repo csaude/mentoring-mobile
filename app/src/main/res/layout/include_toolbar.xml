@@ -4,6 +4,7 @@
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorPrimary"
+    android:background="#00695C"
+    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
     app:theme="@style/Base.ThemeOverlay.AppCompat.Dark" />
 

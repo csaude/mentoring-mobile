@@ -8,4 +8,9 @@
     <string name="mentoring_process">Processo de Mentoria</string>
     <string name="tudoreds">Tutorandos</string>
     <string name="reports">Relatórios</string>
+    <string name="config">Configurações</string>
+    <string name="title_activity_configuration">ConfigurationActivity</string>
+
+
+    <string name="serve_address">SERVER_ADDRESS</string>
 </resources>

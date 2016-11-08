@@ -1,6 +1,9 @@
 package mz.org.fgh.mentoring.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -54,5 +57,23 @@ public class MainActivity extends BaseAuthenticateActivity implements AdapterVie
                 Toast.makeText(this, item.getItemTitle() + " Foi clicado", Toast.LENGTH_SHORT).show();
                 break;
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.main_menu_settings:
+                startActivity(new Intent(MainActivity.this, ConfigurationActivity.class));
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

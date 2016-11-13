@@ -1,20 +1,13 @@
 package mz.org.fgh.mentoring.callback;
 
-import android.app.ProgressDialog;
 import android.support.v7.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import mz.org.fgh.mentoring.R;
 import mz.org.fgh.mentoring.activities.ConfigurationActivity;
-import mz.org.fgh.mentoring.infra.MentoringApplication;
-import mz.org.fgh.mentoring.model.GenericWrapper;
-import mz.org.fgh.mentoring.service.HealthFacilityService;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
+import mz.org.fgh.mentoring.config.model.Location;
+import mz.org.fgh.mentoring.service.SyncService;
 
 /**
  * Created by Stélio Moiane on 10/24/16.
@@ -44,32 +37,14 @@ public class ConfigCallback implements ActionMode.Callback {
         switch (item.getItemId()) {
             case R.id.config_menu_sync:
 
-                MentoringApplication application = (MentoringApplication) activity.getApplication();
-                Retrofit retrofit = application.getRetrofit();
-                HealthFacilityService healthFacilityService = retrofit.create(HealthFacilityService.class);
-                Call<GenericWrapper> call = healthFacilityService.healthFacilities(1L);
-                final ProgressDialog dialog = ProgressDialog.show(activity, "Aguarde", "A receber dados....", true, true);
+                for (Location location : activity.getSelectedItems()) {
 
-                call.enqueue(new Callback<GenericWrapper>() {
+                    SyncService syncService = location.getSyncService();
+                    syncService.setActivity(activity);
+                    syncService.execute();
 
-                                 @Override
-                                 public void onResponse(Call<GenericWrapper> call, Response<GenericWrapper> response) {
-                                     dialog.dismiss();
-                                     GenericWrapper wrapper = response.body();
-                                     Toast.makeText(activity, wrapper.getHealthFacilities().get(5).getHealthFacility(), Toast.LENGTH_SHORT).show();
+                }
 
-                                 }
-
-                                 @Override
-                                 public void onFailure(Call<GenericWrapper> call, Throwable t) {
-                                     dialog.dismiss();
-                                     Toast.makeText(activity, t.getMessage(), Toast.LENGTH_SHORT).show();
-                                 }
-                             }
-                );
-
-                //Toast.makeText(activity, "good", Toast.LENGTH_SHORT).show();
-                //activity.finish();
                 return true;
         }
 

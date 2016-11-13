@@ -8,21 +8,26 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckedTextView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import mz.org.fgh.mentoring.R;
 import mz.org.fgh.mentoring.callback.ConfigCallback;
+import mz.org.fgh.mentoring.config.model.Location;
 
 public class ConfigurationActivity extends BaseAuthenticateActivity {
 
     private ListView configItems;
     private ActionMode actionMode;
-    private ArrayAdapter<String> adapter;
+    private ArrayAdapter<Location> adapter;
     private EditText ipField;
+    private List<Location> selectedItems;
 
     @Override
     protected void onMentoringCreate(Bundle bundle) {
@@ -31,7 +36,7 @@ public class ConfigurationActivity extends BaseAuthenticateActivity {
         ipField = (EditText) findViewById(R.id.config_server_ip);
 
         configItems = (ListView) findViewById(R.id.config_items);
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, Arrays.asList("Unidades Sanitárias", "Carreiras"));
+        adapter = new ArrayAdapter<Location>(this, android.R.layout.simple_list_item_multiple_choice, Arrays.asList(Location.HEALTH_FACILITIES, Location.CAREERS, Location.PROGRAMATIC_AREAS, Location.FORMS));
         configItems.setAdapter(adapter);
 
         configItems.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
@@ -40,7 +45,18 @@ public class ConfigurationActivity extends BaseAuthenticateActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                String item = (String) parent.getItemAtPosition(position);
+                if (selectedItems == null) {
+                    selectedItems = new ArrayList<>();
+                }
+
+                CheckedTextView item = (CheckedTextView) view;
+                Location value = (Location) parent.getItemAtPosition(position);
+
+                if (item.isChecked()) {
+                    selectedItems.add(value);
+                } else {
+                    selectedItems.remove(value);
+                }
 
                 if (actionMode == null) {
                     actionMode = startSupportActionMode(new ConfigCallback(ConfigurationActivity.this));
@@ -57,6 +73,7 @@ public class ConfigurationActivity extends BaseAuthenticateActivity {
 
     public void clearSelection() {
         configItems.clearChoices();
+        selectedItems = new ArrayList<>();
         adapter.notifyDataSetChanged();
     }
 
@@ -86,5 +103,9 @@ public class ConfigurationActivity extends BaseAuthenticateActivity {
         }
 
         return true;
+    }
+
+    public List<Location> getSelectedItems() {
+        return this.selectedItems;
     }
 }

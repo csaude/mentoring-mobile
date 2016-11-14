@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activities.ListTutoredActivity">
+
+    <item
+        android:id="@+id/main_menu_list_tutoreds"
+        android:orderInCategory="100"
+        android:title="Lista de Tutorandos"
+        app:showAsAction="always" />
+</menu>

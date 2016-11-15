@@ -12,6 +12,7 @@ import android.widget.ListView;
 import java.util.List;
 
 import mz.org.fgh.mentoring.R;
+import mz.org.fgh.mentoring.adapter.TutoredItemAdapter;
 import mz.org.fgh.mentoring.dao.TutoredDao;
 import mz.org.fgh.mentoring.dao.TutoredDaoImpl;
 import mz.org.fgh.mentoring.model.Tutored;
@@ -51,10 +52,8 @@ public class ListTutoredActivity  extends AppCompatActivity {
         TutoredDao tutoredDao = new TutoredDaoImpl(this);
         List<Tutored> tutoredList = tutoredDao.findAll();
         tutoredDao.close();
-        ArrayAdapter<Tutored> adapter =
-                new ArrayAdapter<Tutored>(this, android.R.layout.simple_list_item_1, tutoredList);
-        tutoredsList = (ListView) findViewById(R.id.tutored_list);
-        tutoredsList.setAdapter(adapter);
+        TutoredItemAdapter tutoredItemAdapter = new TutoredItemAdapter(ListTutoredActivity.this,tutoredList);
+        tutoredsList.setAdapter(tutoredItemAdapter);
     }
 
     public void setTutoredsList(ListView tutoredsList) {

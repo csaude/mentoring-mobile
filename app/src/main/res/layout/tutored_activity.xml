@@ -5,17 +5,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/include_toolbar"
-        android:visibility="visible"
-        android:id="@+id/toolbar" />
+    <include layout="@layout/include_toolbar" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:weightSum="1">
-
-        <EditText
+    <EditText
             android:id="@+id/tutored_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -32,25 +24,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Telefone" />
+        <Spinner
+            android:id="@+id/tutored_carrer"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent">
+        </Spinner>
 
-        <!--<Spinner-->
-            <!--android:id="@+id/planets_spinner"-->
-            <!--android:layout_width="fill_parent"-->
-            <!--android:layout_height="wrap_content" />-->
-
-        <Button
-            android:id="@+id/save_tutored"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:text="+"
-            android:textColor="#ffffff"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="16dp"
-            android:layout_marginRight="16dp"
-            android:stateListAnimator="@null"
-            android:layout_weight="0.07"
-            android:elevation="6dp" />
-
-    </LinearLayout>
+        <Spinner
+            android:id="@+id/tutored_position"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent">
+        </Spinner>
 </LinearLayout>

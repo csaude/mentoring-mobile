@@ -4,9 +4,9 @@
     tools:context=".activities.TutoredActivity">
 
     <item
-        android:id="@+id/main_menu_tutoreds"
-        android:orderInCategory="100"
-        android:title="Tutorandos"
+        android:id="@+id/save_tutored"
+        android:icon="@mipmap/ic_done"
+        android:title="save"
         app:showAsAction="always" />
 
 </menu>

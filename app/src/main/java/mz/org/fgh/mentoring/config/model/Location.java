@@ -1,5 +1,7 @@
 package mz.org.fgh.mentoring.config.model;
 
+import mz.org.fgh.mentoring.service.FormsSyncServiceimpl;
+import mz.org.fgh.mentoring.service.ProgrammaticAreaSyncServiceImpl;
 import mz.org.fgh.mentoring.service.CareerSyncServiceImpl;
 import mz.org.fgh.mentoring.service.HealthFacilitySyncServiceImpl;
 import mz.org.fgh.mentoring.service.SyncService;
@@ -13,9 +15,9 @@ public enum Location {
 
     HEALTH_FACILITIES("Unidades Sanitárias", new HealthFacilitySyncServiceImpl()),
 
-    PROGRAMATIC_AREAS("Areas Programáticas", null),
+    PROGRAMATIC_AREAS("Areas Programáticas", new ProgrammaticAreaSyncServiceImpl()),
 
-    FORMS("Formulários", null);
+    FORMS("Formulários", new FormsSyncServiceimpl());
 
     private String name;
     private SyncService syncService;

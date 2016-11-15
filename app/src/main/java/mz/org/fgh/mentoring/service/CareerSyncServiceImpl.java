@@ -4,6 +4,9 @@ import android.app.ProgressDialog;
 import android.widget.Toast;
 
 import mz.org.fgh.mentoring.activities.ConfigurationActivity;
+import mz.org.fgh.mentoring.config.dao.CareerDAO;
+import mz.org.fgh.mentoring.config.dao.CareerDAOImpl;
+import mz.org.fgh.mentoring.config.model.Career;
 import mz.org.fgh.mentoring.infra.MentoringApplication;
 import mz.org.fgh.mentoring.model.GenericWrapper;
 import retrofit2.Call;
@@ -15,6 +18,7 @@ import retrofit2.Retrofit;
  * Created by Stélio Moiane on 11/12/16.
  */
 public class CareerSyncServiceImpl implements SyncService {
+
     private ConfigurationActivity activity;
 
     @Override
@@ -22,17 +26,29 @@ public class CareerSyncServiceImpl implements SyncService {
 
         MentoringApplication application = (MentoringApplication) activity.getApplication();
         Retrofit retrofit = application.getRetrofit();
-        SyncDataService healthFacilityService = retrofit.create(SyncDataService.class);
-        Call<GenericWrapper> call = healthFacilityService.healthFacilities(1L);
-        final ProgressDialog dialog = ProgressDialog.show(activity, "Aguarde", "A receber  de carreiras...", true, true);
+        SyncDataService syncDataService = retrofit.create(SyncDataService.class);
+        Call<GenericWrapper> call = syncDataService.careers();
+        final ProgressDialog dialog = ProgressDialog.show(activity, "Aguarde", "A receber dados...", true, true);
 
         call.enqueue(new Callback<GenericWrapper>() {
 
                          @Override
                          public void onResponse(Call<GenericWrapper> call, Response<GenericWrapper> response) {
-                             dialog.dismiss();
+
                              GenericWrapper wrapper = response.body();
-                             Toast.makeText(activity, wrapper.getHealthFacilities() + "", Toast.LENGTH_SHORT).show();
+                             CareerDAO careerDAO = new CareerDAOImpl(activity);
+
+                             for (Career career : wrapper.getCareers()) {
+
+                                 if (!careerDAO.exist(career.getCareerType(), career.getPosition())) {
+                                     careerDAO.create(career);
+                                 }
+                             }
+
+                             Toast.makeText(activity, careerDAO.findAll().size() + " Carreiras foram sincronizadas com sucesso!", Toast.LENGTH_SHORT).show();
+
+                             careerDAO.close();
+                             dialog.dismiss();
                          }
 
                          @Override

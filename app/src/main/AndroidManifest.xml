@@ -24,7 +24,8 @@
         <activity
             android:name=".activities.ConfigurationActivity"
             android:icon="@mipmap/ic_settings"
-            android:label="@string/config"></activity>
+            android:label="@string/config" />
+        <activity android:name=".activities.MentoringActivity" />
     </application>
 
 </manifest>

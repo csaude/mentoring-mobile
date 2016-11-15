@@ -46,6 +46,8 @@ public class MainActivity extends BaseAuthenticateActivity implements AdapterVie
 
         switch (item.getItemType()) {
             case MENTORING_PROCESS:
+
+                startActivity(new Intent(MainActivity.this, MentoringActivity.class));
                 Toast.makeText(this, item.getItemTitle() + " Foi clicado", Toast.LENGTH_SHORT).show();
                 break;
 

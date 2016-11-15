@@ -2,8 +2,13 @@ package mz.org.fgh.mentoring.config.dao;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 
-import mz.org.fgh.mentoring.dao.Career;
+import java.util.ArrayList;
+import java.util.List;
+
+import mz.org.fgh.mentoring.config.model.Career;
 import mz.org.fgh.mentoring.dao.GenericDAOImpl;
 
 /**
@@ -11,7 +16,7 @@ import mz.org.fgh.mentoring.dao.GenericDAOImpl;
  */
 public class CareerDAOImpl extends GenericDAOImpl<Career> implements CareerDAO {
 
-    private static final String TABLE_NAME = "programatic_areas";
+    private static final String TABLE_NAME = "careers";
     private static final String FIELD_NAME = "position";
 
     public CareerDAOImpl(Context context) {
@@ -36,5 +41,39 @@ public class CareerDAOImpl extends GenericDAOImpl<Career> implements CareerDAO {
         values.put("position", career.getPosition());
 
         return values;
+    }
+
+
+    @Override
+    public List<Career> findAll() {
+        SQLiteDatabase database = getReadableDatabase();
+        Cursor cursor = database.rawQuery(CareerDAO.QUERY.findAll, null);
+
+        List<Career> careers = new ArrayList<>();
+
+        while (cursor.moveToNext()) {
+
+            Career career = new Career();
+            career.setId(cursor.getLong(cursor.getColumnIndex("id")));
+            career.setCareerType(cursor.getString(cursor.getColumnIndex("career_type")));
+            career.setPosition(cursor.getString(cursor.getColumnIndex("position")));
+
+            careers.add(career);
+        }
+
+        cursor.close();
+
+        return careers;
+    }
+
+    @Override
+    public boolean exist(String carrerType, String position) {
+        SQLiteDatabase database = getReadableDatabase();
+
+        String[] params = new String[]{carrerType, position};
+        Cursor cursor = database.rawQuery(QUERY.exist, params);
+        int result = cursor.getCount();
+
+        return result > 0;
     }
 }

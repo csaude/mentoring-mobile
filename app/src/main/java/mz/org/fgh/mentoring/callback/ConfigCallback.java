@@ -42,7 +42,6 @@ public class ConfigCallback implements ActionMode.Callback {
                     SyncService syncService = location.getSyncService();
                     syncService.setActivity(activity);
                     syncService.execute();
-
                 }
 
                 return true;

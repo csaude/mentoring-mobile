@@ -22,6 +22,7 @@ public abstract class GenericDAOImpl<T> extends SQLiteOpenHelper implements Gene
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(DISTRICT_TABLE);
         db.execSQL(HEALTH_FACILITY_TABLE);
+        db.execSQL(CAREER_TABLE);
     }
 
     @Override

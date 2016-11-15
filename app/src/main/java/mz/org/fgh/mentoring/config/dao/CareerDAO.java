@@ -1,6 +1,8 @@
 package mz.org.fgh.mentoring.config.dao;
 
-import mz.org.fgh.mentoring.dao.Career;
+import java.util.List;
+
+import mz.org.fgh.mentoring.config.model.Career;
 import mz.org.fgh.mentoring.dao.GenericDAO;
 
 /**
@@ -8,4 +10,12 @@ import mz.org.fgh.mentoring.dao.GenericDAO;
  */
 public interface CareerDAO extends GenericDAO<Career> {
 
+    class QUERY {
+        public static final String findAll = "SELECT * FROM careers;";
+        public static final String exist = "SELECT * FROM careers c WHERE c.career_type = ? AND c.position = ?;";
+    }
+
+    List<Career> findAll();
+
+    boolean exist(final String carrerType, final String position);
 }

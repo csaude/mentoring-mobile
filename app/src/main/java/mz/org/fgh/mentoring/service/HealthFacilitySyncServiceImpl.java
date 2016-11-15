@@ -4,12 +4,12 @@ import android.app.ProgressDialog;
 import android.widget.Toast;
 
 import mz.org.fgh.mentoring.activities.ConfigurationActivity;
-import mz.org.fgh.mentoring.infra.MentoringApplication;
 import mz.org.fgh.mentoring.config.dao.DistrictDAO;
 import mz.org.fgh.mentoring.config.dao.DistrictDAOImpl;
 import mz.org.fgh.mentoring.config.dao.HealthFacilityDAO;
 import mz.org.fgh.mentoring.config.dao.HealthFacilityDAOImpl;
 import mz.org.fgh.mentoring.config.model.HealthFacility;
+import mz.org.fgh.mentoring.infra.MentoringApplication;
 import mz.org.fgh.mentoring.model.GenericWrapper;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -28,8 +28,8 @@ public class HealthFacilitySyncServiceImpl implements SyncService {
 
         MentoringApplication application = (MentoringApplication) activity.getApplication();
         Retrofit retrofit = application.getRetrofit();
-        SyncDataService healthFacilityService = retrofit.create(SyncDataService.class);
-        Call<GenericWrapper> call = healthFacilityService.healthFacilities(6L);
+        SyncDataService syncDataService = retrofit.create(SyncDataService.class);
+        Call<GenericWrapper> call = syncDataService.healthFacilities();
         final ProgressDialog dialog = ProgressDialog.show(activity, "Aguarde", "A receber dados....", true, true);
 
         call.enqueue(new Callback<GenericWrapper>() {

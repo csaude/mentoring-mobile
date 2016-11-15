@@ -1,13 +1,18 @@
 package mz.org.fgh.mentoring.activities;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
+import java.io.File;
 
 import mz.org.fgh.mentoring.R;
 import mz.org.fgh.mentoring.dao.TutoredDao;
@@ -23,14 +28,30 @@ public class TutoredActivity  extends AppCompatActivity {
 
     private TutoredUtil tutoredUtil;
     private TutoredDao tutoredDao;
+    private Button takePhoto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tutored_activity);
         tutoredUtil = new TutoredUtil(TutoredActivity.this);
+        takePhoto = (Button) findViewById(R.id.take_photo);
         showMenuBar();
+        takeTutoredPhoto();
 
+    }
+
+    private void takeTutoredPhoto() {
+        takePhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                String pathPhoto = getExternalFilesDir(null) + "/" + System.currentTimeMillis() + ".jpg";
+                File filePhath = new File(pathPhoto);
+                intentCamera.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(filePhath));
+                startActivity(intentCamera);
+            }
+        });
     }
 
     private void showMenuBar() {

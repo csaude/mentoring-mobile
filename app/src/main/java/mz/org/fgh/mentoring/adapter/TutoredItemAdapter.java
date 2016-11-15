@@ -51,7 +51,6 @@ public class TutoredItemAdapter extends BaseAdapter {
         if(newView==null){
           newView =  layoutInflater.inflate(R.layout.list_items, viewGroup, false);
         }
-
         TextView name = (TextView) newView.findViewById(R.id.item_name);
         name.setText(tutored.getName().concat(" ").concat(tutored.getSurname()));
         TextView  phoneNumber  = (TextView) newView.findViewById(R.id.item_phone);

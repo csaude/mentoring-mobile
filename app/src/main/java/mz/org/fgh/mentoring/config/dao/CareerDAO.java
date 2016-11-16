@@ -3,6 +3,7 @@ package mz.org.fgh.mentoring.config.dao;
 import java.util.List;
 
 import mz.org.fgh.mentoring.config.model.Career;
+import mz.org.fgh.mentoring.config.model.CareerType;
 import mz.org.fgh.mentoring.dao.GenericDAO;
 
 /**
@@ -17,5 +18,5 @@ public interface CareerDAO extends GenericDAO<Career> {
 
     List<Career> findAll();
 
-    boolean exist(final String carrerType, final String position);
+    boolean exist(final CareerType carrerType, final String position);
 }

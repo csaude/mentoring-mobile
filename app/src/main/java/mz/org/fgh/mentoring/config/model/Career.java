@@ -34,4 +34,10 @@ public class Career {
     public void setPosition(String position) {
         this.position = position;
     }
+
+    @Override
+    public String toString() {
+        return getCareerType().toString();
+    }
+
 }

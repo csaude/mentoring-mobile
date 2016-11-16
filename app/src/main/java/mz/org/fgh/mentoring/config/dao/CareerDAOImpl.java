@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NavigableMap;
 
 import mz.org.fgh.mentoring.config.model.Career;
 import mz.org.fgh.mentoring.config.model.CareerType;
@@ -76,5 +77,27 @@ public class CareerDAOImpl extends GenericDAOImpl<Career> implements CareerDAO {
         int result = cursor.getCount();
 
         return result > 0;
+    }
+
+    @Override
+    public  List<Career>  findPositionByCarrerType(String carrerType) {
+        SQLiteDatabase database = getReadableDatabase();
+        String[] params = new String[]{carrerType};
+        Cursor cursor = database.rawQuery(QUERY.findPositionByCarrerType, params);
+        List<Career> careers = new ArrayList<>();
+
+        while (cursor.moveToNext()) {
+
+            Career career = new Career();
+            career.setId(cursor.getLong(cursor.getColumnIndex("id")));
+            career.setCareerType(cursor.getString(cursor.getColumnIndex("career_type")));
+            career.setPosition(cursor.getString(cursor.getColumnIndex("position")));
+
+            careers.add(career);
+        }
+
+        cursor.close();
+
+        return careers;
     }
 }

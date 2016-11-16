@@ -67,13 +67,12 @@ public class TutoredItemAdapter extends BaseAdapter {
 
         if (charText.length() == 0) {
             tutoredArrayList.addAll(tutoreds);
-        } else {
+        }
             for (Tutored t : tutoredArrayList) {
-                if (t.getName().toLowerCase(Locale.getDefault()).contains(charText)) {
+                if (t.getName().toLowerCase().contains(charText)) {
                     tutoredArrayList.add(t);
                 }
             }
             notifyDataSetChanged();
-        }
     }
 }

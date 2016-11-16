@@ -15,6 +15,12 @@
     <string name="serve_address">SERVER_ADDRESS</string>
     <string name="title_activity_mentoring">MentoringActivity</string>
 
-<!-- TODO: Remove or change this placeholder text -->
+    <array name="question_answers">
+        <item>COMPETENTE</item>
+        <item>NAO SATISFATORIO</item>
+        <item>NA</item>
+    </array>
+
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

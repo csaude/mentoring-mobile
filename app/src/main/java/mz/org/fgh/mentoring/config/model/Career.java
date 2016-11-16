@@ -7,7 +7,7 @@ public class Career {
 
     private Long id;
 
-    private String careerType;
+    private CareerType careerType;
 
     private String position;
 
@@ -19,11 +19,11 @@ public class Career {
         this.id = id;
     }
 
-    public String getCareerType() {
+    public CareerType getCareerType() {
         return careerType;
     }
 
-    public void setCareerType(String careerType) {
+    public void setCareerType(CareerType careerType) {
         this.careerType = careerType;
     }
 

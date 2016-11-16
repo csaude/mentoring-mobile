@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mz.org.fgh.mentoring.config.model.Career;
+import mz.org.fgh.mentoring.config.model.CareerType;
 import mz.org.fgh.mentoring.dao.GenericDAOImpl;
 
 /**
@@ -37,7 +38,7 @@ public class CareerDAOImpl extends GenericDAOImpl<Career> implements CareerDAO {
     public ContentValues getObjectValues(Career career) {
         ContentValues values = new ContentValues();
 
-        values.put("career_type", career.getCareerType());
+        values.put("career_type", career.getCareerType().toString());
         values.put("position", career.getPosition());
 
         return values;
@@ -55,7 +56,7 @@ public class CareerDAOImpl extends GenericDAOImpl<Career> implements CareerDAO {
 
             Career career = new Career();
             career.setId(cursor.getLong(cursor.getColumnIndex("id")));
-            career.setCareerType(cursor.getString(cursor.getColumnIndex("career_type")));
+            career.setCareerType(CareerType.valueOf(cursor.getString(cursor.getColumnIndex("career_type"))));
             career.setPosition(cursor.getString(cursor.getColumnIndex("position")));
 
             careers.add(career);
@@ -67,10 +68,10 @@ public class CareerDAOImpl extends GenericDAOImpl<Career> implements CareerDAO {
     }
 
     @Override
-    public boolean exist(String carrerType, String position) {
+    public boolean exist(CareerType carrerType, String position) {
         SQLiteDatabase database = getReadableDatabase();
 
-        String[] params = new String[]{carrerType, position};
+        String[] params = new String[]{carrerType.toString(), position};
         Cursor cursor = database.rawQuery(QUERY.exist, params);
         int result = cursor.getCount();
 

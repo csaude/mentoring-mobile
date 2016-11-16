@@ -2,12 +2,11 @@ package mz.org.fgh.mentoring.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.SearchView;
 
 import java.util.List;
 
@@ -22,20 +21,29 @@ import mz.org.fgh.mentoring.model.Tutored;
  * Created by Eusebio Jose Maposse on 14-Nov-16.
  */
 
-public class ListTutoredActivity  extends AppCompatActivity {
+public class ListTutoredActivity  extends BaseAuthenticateActivity  implements SearchView.OnQueryTextListener{
 
-    private ListView tutoredsList;
+    private ListView tutoredList;
     private Button newTutored;
+    private SearchView searchView;
+    TutoredItemAdapter tutoredItemAdapter;
+    private List<Tutored> tutoreds;
+    private TutoredDao tutoredDao;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.tutored_list);
-        tutoredsList = (ListView) findViewById(R.id.tutored_list);
-        newTutored = (Button) findViewById(R.id.new_tutored);
-        getTutoreds();
+    protected void onMentoringCreate(Bundle bundle) {
+        setContentView(R.layout.list_tutoreds);
+        findViewById();
+        findAllTutored();
+        getTutored();
         goTutoredForm();
+    }
 
+    private void findViewById() {
+        tutoredList = (ListView) findViewById(R.id.tutored_list);
+        newTutored = (Button) findViewById(R.id.new_tutored);
+        searchView = (SearchView) findViewById(R.id.simpleSearchView);
+        searchView.setOnQueryTextListener(ListTutoredActivity.this);
     }
 
     private void goTutoredForm() {
@@ -47,22 +55,31 @@ public class ListTutoredActivity  extends AppCompatActivity {
             }
         });
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.tutored_list_menu, menu);
+        return true;
+    }
 
-    private void getTutoreds() {
-        TutoredDao tutoredDao = new TutoredDaoImpl(this);
-        List<Tutored> tutoredList = tutoredDao.findAll();
+    private void getTutored() {
         tutoredDao.close();
-        TutoredItemAdapter tutoredItemAdapter = new TutoredItemAdapter(ListTutoredActivity.this,tutoredList);
-        tutoredsList.setAdapter(tutoredItemAdapter);
+        this.tutoredList.setAdapter(tutoredItemAdapter);
     }
 
-    public void setTutoredsList(ListView tutoredsList) {
-        this.tutoredsList = tutoredsList;
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
     }
-    public Button getNewTutored() {
-        return newTutored;
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        tutoredItemAdapter.filter(newText);
+        return true;
     }
-    public void setNewTutored(Button newTutored) {
-        this.newTutored = newTutored;
+
+    private void findAllTutored() {
+        tutoredDao = new TutoredDaoImpl(this);
+        tutoreds = tutoredDao.findAll();
+        tutoredItemAdapter = new TutoredItemAdapter(ListTutoredActivity.this,tutoreds);
     }
 }

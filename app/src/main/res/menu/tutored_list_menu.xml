@@ -5,7 +5,8 @@
 
     <item
         android:id="@+id/main_menu_list_tutoreds"
-        android:orderInCategory="100"
-        android:title="Lista de Tutorandos"
+        android:icon="@mipmap/ic_done"
+        android:title="save"
         app:showAsAction="always" />
 </menu>
+

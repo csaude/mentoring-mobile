@@ -1,15 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/content_tutored"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <SearchView
+        android:id="@+id/simpleSearchView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:iconifiedByDefault="false"
+        android:queryHint="Search here"/>
+
     <ListView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/tutored_list"
-        android:textSize="14dip"
-        >
+        android:textSize="14dp"
+        android:layout_below="@+id/simpleSearchView">
     </ListView>
 
     <Button
@@ -17,6 +25,7 @@
         android:layout_width="56dp"
         android:layout_height="56dp"
         android:text="+"
+        android:textSize="24dp"
         android:textColor="#ffffff"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"

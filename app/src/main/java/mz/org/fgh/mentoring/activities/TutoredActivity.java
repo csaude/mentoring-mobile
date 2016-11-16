@@ -24,42 +24,18 @@ import mz.org.fgh.mentoring.util.TutoredUtil;
  * Created by Eusebio Maposse on 14-Nov-16.
  */
 
-public class TutoredActivity  extends AppCompatActivity {
+public class TutoredActivity  extends BaseAuthenticateActivity {
 
     private TutoredUtil tutoredUtil;
     private TutoredDao tutoredDao;
     private Button takePhoto;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void onMentoringCreate(Bundle bundle) {
         setContentView(R.layout.tutored_activity);
         tutoredUtil = new TutoredUtil(TutoredActivity.this);
-        takePhoto = (Button) findViewById(R.id.take_photo);
-        showMenuBar();
-        takeTutoredPhoto();
 
     }
-
-    private void takeTutoredPhoto() {
-        takePhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intentCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                String pathPhoto = getExternalFilesDir(null) + "/" + System.currentTimeMillis() + ".jpg";
-                File filePhath = new File(pathPhoto);
-                intentCamera.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(filePhath));
-                startActivity(intentCamera);
-            }
-        });
-    }
-
-    private void showMenuBar() {
-        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);

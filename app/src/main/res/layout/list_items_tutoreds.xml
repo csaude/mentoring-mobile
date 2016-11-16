@@ -2,12 +2,27 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-    <ImageView
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:src="@drawable/person"
-        android:id="@+id/item_foto"/>
+    android:layout_height="wrap_content"
+    android:paddingTop="18dp"
+    android:paddingLeft="12dp">
+
+
+    <Button
+        android:id="@+id/item_foto"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:textColor="#ffffff"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="16dp"
+        android:layout_marginRight="16dp"
+        android:stateListAnimator="@null"
+        android:elevation="8dp"
+        android:textSize="24dp"
+        android:text="S"
+        android:visibility="visible"
+        android:background="@drawable/botton_style"
+        />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -24,8 +39,6 @@
             android:textStyle="bold"
             android:paddingLeft="10dp"
             android:textColor="#00695C"/>
-
-
 
         <TextView
             android:layout_width="wrap_content"

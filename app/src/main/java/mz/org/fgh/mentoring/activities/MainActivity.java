@@ -52,7 +52,8 @@ public class MainActivity extends BaseAuthenticateActivity implements AdapterVie
                 break;
 
             case TUDOREDS:
-                Toast.makeText(this, item.getItemTitle() + " Foi clicado", Toast.LENGTH_SHORT).show();
+                Intent goToTutoredList = new Intent(MainActivity.this, ListTutoredActivity.class);
+                startActivity(goToTutoredList);
                 break;
 
             case REPORTS:

@@ -13,6 +13,8 @@ public interface GenericDAO<T> {
 
     String CAREER_TABLE = "CREATE TABLE careers(id INTEGER PRIMARY KEY, career_type TEXT, position TEXT);";
 
+    String TUTORED = "CREATE TABLE tutoreds(id INTEGER PRIMARY KEY, name TEXT, surname TEXT, phoneNumber TEXT, carrer TEXT);";
+
     String getTableName();
 
     String getFieldName();

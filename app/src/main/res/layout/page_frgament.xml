@@ -1,20 +1,35 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="20dp"
-        android:text="THE PAGE" />
+        android:text="THE PAGE"
+        android:textSize="20dp"
+        android:textStyle="bold" />
 
-    <EditText
-        android:id="@+id/edit_text"
+    <Spinner
+        android:id="@+id/answer_value"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp" />
+        android:layout_below="@+id/text_view"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="50dp" />
 
-</LinearLayout>
+    <Button
+        android:id="@+id/save_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="20dp"
+        android:background="#00695C"
+        android:text="Submeter"
+        android:textColor="#fff"
+        android:textStyle="bold" />
+
+</RelativeLayout>

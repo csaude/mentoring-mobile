@@ -37,7 +37,7 @@ public class Career {
 
     @Override
     public String toString() {
-        return getCareerType().toString();
+        return getPosition();
     }
 
 }

@@ -59,7 +59,9 @@ public class TutoredItemAdapter extends BaseAdapter {
         TextView  phoneNumber  = (TextView) newView.findViewById(R.id.item_phone);
         phoneNumber.setText(tutored.getPhoneNumber());
         Button button = (Button) newView.findViewById(R.id.item_foto);
-        button.setText(tutored.getName().substring(0,1));
+        if(!tutored.getName().isEmpty()) {
+            button.setText(tutored.getName().substring(0, 1));
+        }
         return newView;
     }
     public void filter(String charText) {

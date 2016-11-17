@@ -11,7 +11,7 @@ import mz.org.fgh.mentoring.model.Tutored;
 
 public interface TutoredDao extends  GenericDAO<Tutored> {
     class QUERY {
-        public static final String findAll = "SELECT t.id, t.name, t.surname, t.phoneNumber FROM tutoreds t;";
+        public static final String findAll = "SELECT * FROM tutoreds;";
     }
 
     List<Tutored> findAll();

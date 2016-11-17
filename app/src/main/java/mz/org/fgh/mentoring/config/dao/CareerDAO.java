@@ -19,7 +19,7 @@ public interface CareerDAO extends GenericDAO<Career> {
 
     List<Career> findAll();
 
-    boolean exist(final String carrerType, final String position);
-    List<Career> findPositionByCarrerType(String carrerType);
+    boolean exist(final CareerType carrerType, final String position);
+    List<Career> findPositionByCarrerType(CareerType carrerType);
 
 }

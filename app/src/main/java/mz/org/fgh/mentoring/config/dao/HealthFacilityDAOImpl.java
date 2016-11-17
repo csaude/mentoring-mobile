@@ -16,8 +16,7 @@ import mz.org.fgh.mentoring.config.model.HealthFacility;
  */
 public class HealthFacilityDAOImpl extends GenericDAOImpl<HealthFacility> implements HealthFacilityDAO {
 
-    private static final String TABLE_NAME = "health_facilities";
-    private static final String FIELD_NAME = "health_facility";
+
 
     public HealthFacilityDAOImpl(Context context) {
         super(context);

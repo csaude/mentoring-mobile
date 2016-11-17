@@ -8,7 +8,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import java.util.List;
 
 import mz.org.fgh.mentoring.fragment.PageFragment;
-import mz.org.fgh.mentoring.process.model.Question;
+import mz.org.fgh.mentoring.config.model.Question;
 
 /**
  * Created by Stélio Moiane on 11/14/16.

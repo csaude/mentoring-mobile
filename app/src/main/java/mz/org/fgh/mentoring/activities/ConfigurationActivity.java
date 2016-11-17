@@ -36,7 +36,7 @@ public class ConfigurationActivity extends BaseAuthenticateActivity {
         ipField = (EditText) findViewById(R.id.config_server_ip);
 
         configItems = (ListView) findViewById(R.id.config_items);
-        adapter = new ArrayAdapter<Location>(this, android.R.layout.simple_list_item_multiple_choice, Arrays.asList(Location.HEALTH_FACILITIES, Location.CAREERS, Location.PROGRAMATIC_AREAS, Location.FORMS));
+        adapter = new ArrayAdapter<Location>(this, android.R.layout.simple_list_item_multiple_choice, Arrays.asList(Location.HEALTH_FACILITIES, Location.CAREERS, Location.FORMS));
         configItems.setAdapter(adapter);
 
         configItems.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);

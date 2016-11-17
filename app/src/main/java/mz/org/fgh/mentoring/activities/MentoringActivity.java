@@ -11,9 +11,9 @@ import java.util.List;
 
 import mz.org.fgh.mentoring.R;
 import mz.org.fgh.mentoring.adapter.SwipeAdapter;
-import mz.org.fgh.mentoring.process.model.Question;
-import mz.org.fgh.mentoring.process.model.QuestionCategory;
-import mz.org.fgh.mentoring.process.model.QuestionType;
+import mz.org.fgh.mentoring.config.model.Question;
+import mz.org.fgh.mentoring.config.model.QuestionCategory;
+import mz.org.fgh.mentoring.config.model.QuestionType;
 
 public class MentoringActivity extends FragmentActivity {
 

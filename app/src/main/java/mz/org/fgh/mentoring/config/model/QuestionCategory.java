@@ -1,4 +1,4 @@
-package mz.org.fgh.mentoring.process.model;
+package mz.org.fgh.mentoring.config.model;
 
 public enum QuestionCategory {
 

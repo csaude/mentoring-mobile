@@ -54,7 +54,7 @@ public class TutoredItemAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         Tutored tutored = tutoreds.get(i);
-//        Career career = careerDAO.findCareerById(tutored.getCarrerId());
+        Career career = careerDAO.findCareerById(tutored.getCarrerId());
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         View newView = view;
 
@@ -65,7 +65,7 @@ public class TutoredItemAdapter extends BaseAdapter {
         name.setText(tutored.getName().concat(" ").concat(tutored.getSurname()));
         TextView  phoneNumber  = (TextView) newView.findViewById(R.id.item_phone);
         TextView carrerText = (TextView) newView.findViewById(R.id.item_carrer);
-//        carrerText.setText(career.getPosition());
+        carrerText.setText(career.getPosition());
         phoneNumber.setText(tutored.getPhoneNumber());
         Button button = (Button) newView.findViewById(R.id.item_foto);
         if(!tutored.getName().isEmpty()) {

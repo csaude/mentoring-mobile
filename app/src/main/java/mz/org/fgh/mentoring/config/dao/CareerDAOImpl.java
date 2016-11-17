@@ -90,30 +90,29 @@ public class CareerDAOImpl extends GenericDAOImpl<Career> implements CareerDAO {
         while (cursor.moveToNext()) {
 
             Career career = new Career();
-            career.setId(Long.parseLong(cursor.getString(cursor.getColumnIndex("id"))));
+            career.setId(cursor.getLong(cursor.getColumnIndex("id")));
             career.setCareerType(CareerType.valueOf(cursor.getString( cursor.getColumnIndex("career_type"))));
             career.setPosition(cursor.getString(cursor.getColumnIndex("position")));
-
             careers.add(career);
         }
 
         cursor.close();
-
         return careers;
     }
 
 
     @Override
-    public Career findCareerById(long carrerId) {
+    public Career findCareerById(Long carrerId) {
         SQLiteDatabase database = getReadableDatabase();
         String[] params = new String[]{Long.toString(carrerId)};
         Cursor cursor = database.rawQuery(QUERY.findCareerById, params);
 
         Career career = new Career();
-        career.setId(cursor.getLong(cursor.getColumnIndex("id")));
-        career.setCareerType(CareerType.valueOf(cursor.getString( cursor.getColumnIndex("career_type"))));
-        career.setPosition(cursor.getString(cursor.getColumnIndex("position")));
-
+        while (cursor.moveToNext()) {
+            career.setId(Long.parseLong(String.valueOf(cursor.getLong(cursor.getColumnIndex("id")))));
+            career.setCareerType(CareerType.valueOf(cursor.getString(cursor.getColumnIndex("career_type"))));
+            career.setPosition(cursor.getString(cursor.getColumnIndex("position")));
+        }
         return career;
     }
 }

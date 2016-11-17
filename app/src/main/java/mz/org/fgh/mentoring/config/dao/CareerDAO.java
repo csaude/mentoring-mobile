@@ -15,7 +15,7 @@ public interface CareerDAO extends GenericDAO<Career> {
         public static final String findAll = "SELECT * FROM careers;";
         public static final String exist = "SELECT * FROM careers c WHERE c.career_type = ? AND c.position = ?;";
         public static final String findPositionByCarrerType = "SELECT * FROM careers c WHERE c.career_type = ?;";
-        public static final String findCareerById = "SELECT * FROM careers c WHERE c.career_type = ?;";
+        public static final String findCareerById = "SELECT c.id, c.career_type, c.position FROM careers c WHERE c.id = ?;";
 
     }
 
@@ -23,7 +23,7 @@ public interface CareerDAO extends GenericDAO<Career> {
 
     boolean exist(final CareerType carrerType, final String position);
     List<Career> findPositionByCarrerType(CareerType carrerType);
-    public  Career  findCareerById(long carrerId);
+    public Career  findCareerById(Long carrerId);
 
 
 

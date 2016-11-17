@@ -1,6 +1,5 @@
 package mz.org.fgh.mentoring.activities;
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -9,12 +8,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import mz.org.fgh.mentoring.Helper.TutoredHelper;
 import mz.org.fgh.mentoring.R;
 import mz.org.fgh.mentoring.config.dao.CareerDAO;
 import mz.org.fgh.mentoring.config.dao.CareerDAOImpl;
@@ -23,13 +22,12 @@ import mz.org.fgh.mentoring.config.model.CareerType;
 import mz.org.fgh.mentoring.dao.TutoredDao;
 import mz.org.fgh.mentoring.dao.TutoredDaoImpl;
 import mz.org.fgh.mentoring.model.Tutored;
-import mz.org.fgh.mentoring.Helper.TutoredHelper;
 
 /**
  * Created by Eusebio Maposse on 14-Nov-16.
  */
 
-public class TutoredActivity  extends BaseAuthenticateActivity {
+public class TutoredActivity extends BaseAuthenticateActivity {
 
     private TutoredHelper tutoredHelper;
     private TutoredDao tutoredDao;
@@ -42,7 +40,7 @@ public class TutoredActivity  extends BaseAuthenticateActivity {
     private ArrayAdapter carrerAdapter;
     private ArrayAdapter positionAdapter;
     private Tutored tutored;
-    List<CareerType> careerTypes = new ArrayList<>();;
+    List<CareerType> careerTypes = new ArrayList<>();
 
     @Override
     protected void onMentoringCreate(Bundle bundle) {
@@ -67,7 +65,7 @@ public class TutoredActivity  extends BaseAuthenticateActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         tutoredDao = new TutoredDaoImpl(this);
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.save_tutored:
                 tutored = tutoredHelper.getTutored();
                 tutoredDao.create(tutored);
@@ -81,19 +79,19 @@ public class TutoredActivity  extends BaseAuthenticateActivity {
 
     private void getCarrer() {
         setSpinnerAdapter();
-        positions = new ArrayList<>();
-        positionAdapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item, positions);
-        carrerTypeSpinner.setAdapter(carrerAdapter);
 
         carrerTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                positionAdapter.clear();
-                positions.addAll(careerDAO.findPositionByCarrerType(CareerType.valueOf(adapterView.getItemAtPosition(i).toString())));
-                positionAdapter.addAll(positions);
-                positionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                positionSpinner.setAdapter(positionAdapter);
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                CareerType careerType = (CareerType) adapterView.getItemAtPosition(position);
+                List<Career> positions = careerDAO.findPositionByCarrerType(careerType);
+
+                ArrayAdapter adapter = new ArrayAdapter(TutoredActivity.this, android.R.layout.simple_spinner_item, positions);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+                positionSpinner.setAdapter(adapter);
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
                 positionAdapter.clear();
@@ -101,11 +99,14 @@ public class TutoredActivity  extends BaseAuthenticateActivity {
         });
         positionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                 tutored = tutoredHelper.getTutored();
-                tutored.setCareer(positions.get(i));
-                tutored.setCarrerId(Long.valueOf(tutored.getCareer().getId()));
+                Career career = (Career) adapterView.getItemAtPosition(position);
+
+                tutored.setCareer(career);
+                tutored.setCarrerId(Long.valueOf(career.getId()));
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
                 positionAdapter.clear();
@@ -116,8 +117,9 @@ public class TutoredActivity  extends BaseAuthenticateActivity {
     private void setSpinnerAdapter() {
         careerDAO = new CareerDAOImpl(this);
         careerTypes.addAll(Arrays.asList(CareerType.values()));
-        carrerAdapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item, careerTypes);
+        carrerAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, careerTypes);
         carrerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        carrerTypeSpinner.setAdapter(carrerAdapter);
     }
 
 }

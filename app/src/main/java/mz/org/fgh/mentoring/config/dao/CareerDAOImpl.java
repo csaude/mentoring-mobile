@@ -83,7 +83,7 @@ public class CareerDAOImpl extends GenericDAOImpl<Career> implements CareerDAO {
     @Override
     public List<Career> findPositionByCarrerType(CareerType carrerType) {
         SQLiteDatabase database = getReadableDatabase();
-        String[] params = new String[]{carrerType.toString()};
+        String[] params = new String[]{carrerType.name()};
         Cursor cursor = database.rawQuery(QUERY.findPositionByCarrerType, params);
         List<Career> careers = new ArrayList<>();
 
@@ -91,7 +91,7 @@ public class CareerDAOImpl extends GenericDAOImpl<Career> implements CareerDAO {
 
             Career career = new Career();
             career.setId(cursor.getLong(cursor.getColumnIndex("id")));
-            career.setCareerType(CareerType.valueOf(cursor.getString( cursor.getColumnIndex("career_type"))));
+            career.setCareerType(CareerType.valueOf(cursor.getString(cursor.getColumnIndex("career_type"))));
             career.setPosition(cursor.getString(cursor.getColumnIndex("position")));
             careers.add(career);
         }

@@ -32,18 +32,11 @@ public enum CareerType{
     CareerType(final String description) {
         this.description = description;
     }
-    public CareerType getByDescription(String description) {
 
-        for (CareerType careerType : CareerType.values()) {
-            if (this.equals(description)) {
-                return careerType;
-            }
-        }
-        return null;
-    }
+
 
     @Override
     public String toString() {
-        return super.toString();
+        return description;
     }
 }

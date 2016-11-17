@@ -53,7 +53,6 @@ public class HealthFacilityDAOImpl extends GenericDAOImpl<HealthFacility> implem
 
         while (cursor.moveToNext()) {
             HealthFacility healthFacility = new HealthFacility();
-
             healthFacility.setId(cursor.getLong(cursor.getColumnIndex("id")));
             healthFacility.setHealthFacility(cursor.getString(cursor.getColumnIndex("health_facility")));
 

@@ -68,6 +68,7 @@ public class TutoredItemAdapter extends BaseAdapter {
         carrerText.setText(career.getPosition());
         phoneNumber.setText(tutored.getPhoneNumber());
         Button button = (Button) newView.findViewById(R.id.item_foto);
+
         if(!tutored.getName().isEmpty()) {
             button.setText(tutored.getName().substring(0, 1));
         }

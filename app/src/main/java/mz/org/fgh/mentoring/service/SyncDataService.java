@@ -17,4 +17,6 @@ public interface SyncDataService {
 
     @GET("programmaticareas")
     Call<GenericWrapper> programmaticareas();
+
+
 }

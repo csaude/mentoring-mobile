@@ -64,6 +64,13 @@ public class ListTutoredActivity  extends BaseAuthenticateActivity  implements S
         return true;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        findAllTutored();
+    }
+
+
     private void getTutored() {
         tutoredDao.close();
         this.tutoredList.setAdapter(tutoredItemAdapter);
@@ -82,5 +89,8 @@ public class ListTutoredActivity  extends BaseAuthenticateActivity  implements S
     private void findAllTutored() {
         tutoredDao = new TutoredDaoImpl(this);
         tutoreds = tutoredDao.findAll();
+        tutoredItemAdapter = new TutoredItemAdapter(ListTutoredActivity.this,tutoreds);
+        tutoredList.setAdapter(tutoredItemAdapter);
+
     }
 }

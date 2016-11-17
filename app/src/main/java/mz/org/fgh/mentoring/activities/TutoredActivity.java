@@ -1,5 +1,6 @@
 package mz.org.fgh.mentoring.activities;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -71,6 +72,9 @@ public class TutoredActivity  extends BaseAuthenticateActivity {
                 tutored = tutoredHelper.getTutored();
                 tutoredDao.create(tutored);
                 tutoredDao.close();
+                finish();
+                tutoredDao.findAll();
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -104,6 +108,7 @@ public class TutoredActivity  extends BaseAuthenticateActivity {
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
+                positionAdapter.clear();
             }
         });
     }

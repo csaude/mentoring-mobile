@@ -34,4 +34,9 @@ public class Form extends GenericEntity {
     public String getVersion() {
         return version;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

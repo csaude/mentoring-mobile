@@ -6,7 +6,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.UUID;
+
 import mz.org.fgh.mentoring.model.GenericEntity;
+import mz.org.fgh.mentoring.model.Tutored;
 
 /**
  * Created by Stélio Moiane on 11/9/16.
@@ -41,6 +44,11 @@ public abstract class GenericDAOImpl<T extends GenericEntity> extends SQLiteOpen
         SQLiteDatabase database = getWritableDatabase();
 
         ContentValues values = getContentValues(entity);
+        String uuid = UUID.randomUUID().toString().replace("-", "");
+
+        if(entity instanceof Tutored){
+            values.put("uuid", uuid);
+        }
 
         database.insert(getTableName(), null, values);
     }

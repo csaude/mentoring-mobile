@@ -3,17 +3,19 @@ package mz.org.fgh.mentoring.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import java.util.List;
 
 import mz.org.fgh.mentoring.R;
 import mz.org.fgh.mentoring.adapter.TutoredItemAdapter;
-import mz.org.fgh.mentoring.dao.TutoredDao;
-import mz.org.fgh.mentoring.dao.TutoredDaoImpl;
+import mz.org.fgh.mentoring.config.dao.TutoredDao;
+import mz.org.fgh.mentoring.config.dao.TutoredDaoImpl;
 import mz.org.fgh.mentoring.model.Tutored;
 
 
@@ -21,7 +23,7 @@ import mz.org.fgh.mentoring.model.Tutored;
  * Created by Eusebio Jose Maposse on 14-Nov-16.
  */
 
-public class ListTutoredActivity  extends BaseAuthenticateActivity  implements SearchView.OnQueryTextListener{
+public class ListTutoredActivity extends BaseAuthenticateActivity implements SearchView.OnQueryTextListener {
 
     private ListView tutoredList;
     private Button newTutored;
@@ -35,6 +37,8 @@ public class ListTutoredActivity  extends BaseAuthenticateActivity  implements S
         setContentView(R.layout.list_tutoreds);
         findViewById();
         findAllTutored();
+        tutoredItemAdapter = new TutoredItemAdapter(ListTutoredActivity.this, tutoreds);
+        tutoredList.setAdapter(tutoredItemAdapter);
         getTutored();
         goTutoredForm();
     }
@@ -55,12 +59,20 @@ public class ListTutoredActivity  extends BaseAuthenticateActivity  implements S
             }
         });
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.tutored_list_menu, menu);
         return true;
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        findAllTutored();
+    }
+
 
     private void getTutored() {
         tutoredDao.close();
@@ -71,15 +83,25 @@ public class ListTutoredActivity  extends BaseAuthenticateActivity  implements S
     public boolean onQueryTextSubmit(String query) {
         return false;
     }
+
     @Override
     public boolean onQueryTextChange(String newText) {
         tutoredItemAdapter.filter(newText);
-        return true;
+        return false;
     }
 
     private void findAllTutored() {
         tutoredDao = new TutoredDaoImpl(this);
         tutoreds = tutoredDao.findAll();
-        tutoredItemAdapter = new TutoredItemAdapter(ListTutoredActivity.this,tutoreds);
+        tutoredItemAdapter = new TutoredItemAdapter(ListTutoredActivity.this, tutoreds);
+        tutoredList.setAdapter(tutoredItemAdapter);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        Toast.makeText(this, "a sincronizar dados....", Toast.LENGTH_SHORT).show();
+
+        return super.onOptionsItemSelected(item);
     }
 }

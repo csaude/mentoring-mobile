@@ -8,6 +8,7 @@ import mz.org.fgh.mentoring.model.GenericEntity;
 public class District extends GenericEntity {
 
     private String province;
+
     private String district;
 
     public District(final Long id, final String province, final String district) {

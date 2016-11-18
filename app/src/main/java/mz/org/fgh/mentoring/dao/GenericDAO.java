@@ -15,7 +15,7 @@ public interface GenericDAO<T extends GenericEntity> {
 
     String CAREER_TABLE = "CREATE TABLE careers(id INTEGER PRIMARY KEY, career_type TEXT, position TEXT);";
 
-    String TUTORED_TABLE = "CREATE TABLE tutoreds(id INTEGER PRIMARY KEY, name TEXT, surname TEXT, phoneNumber TEXT, carrer TEXT);";
+    String TUTORED_TABLE = "CREATE TABLE tutoreds(id INTEGER PRIMARY KEY, code TEXT, name TEXT, surname TEXT, phoneNumber TEXT, carrer_id INTEGER, uuid TEXT, FOREIGN KEY(carrer_id) REFERENCES careers(id));";
 
     String FORM_TABLE = "CREATE TABLE forms(id INTEGER PRIMARY KEY, code TEXT, name TEXT, description TEXT, programmatic_area TEXT, version INTEGER, CONSTRAINT code_unique UNIQUE (code));";
 

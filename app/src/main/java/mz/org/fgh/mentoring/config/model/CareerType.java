@@ -3,7 +3,7 @@ package mz.org.fgh.mentoring.config.model;
 /**
  * Created by Stélio Moiane on 11/16/16.
  */
-public enum CareerType {
+public enum CareerType{
 
     HEALTH_TECHNICAL_ASSISTANT("Assistente Técnico de Saúde"),
 
@@ -30,22 +30,13 @@ public enum CareerType {
     private String description;
 
     CareerType(final String description) {
-
         this.description = description;
     }
 
-    public String getDescription() {
+
+
+    @Override
+    public String toString() {
         return description;
-    }
-
-    public CareerType getByDescription(String description) {
-
-        for (CareerType careerType : CareerType.values()) {
-            if (careerType.description.equals(description)) {
-                return careerType;
-            }
-        }
-
-        return null;
     }
 }

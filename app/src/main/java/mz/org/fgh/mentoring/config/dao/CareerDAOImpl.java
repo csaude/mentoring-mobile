@@ -35,7 +35,7 @@ public class CareerDAOImpl extends GenericDAOImpl<Career> implements CareerDAO {
     public ContentValues getContentValues(Career career) {
         ContentValues values = new ContentValues();
 
-        values.put("career_type", career.getCareerType().toString());
+        values.put("career_type", career.getCareerType().name());
         values.put("position", career.getPosition());
 
         return values;
@@ -64,6 +64,7 @@ public class CareerDAOImpl extends GenericDAOImpl<Career> implements CareerDAO {
         return careers;
     }
 
+
     @Override
     public boolean exist(CareerType carrerType, String position) {
         SQLiteDatabase database = getReadableDatabase();
@@ -73,5 +74,41 @@ public class CareerDAOImpl extends GenericDAOImpl<Career> implements CareerDAO {
         int result = cursor.getCount();
 
         return result > 0;
+    }
+
+    @Override
+    public List<Career> findPositionByCarrerType(CareerType carrerType) {
+        SQLiteDatabase database = getReadableDatabase();
+        String[] params = new String[]{carrerType.name()};
+        Cursor cursor = database.rawQuery(QUERY.findPositionByCarrerType, params);
+        List<Career> careers = new ArrayList<>();
+
+        while (cursor.moveToNext()) {
+
+            Career career = new Career();
+            career.setId(cursor.getLong(cursor.getColumnIndex("id")));
+            career.setCareerType(CareerType.valueOf(cursor.getString(cursor.getColumnIndex("career_type"))));
+            career.setPosition(cursor.getString(cursor.getColumnIndex("position")));
+            careers.add(career);
+        }
+
+        cursor.close();
+        return careers;
+    }
+
+
+    @Override
+    public Career findCareerById(Long carrerId) {
+        SQLiteDatabase database = getReadableDatabase();
+        String[] params = new String[]{Long.toString(carrerId)};
+        Cursor cursor = database.rawQuery(QUERY.findCareerById, params);
+
+        Career career = new Career();
+        while (cursor.moveToNext()) {
+            career.setId(Long.parseLong(String.valueOf(cursor.getLong(cursor.getColumnIndex("id")))));
+            career.setCareerType(CareerType.valueOf(cursor.getString(cursor.getColumnIndex("career_type"))));
+            career.setPosition(cursor.getString(cursor.getColumnIndex("position")));
+        }
+        return career;
     }
 }

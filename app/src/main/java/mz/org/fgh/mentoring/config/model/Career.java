@@ -26,4 +26,10 @@ public class Career extends GenericEntity {
     public void setPosition(String position) {
         this.position = position;
     }
+
+    @Override
+    public String toString() {
+        return getPosition();
+    }
+
 }

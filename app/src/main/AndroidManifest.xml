@@ -21,13 +21,17 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.LoginActivity" />
-        <activity android:name=".activities.ListTutoredActivity" />
-        <activity android:name=".activities.TutoredActivity"/>
+        <activity
+            android:name=".activities.ListTutoredActivity"
+            android:label="Tutorandos" />
+        <activity android:name=".activities.TutoredActivity" />
         <activity
             android:name=".activities.ConfigurationActivity"
             android:icon="@mipmap/ic_settings"
             android:label="@string/config" />
-        <activity android:name=".activities.MentoringActivity" android:label="Processo de Mentoria"/>
+        <activity
+            android:name=".activities.MentoringActivity"
+            android:label="Processo de Mentoria" />
     </application>
 
 </manifest>

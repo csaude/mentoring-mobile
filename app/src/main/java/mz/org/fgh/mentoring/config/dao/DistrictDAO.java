@@ -15,4 +15,5 @@ public interface DistrictDAO extends GenericDAO<District> {
     }
 
     List<District> findAll();
+
 }

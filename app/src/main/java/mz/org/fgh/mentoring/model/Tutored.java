@@ -1,5 +1,7 @@
 package mz.org.fgh.mentoring.model;
 
+import mz.org.fgh.mentoring.config.model.Career;
+
 /**
  * Created by Eusebio Maposse on 14-Nov-16.
  */
@@ -10,6 +12,10 @@ public class Tutored extends GenericEntity {
     private String surname;
 
     private String phoneNumber;
+
+    private Long carrerId;
+
+    private Career career;
 
     public String getName() {
         return name;
@@ -34,6 +40,23 @@ public class Tutored extends GenericEntity {
     public void setSurname(String surname) {
         this.surname = surname;
     }
+
+    public Long getCarrerId() {
+        return carrerId;
+    }
+
+    public void setCarrerId(Long carrerId) {
+        this.carrerId = carrerId;
+    }
+
+    public Career getCareer() {
+        return career;
+    }
+
+    public void setCareer(Career career) {
+        this.career = career;
+    }
+
 
     @Override
     public String toString() {

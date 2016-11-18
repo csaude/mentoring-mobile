@@ -4,9 +4,9 @@
     tools:context=".activities.ListTutoredActivity">
 
     <item
-        android:id="@+id/main_menu_list_tutoreds"
-        android:icon="@mipmap/ic_done"
-        android:title="save"
+        android:id="@+id/menu_sync_tutoreds"
+        android:icon="@mipmap/ic_upload"
+        android:title="Sync"
         app:showAsAction="always" />
 </menu>
 

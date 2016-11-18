@@ -12,7 +12,10 @@ import java.util.List;
 import mz.org.fgh.mentoring.R;
 import mz.org.fgh.mentoring.adapter.SwipeAdapter;
 import mz.org.fgh.mentoring.config.dao.QuestionDAOImpl;
+import mz.org.fgh.mentoring.config.model.Form;
+import mz.org.fgh.mentoring.config.model.HealthFacility;
 import mz.org.fgh.mentoring.config.model.Question;
+import mz.org.fgh.mentoring.model.Tutored;
 
 public class MentoringActivity extends BaseAuthenticateActivity {
 
@@ -29,7 +32,7 @@ public class MentoringActivity extends BaseAuthenticateActivity {
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
 
-        adapter = new SwipeAdapter(getSupportFragmentManager(), questions);
+        adapter = new SwipeAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
     }
 
@@ -49,7 +52,12 @@ public class MentoringActivity extends BaseAuthenticateActivity {
             answers.add(bundle.getString(question.getCode()));
         }
 
-        Toast.makeText(this, answers + " ", Toast.LENGTH_SHORT).show();
+        Tutored tutored = (Tutored) bundle.getSerializable("tutored");
+        Form form = (Form) bundle.getSerializable("form");
+        HealthFacility healthFacility = (HealthFacility) bundle.getSerializable("healthFacility");
+
+
+        Toast.makeText(this, answers + " -- turando: " + tutored.getName() + "-- formulario: " + form.getName() + "-- HF " + healthFacility.getHealthFacility(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -68,5 +76,9 @@ public class MentoringActivity extends BaseAuthenticateActivity {
         }
 
         return true;
+    }
+
+    public SwipeAdapter getAdapter() {
+        return adapter;
     }
 }

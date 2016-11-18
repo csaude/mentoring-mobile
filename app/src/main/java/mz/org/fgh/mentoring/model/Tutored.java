@@ -2,6 +2,8 @@ package mz.org.fgh.mentoring.model;
 
 import java.io.Serializable;
 
+import mz.org.fgh.mentoring.config.model.Career;
+
 /**
  * Created by Eusebio Maposse on 14-Nov-16.
  */
@@ -10,6 +12,8 @@ public class Tutored implements Serializable {
     private String name;
     private String surname;
     private String phoneNumber;
+    private Career career;
+    private Long carrerId;
 
     public String getName() {
         return name;
@@ -49,6 +53,22 @@ public class Tutored implements Serializable {
     @Override
     public String toString() {
         return id+"-"+name+ " "+surname;
+    }
+
+    public Career getCareer() {
+        return career;
+    }
+
+    public void setCareer(Career career) {
+        this.career = career;
+    }
+
+    public Long getCarrerId() {
+        return carrerId;
+    }
+
+    public void setCarrerId(Long carrerId) {
+        this.carrerId = carrerId;
     }
 }
 

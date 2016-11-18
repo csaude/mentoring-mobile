@@ -43,6 +43,7 @@ public class TutoredDaoImpl extends GenericDAOImpl<Tutored> implements TutoredDa
         values.put("name", tutored.getName());
         values.put("surname", tutored.getSurname());
         values.put("phoneNumber", tutored.getPhoneNumber());
+        values.put("carrer_id", tutored.getCarrerId());
 
 
         return values;
@@ -61,6 +62,7 @@ public class TutoredDaoImpl extends GenericDAOImpl<Tutored> implements TutoredDa
             tutored.setName(cursor.getString(cursor.getColumnIndex("name")));
             tutored.setSurname(cursor.getString(cursor.getColumnIndex("surname")));
             tutored.setPhoneNumber(cursor.getString(cursor.getColumnIndex("phoneNumber")));
+            tutored.setCarrerId(cursor.getLong(cursor.getColumnIndex("carrer_id")));
 
             tutoreds.add(tutored);
         }

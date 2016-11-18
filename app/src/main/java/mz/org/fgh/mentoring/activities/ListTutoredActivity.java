@@ -35,6 +35,8 @@ public class ListTutoredActivity  extends BaseAuthenticateActivity  implements S
         setContentView(R.layout.list_tutoreds);
         findViewById();
         findAllTutored();
+        tutoredItemAdapter = new TutoredItemAdapter(ListTutoredActivity.this,tutoreds);
+        tutoredList.setAdapter(tutoredItemAdapter);
         getTutored();
         goTutoredForm();
     }
@@ -62,6 +64,13 @@ public class ListTutoredActivity  extends BaseAuthenticateActivity  implements S
         return true;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        findAllTutored();
+    }
+
+
     private void getTutored() {
         tutoredDao.close();
         this.tutoredList.setAdapter(tutoredItemAdapter);
@@ -74,12 +83,14 @@ public class ListTutoredActivity  extends BaseAuthenticateActivity  implements S
     @Override
     public boolean onQueryTextChange(String newText) {
         tutoredItemAdapter.filter(newText);
-        return true;
+        return false;
     }
 
     private void findAllTutored() {
         tutoredDao = new TutoredDaoImpl(this);
         tutoreds = tutoredDao.findAll();
         tutoredItemAdapter = new TutoredItemAdapter(ListTutoredActivity.this,tutoreds);
+        tutoredList.setAdapter(tutoredItemAdapter);
+
     }
 }

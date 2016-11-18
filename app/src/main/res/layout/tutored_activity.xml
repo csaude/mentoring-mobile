@@ -27,12 +27,15 @@
         <Spinner
             android:id="@+id/tutored_carrer"
             android:layout_height="wrap_content"
-            android:layout_width="fill_parent">
+            android:layout_width="fill_parent"
+            android:theme="@style/AppTheme"
+            android:elevation="6dp">
         </Spinner>
 
-        <Spinner
-            android:id="@+id/tutored_position"
-            android:layout_height="wrap_content"
-            android:layout_width="fill_parent">
-        </Spinner>
+    <Spinner
+        android:id="@+id/tutored_position"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:animationCache="false">
+    </Spinner>
 </LinearLayout>

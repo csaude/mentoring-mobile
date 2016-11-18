@@ -5,6 +5,7 @@ import mz.org.fgh.mentoring.service.ProgrammaticAreaSyncServiceImpl;
 import mz.org.fgh.mentoring.service.CareerSyncServiceImpl;
 import mz.org.fgh.mentoring.service.HealthFacilitySyncServiceImpl;
 import mz.org.fgh.mentoring.service.SyncService;
+import mz.org.fgh.mentoring.service.TutoredSyncServiceImpl;
 
 /**
  * Created by Stélio Moiane on 11/12/16.
@@ -17,7 +18,9 @@ public enum Location {
 
     PROGRAMATIC_AREAS("Areas Programáticas", new ProgrammaticAreaSyncServiceImpl()),
 
-    FORMS("Formulários", new FormsSyncServiceimpl());
+    FORMS("Formulários", new FormsSyncServiceimpl()),
+
+    TUTOREDS("Tutorandos", new TutoredSyncServiceImpl());
 
     private String name;
     private SyncService syncService;

@@ -1,9 +1,10 @@
-package mz.org.fgh.mentoring.util;
+package mz.org.fgh.mentoring.Helper;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 
 import mz.org.fgh.mentoring.R;
 import mz.org.fgh.mentoring.activities.TutoredActivity;
@@ -13,18 +14,20 @@ import mz.org.fgh.mentoring.model.Tutored;
  * Created by Eusebio Maposse on 14-Nov-16.
  */
 
-public class TutoredUtil {
+public class TutoredHelper {
 
     private EditText nameValue;
     private EditText surnameValue;
     private EditText phoneNumberValue;
+    private Spinner carrerValue;
     private Tutored tutored;
     private ImageView photo;
 
-    public TutoredUtil(TutoredActivity activity){
+    public TutoredHelper(TutoredActivity activity){
         nameValue = (EditText) activity.findViewById(R.id.tutored_name);
         surnameValue = (EditText) activity.findViewById(R.id.tutored_surname);
         phoneNumberValue = (EditText) activity.findViewById(R.id.tutored_phone_number);
+        carrerValue = (Spinner) activity.findViewById(R.id.tutored_carrer);
         tutored = new Tutored();
     }
     public Tutored getTutored(){

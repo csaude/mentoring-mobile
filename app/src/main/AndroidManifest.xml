@@ -27,7 +27,7 @@
             android:name=".activities.ConfigurationActivity"
             android:icon="@mipmap/ic_settings"
             android:label="@string/config" />
-        <activity android:name=".activities.MentoringActivity" />
+        <activity android:name=".activities.MentoringActivity" android:label="Processo de Mentoria"/>
     </application>
 
 </manifest>

@@ -11,4 +11,19 @@ public class FormQuestionHelper {
 
     private Question question;
 
+    public FormHelper getForm() {
+        return form;
+    }
+
+    public void setForm(FormHelper form) {
+        this.form = form;
+    }
+
+    public Question getQuestion() {
+        return question;
+    }
+
+    public void setQuestion(Question question) {
+        this.question = question;
+    }
 }

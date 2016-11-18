@@ -1,14 +1,14 @@
 package mz.org.fgh.mentoring.model;
 
-import java.io.Serializable;
-
 /**
  * Created by Eusebio Maposse on 14-Nov-16.
  */
-public class Tutored implements Serializable {
-    private Long id;
+public class Tutored extends GenericEntity {
+
     private String name;
+
     private String surname;
+
     private String phoneNumber;
 
     public String getName() {
@@ -34,21 +34,10 @@ public class Tutored implements Serializable {
     public void setSurname(String surname) {
         this.surname = surname;
     }
-    public  Tutored(){
-
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     @Override
     public String toString() {
-        return id+"-"+name+ " "+surname;
+        return getId() + "-" + name + " " + surname;
     }
 }
 

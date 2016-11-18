@@ -33,7 +33,7 @@ public class HealthFacilityDAOImpl extends GenericDAOImpl<HealthFacility> implem
     }
 
     @Override
-    public ContentValues getObjectValues(HealthFacility healthFacility) {
+    public ContentValues getContentValues(HealthFacility healthFacility) {
         ContentValues values = new ContentValues();
 
         values.put("district_id", healthFacility.getDistrict().getId());

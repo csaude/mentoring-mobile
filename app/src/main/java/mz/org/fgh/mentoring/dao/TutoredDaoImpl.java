@@ -37,7 +37,7 @@ public class TutoredDaoImpl extends GenericDAOImpl<Tutored> implements TutoredDa
     }
 
     @Override
-    public ContentValues getObjectValues(Tutored tutored) {
+    public ContentValues getContentValues(Tutored tutored) {
         ContentValues values = new ContentValues();
 
         values.put("name", tutored.getName());

@@ -17,9 +17,6 @@ import mz.org.fgh.mentoring.dao.GenericDAOImpl;
  */
 public class CareerDAOImpl extends GenericDAOImpl<Career> implements CareerDAO {
 
-    private static final String TABLE_NAME = "careers";
-    private static final String FIELD_NAME = "position";
-
     public CareerDAOImpl(Context context) {
         super(context);
     }
@@ -35,7 +32,7 @@ public class CareerDAOImpl extends GenericDAOImpl<Career> implements CareerDAO {
     }
 
     @Override
-    public ContentValues getObjectValues(Career career) {
+    public ContentValues getContentValues(Career career) {
         ContentValues values = new ContentValues();
 
         values.put("career_type", career.getCareerType().toString());

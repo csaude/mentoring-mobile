@@ -11,6 +11,9 @@ import mz.org.fgh.mentoring.dao.GenericDAO;
  */
 public interface CareerDAO extends GenericDAO<Career> {
 
+    String TABLE_NAME = "careers";
+    String FIELD_NAME = "position";
+
     class QUERY {
         public static final String findAll = "SELECT * FROM careers;";
         public static final String exist = "SELECT * FROM careers c WHERE c.career_type = ? AND c.position = ?;";

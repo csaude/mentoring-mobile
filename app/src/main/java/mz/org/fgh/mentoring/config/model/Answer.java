@@ -3,12 +3,13 @@
  */
 package mz.org.fgh.mentoring.config.model;
 
+import mz.org.fgh.mentoring.model.GenericEntity;
 import mz.org.fgh.mentoring.process.model.Mentorship;
 
 /**
  * Created by Stélio Moiane on 11/16/16.
  */
-public abstract class Answer {
+public abstract class Answer extends GenericEntity {
 
     private Form form;
 

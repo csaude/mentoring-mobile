@@ -6,14 +6,12 @@ import android.support.v4.view.ViewPager;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import mz.org.fgh.mentoring.R;
 import mz.org.fgh.mentoring.adapter.SwipeAdapter;
+import mz.org.fgh.mentoring.config.dao.QuestionDAOImpl;
 import mz.org.fgh.mentoring.config.model.Question;
-import mz.org.fgh.mentoring.config.model.QuestionCategory;
-import mz.org.fgh.mentoring.config.model.QuestionType;
 
 public class MentoringActivity extends FragmentActivity {
 
@@ -30,11 +28,7 @@ public class MentoringActivity extends FragmentActivity {
 
         bundle = new Bundle();
 
-        questions = Arrays.asList(new Question("NZ001", "COMO TE CHAMAS ?", QuestionType.TEXT, QuestionCategory.ACCURACY),
-                new Question("NZ002", "IDADE", QuestionType.TEXT, QuestionCategory.ACCURACY),
-                new Question("NZ003", "ENDERECO", QuestionType.TEXT, QuestionCategory.ACCURACY),
-                new Question("NZ004", "ESCOLARIDADE", QuestionType.TEXT, QuestionCategory.ACCURACY));
-
+        questions = new QuestionDAOImpl(this).findQuestionByForm("MT00000007");
 
         adapter = new SwipeAdapter(getSupportFragmentManager(), questions);
         viewPager.setAdapter(adapter);

@@ -4,6 +4,7 @@
 
 package mz.org.fgh.mentoring.process.model;
 
+import mz.org.fgh.mentoring.config.model.Form;
 import mz.org.fgh.mentoring.config.model.HealthFacility;
 import mz.org.fgh.mentoring.model.GenericEntity;
 

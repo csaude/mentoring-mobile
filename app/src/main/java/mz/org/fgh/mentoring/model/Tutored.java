@@ -1,19 +1,21 @@
 package mz.org.fgh.mentoring.model;
 
-import java.io.Serializable;
-
 import mz.org.fgh.mentoring.config.model.Career;
 
 /**
  * Created by Eusebio Maposse on 14-Nov-16.
  */
-public class Tutored implements Serializable {
-    private Long id;
+public class Tutored extends GenericEntity {
+
     private String name;
+
     private String surname;
+
     private String phoneNumber;
-    private Career career;
+
     private Long carrerId;
+
+    private Career career;
 
     public String getName() {
         return name;
@@ -38,21 +40,13 @@ public class Tutored implements Serializable {
     public void setSurname(String surname) {
         this.surname = surname;
     }
-    public  Tutored(){
 
+    public Long getCarrerId() {
+        return carrerId;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    @Override
-    public String toString() {
-        return id+"-"+name+ " "+surname;
+    public void setCarrerId(Long carrerId) {
+        this.carrerId = carrerId;
     }
 
     public Career getCareer() {
@@ -63,12 +57,10 @@ public class Tutored implements Serializable {
         this.career = career;
     }
 
-    public Long getCarrerId() {
-        return carrerId;
-    }
 
-    public void setCarrerId(Long carrerId) {
-        this.carrerId = carrerId;
+    @Override
+    public String toString() {
+        return getId() + "-" + name + " " + surname;
     }
 }
 

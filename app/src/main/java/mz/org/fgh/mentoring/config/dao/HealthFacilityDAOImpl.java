@@ -8,16 +8,14 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-import mz.org.fgh.mentoring.dao.GenericDAOImpl;
 import mz.org.fgh.mentoring.config.model.HealthFacility;
+import mz.org.fgh.mentoring.dao.GenericDAOImpl;
 
 /**
  * Created by Stélio Moiane on 11/13/16.
  */
 public class HealthFacilityDAOImpl extends GenericDAOImpl<HealthFacility> implements HealthFacilityDAO {
 
-    private static final String TABLE_NAME = "health_facilities";
-    private static final String FIELD_NAME = "health_facility";
 
     public HealthFacilityDAOImpl(Context context) {
         super(context);
@@ -34,7 +32,7 @@ public class HealthFacilityDAOImpl extends GenericDAOImpl<HealthFacility> implem
     }
 
     @Override
-    public ContentValues getObjectValues(HealthFacility healthFacility) {
+    public ContentValues getContentValues(HealthFacility healthFacility) {
         ContentValues values = new ContentValues();
 
         values.put("district_id", healthFacility.getDistrict().getId());
@@ -54,6 +52,7 @@ public class HealthFacilityDAOImpl extends GenericDAOImpl<HealthFacility> implem
         while (cursor.moveToNext()) {
             HealthFacility healthFacility = new HealthFacility();
             healthFacility.setId(cursor.getLong(cursor.getColumnIndex("id")));
+            healthFacility.setDistrictId(cursor.getLong(cursor.getColumnIndex("district_id")));
             healthFacility.setHealthFacility(cursor.getString(cursor.getColumnIndex("health_facility")));
 
             healthFacilities.add(healthFacility);

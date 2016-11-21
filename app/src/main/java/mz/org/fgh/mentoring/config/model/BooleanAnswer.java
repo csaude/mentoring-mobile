@@ -1,7 +1,7 @@
 /*
  * Friends in Global Health - FGH © 2016
  */
-package mz.org.fgh.mentoring.process.model;
+package mz.org.fgh.mentoring.config.model;
 
 /**
  * Created by Stélio Moiane on 11/16/16.

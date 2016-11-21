@@ -10,14 +10,11 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import mz.org.fgh.mentoring.R;
-import mz.org.fgh.mentoring.activities.ListTutoredActivity;
 import mz.org.fgh.mentoring.config.dao.CareerDAO;
 import mz.org.fgh.mentoring.config.dao.CareerDAOImpl;
 import mz.org.fgh.mentoring.config.model.Career;
-import mz.org.fgh.mentoring.dao.TutoredDao;
 import mz.org.fgh.mentoring.model.Tutored;
 
 /**

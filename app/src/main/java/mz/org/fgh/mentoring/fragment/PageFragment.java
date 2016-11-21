@@ -15,7 +15,7 @@ import android.widget.TextView;
 import mz.org.fgh.mentoring.R;
 import mz.org.fgh.mentoring.activities.MentoringActivity;
 import mz.org.fgh.mentoring.adapter.SwipeAdapter;
-import mz.org.fgh.mentoring.process.model.Question;
+import mz.org.fgh.mentoring.config.model.Question;
 
 public class PageFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
@@ -69,7 +69,9 @@ public class PageFragment extends Fragment implements View.OnClickListener, Adap
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String value = (String) parent.getItemAtPosition(position);
-        activityBundle.putString(question.getCode(), value);
+
+        if (activityBundle != null)
+            activityBundle.putString(question.getCode(), value);
     }
 
     @Override

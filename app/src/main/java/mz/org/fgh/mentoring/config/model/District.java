@@ -1,22 +1,20 @@
 package mz.org.fgh.mentoring.config.model;
 
+import mz.org.fgh.mentoring.model.GenericEntity;
+
 /**
  * Created by Stélio Moiane on 10/26/16.
  */
-public class District {
+public class District extends GenericEntity {
 
-    private Long id;
     private String province;
+
     private String district;
 
     public District(final Long id, final String province, final String district) {
-        this.id = id;
+        this.setId(id);
         this.province = province;
         this.district = district;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public String getProvince() {

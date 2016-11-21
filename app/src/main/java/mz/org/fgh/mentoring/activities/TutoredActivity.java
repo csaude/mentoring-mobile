@@ -13,14 +13,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import mz.org.fgh.mentoring.Helper.TutoredHelper;
+import mz.org.fgh.mentoring.helpers.TutoredHelper;
 import mz.org.fgh.mentoring.R;
 import mz.org.fgh.mentoring.config.dao.CareerDAO;
 import mz.org.fgh.mentoring.config.dao.CareerDAOImpl;
 import mz.org.fgh.mentoring.config.model.Career;
 import mz.org.fgh.mentoring.config.model.CareerType;
-import mz.org.fgh.mentoring.dao.TutoredDao;
-import mz.org.fgh.mentoring.dao.TutoredDaoImpl;
+import mz.org.fgh.mentoring.config.dao.TutoredDao;
+import mz.org.fgh.mentoring.config.dao.TutoredDaoImpl;
 import mz.org.fgh.mentoring.model.Tutored;
 
 /**

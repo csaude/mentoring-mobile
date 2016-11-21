@@ -1,4 +1,4 @@
-package mz.org.fgh.mentoring.Helper;
+package mz.org.fgh.mentoring.helpers;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

@@ -15,8 +15,6 @@ public interface SyncDataService {
     @GET("careers")
     Call<GenericWrapper> careers();
 
-    @GET("programmaticareas")
-    Call<GenericWrapper> programmaticareas();
-
-
+    @GET("formquestions")
+    Call<GenericWrapper> formQuestions();
 }

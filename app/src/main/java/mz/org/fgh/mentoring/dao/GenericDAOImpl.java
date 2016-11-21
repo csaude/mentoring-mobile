@@ -6,10 +6,15 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.UUID;
+
+import mz.org.fgh.mentoring.model.GenericEntity;
+import mz.org.fgh.mentoring.model.Tutored;
+
 /**
  * Created by Stélio Moiane on 11/9/16.
  */
-public abstract class GenericDAOImpl<T> extends SQLiteOpenHelper implements GenericDAO<T> {
+public abstract class GenericDAOImpl<T extends GenericEntity> extends SQLiteOpenHelper implements GenericDAO<T> {
 
     private static final String name = "mentoringdb";
     private static final int version = 1;
@@ -23,7 +28,10 @@ public abstract class GenericDAOImpl<T> extends SQLiteOpenHelper implements Gene
         db.execSQL(DISTRICT_TABLE);
         db.execSQL(HEALTH_FACILITY_TABLE);
         db.execSQL(CAREER_TABLE);
-        db.execSQL(TUTORED);
+        db.execSQL(TUTORED_TABLE);
+        db.execSQL(FORM_TABLE);
+        db.execSQL(QUESTION_TABLE);
+        db.execSQL(FORM_QUESTION_TABLE);
     }
 
     @Override
@@ -32,12 +40,28 @@ public abstract class GenericDAOImpl<T> extends SQLiteOpenHelper implements Gene
     }
 
     @Override
-    public Long create(final T entity) {
+    public void create(final T entity) {
         SQLiteDatabase database = getWritableDatabase();
 
-        ContentValues values = getObjectValues(entity);
+        ContentValues values = getContentValues(entity);
+        String uuid = UUID.randomUUID().toString().replace("-", "");
 
-        return database.insert(getTableName(), null, values);
+        if(entity instanceof Tutored){
+            values.put("uuid", uuid);
+        }
+
+        database.insert(getTableName(), null, values);
+    }
+
+    @Override
+    public void update(T entity) {
+
+        SQLiteDatabase database = getReadableDatabase();
+
+        String[] params = new String[]{String.valueOf(entity.getId())};
+        ContentValues values = getContentValues(entity);
+
+        database.update(getTableName(), values, "id = ?", params);
     }
 
     @Override

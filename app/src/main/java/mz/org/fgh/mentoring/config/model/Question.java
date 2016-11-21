@@ -1,4 +1,4 @@
-package mz.org.fgh.mentoring.process.model;
+package mz.org.fgh.mentoring.config.model;
 
 import mz.org.fgh.mentoring.model.GenericEntity;
 
@@ -7,23 +7,17 @@ import mz.org.fgh.mentoring.model.GenericEntity;
  */
 public class Question extends GenericEntity {
 
-    public Question(String code, String question, QuestionType questionType, QuestionCategory questionCategory) {
-        this.code = code;
-        this.question = question;
-        this.questionType = questionType;
-        this.questionCategory = questionCategory;
-    }
-
-    private String code;
-
     private String question;
 
     private QuestionType questionType;
 
     private QuestionCategory questionCategory;
 
-    public String getCode() {
-        return code;
+    public Question(String code, String question, QuestionType questionType, QuestionCategory questionCategory) {
+        this.setCode(code);
+        this.question = question;
+        this.questionType = questionType;
+        this.questionCategory = questionCategory;
     }
 
     public String getQuestion() {

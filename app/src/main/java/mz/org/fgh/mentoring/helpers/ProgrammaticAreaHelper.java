@@ -1,23 +1,15 @@
-package mz.org.fgh.mentoring.config.model;
+package mz.org.fgh.mentoring.helpers;
 
 /**
- * Created by Stélio Moiane on 11/13/16.
+ * Created by Stélio Moiane on 11/16/16.
  */
-public class ProgrammaticArea {
-
-    private Long id;
+public class ProgrammaticAreaHelper {
 
     private String code;
 
     private String name;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    private String description;
 
     public String getCode() {
         return code;
@@ -33,5 +25,13 @@ public class ProgrammaticArea {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

@@ -1,23 +1,15 @@
 package mz.org.fgh.mentoring.config.model;
 
+import mz.org.fgh.mentoring.model.GenericEntity;
+
 /**
  * Created by Stélio Moiane on 11/13/16.
  */
-public class Career {
-
-    private Long id;
+public class Career extends GenericEntity {
 
     private CareerType careerType;
 
     private String position;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public CareerType getCareerType() {
         return careerType;

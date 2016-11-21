@@ -1,17 +1,17 @@
 package mz.org.fgh.mentoring.config.model;
 
+import mz.org.fgh.mentoring.model.GenericEntity;
+
 /**
  * Created by Stélio Moiane on 10/26/16.
  */
-public class HealthFacility {
+public class HealthFacility extends GenericEntity {
 
-    private Long id;
     private District district;
+
     private Long districtId;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    private String healthFacility;
 
     public void setDistrict(District district) {
         this.district = district;
@@ -25,12 +25,6 @@ public class HealthFacility {
         this.healthFacility = healthFacility;
     }
 
-    private String healthFacility;
-
-    public Long getId() {
-        return id;
-    }
-
     public District getDistrict() {
         return district;
     }
@@ -41,5 +35,10 @@ public class HealthFacility {
 
     public String getHealthFacility() {
         return healthFacility;
+    }
+
+    @Override
+    public String toString() {
+        return this.healthFacility;
     }
 }

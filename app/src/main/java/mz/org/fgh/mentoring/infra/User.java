@@ -1,9 +1,11 @@
 package mz.org.fgh.mentoring.infra;
 
+import mz.org.fgh.mentoring.model.GenericEntity;
+
 /**
  * Created by Stélio Moiane on 10/18/16.
  */
-public class User {
+public class User extends GenericEntity {
 
     private String username;
     private String password;

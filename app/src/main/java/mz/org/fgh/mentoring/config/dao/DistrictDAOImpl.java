@@ -34,7 +34,7 @@ public class DistrictDAOImpl extends GenericDAOImpl<District> implements Distric
     }
 
     @Override
-    public ContentValues getObjectValues(final District district) {
+    public ContentValues getContentValues(final District district) {
 
         ContentValues values = new ContentValues();
 

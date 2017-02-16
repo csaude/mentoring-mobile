@@ -1,0 +1,12 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activities.ListTutoredActivity">
+
+    <item
+        android:id="@+id/menu_sync_tutoreds"
+        android:icon="@mipmap/ic_upload"
+        android:title="Sync"
+        app:showAsAction="always" />
+</menu>
+

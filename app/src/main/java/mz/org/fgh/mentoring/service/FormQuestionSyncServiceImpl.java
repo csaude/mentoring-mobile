@@ -42,7 +42,12 @@ public class FormQuestionSyncServiceImpl implements SyncService {
                          @Override
                          public void onResponse(Call<GenericWrapper> call, Response<GenericWrapper> response) {
 
+
                              GenericWrapper wrapper = response.body();
+
+                             if(wrapper == null){
+                                 Toast.makeText(activity, "Nao existe nehum formulario no servidor", Toast.LENGTH_SHORT).show();
+                             }
 
                              FormDAO formDAO = new FormDAOImpl(activity);
                              QuestionDAO questionDAO = new QuestionDAOImpl(activity);

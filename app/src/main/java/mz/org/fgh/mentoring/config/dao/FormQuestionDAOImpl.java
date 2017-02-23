@@ -2,6 +2,7 @@ package mz.org.fgh.mentoring.config.dao;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 
 import mz.org.fgh.mentoring.config.model.FormQuestion;
 import mz.org.fgh.mentoring.dao.GenericDAOImpl;
@@ -34,5 +35,10 @@ public class FormQuestionDAOImpl extends GenericDAOImpl<FormQuestion> implements
         values.put("question_code", entity.getQuestionCode());
 
         return values;
+    }
+
+    @Override
+    public FormQuestion getPopulatedEntity(Cursor cursor) {
+        return null;
     }
 }

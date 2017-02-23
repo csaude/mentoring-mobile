@@ -42,6 +42,17 @@ public class HealthFacilityDAOImpl extends GenericDAOImpl<HealthFacility> implem
     }
 
     @Override
+    public HealthFacility getPopulatedEntity(Cursor cursor) {
+
+        HealthFacility healthFacility = new HealthFacility();
+        healthFacility.setId(cursor.getLong(cursor.getColumnIndex("id")));
+        healthFacility.setDistrictId(cursor.getLong(cursor.getColumnIndex("district_id")));
+        healthFacility.setHealthFacility(cursor.getString(cursor.getColumnIndex("health_facility")));
+
+        return healthFacility;
+    }
+
+    @Override
     public List<HealthFacility> findAll() {
         SQLiteDatabase database = getReadableDatabase();
 
@@ -50,14 +61,11 @@ public class HealthFacilityDAOImpl extends GenericDAOImpl<HealthFacility> implem
         List<HealthFacility> healthFacilities = new ArrayList<>();
 
         while (cursor.moveToNext()) {
-            HealthFacility healthFacility = new HealthFacility();
-            healthFacility.setId(cursor.getLong(cursor.getColumnIndex("id")));
-            healthFacility.setDistrictId(cursor.getLong(cursor.getColumnIndex("district_id")));
-            healthFacility.setHealthFacility(cursor.getString(cursor.getColumnIndex("health_facility")));
-
+            HealthFacility healthFacility = getPopulatedEntity(cursor);
             healthFacilities.add(healthFacility);
         }
 
+        cursor.close();
         return healthFacilities;
     }
 }

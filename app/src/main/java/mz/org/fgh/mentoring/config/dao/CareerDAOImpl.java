@@ -41,6 +41,17 @@ public class CareerDAOImpl extends GenericDAOImpl<Career> implements CareerDAO {
         return values;
     }
 
+    @Override
+    public Career getPopulatedEntity(Cursor cursor) {
+
+        Career career = new Career();
+        career.setId(cursor.getLong(cursor.getColumnIndex("id")));
+        career.setCareerType(CareerType.valueOf(cursor.getString(cursor.getColumnIndex("career_type"))));
+        career.setPosition(cursor.getString(cursor.getColumnIndex("position")));
+
+        return career;
+    }
+
 
     @Override
     public List<Career> findAll() {
@@ -50,12 +61,7 @@ public class CareerDAOImpl extends GenericDAOImpl<Career> implements CareerDAO {
         List<Career> careers = new ArrayList<>();
 
         while (cursor.moveToNext()) {
-
-            Career career = new Career();
-            career.setId(cursor.getLong(cursor.getColumnIndex("id")));
-            career.setCareerType(CareerType.valueOf(cursor.getString(cursor.getColumnIndex("career_type"))));
-            career.setPosition(cursor.getString(cursor.getColumnIndex("position")));
-
+            Career career = getPopulatedEntity(cursor);
             careers.add(career);
         }
 
@@ -80,15 +86,13 @@ public class CareerDAOImpl extends GenericDAOImpl<Career> implements CareerDAO {
     public List<Career> findPositionByCarrerType(CareerType carrerType) {
         SQLiteDatabase database = getReadableDatabase();
         String[] params = new String[]{carrerType.name()};
+
         Cursor cursor = database.rawQuery(QUERY.findPositionByCarrerType, params);
+
         List<Career> careers = new ArrayList<>();
 
         while (cursor.moveToNext()) {
-
-            Career career = new Career();
-            career.setId(cursor.getLong(cursor.getColumnIndex("id")));
-            career.setCareerType(CareerType.valueOf(cursor.getString(cursor.getColumnIndex("career_type"))));
-            career.setPosition(cursor.getString(cursor.getColumnIndex("position")));
+            Career career = getPopulatedEntity(cursor);
             careers.add(career);
         }
 
@@ -101,14 +105,15 @@ public class CareerDAOImpl extends GenericDAOImpl<Career> implements CareerDAO {
     public Career findCareerById(Long carrerId) {
         SQLiteDatabase database = getReadableDatabase();
         String[] params = new String[]{Long.toString(carrerId)};
+
         Cursor cursor = database.rawQuery(QUERY.findCareerById, params);
 
         Career career = new Career();
         while (cursor.moveToNext()) {
-            career.setId(Long.parseLong(String.valueOf(cursor.getLong(cursor.getColumnIndex("id")))));
-            career.setCareerType(CareerType.valueOf(cursor.getString(cursor.getColumnIndex("career_type"))));
-            career.setPosition(cursor.getString(cursor.getColumnIndex("position")));
+            career = getPopulatedEntity(cursor);
         }
+
+        cursor.close();
         return career;
     }
 }

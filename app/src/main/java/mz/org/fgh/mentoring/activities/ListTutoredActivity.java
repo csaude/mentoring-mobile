@@ -14,9 +14,11 @@ import java.util.List;
 
 import mz.org.fgh.mentoring.R;
 import mz.org.fgh.mentoring.adapter.TutoredItemAdapter;
-import mz.org.fgh.mentoring.config.dao.TutoredDao;
-import mz.org.fgh.mentoring.config.dao.TutoredDaoImpl;
+import mz.org.fgh.mentoring.config.dao.TutoredDAO;
+import mz.org.fgh.mentoring.config.dao.TutoredDAOImpl;
 import mz.org.fgh.mentoring.model.Tutored;
+import mz.org.fgh.mentoring.service.SyncService;
+import mz.org.fgh.mentoring.service.TutoredSyncServiceImpl;
 
 
 /**
@@ -30,7 +32,7 @@ public class ListTutoredActivity extends BaseAuthenticateActivity implements Sea
     private SearchView searchView;
     TutoredItemAdapter tutoredItemAdapter;
     private List<Tutored> tutoreds;
-    private TutoredDao tutoredDao;
+    private TutoredDAO tutoredDAO;
 
     @Override
     protected void onMentoringCreate(Bundle bundle) {
@@ -75,7 +77,7 @@ public class ListTutoredActivity extends BaseAuthenticateActivity implements Sea
 
 
     private void getTutored() {
-        tutoredDao.close();
+        tutoredDAO.close();
         this.tutoredList.setAdapter(tutoredItemAdapter);
     }
 
@@ -91,14 +93,18 @@ public class ListTutoredActivity extends BaseAuthenticateActivity implements Sea
     }
 
     private void findAllTutored() {
-        tutoredDao = new TutoredDaoImpl(this);
-        tutoreds = tutoredDao.findAll();
+        tutoredDAO = new TutoredDAOImpl(this);
+        tutoreds = tutoredDAO.findAllWithNoCode();
         tutoredItemAdapter = new TutoredItemAdapter(ListTutoredActivity.this, tutoreds);
         tutoredList.setAdapter(tutoredItemAdapter);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
+        SyncService syncService = new TutoredSyncServiceImpl(new TutoredDAOImpl(this));
+        syncService.setActivity(this);
+        syncService.execute();
 
         Toast.makeText(this, "a sincronizar dados....", Toast.LENGTH_SHORT).show();
 

@@ -8,8 +8,8 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-import mz.org.fgh.mentoring.dao.GenericDAOImpl;
 import mz.org.fgh.mentoring.config.model.District;
+import mz.org.fgh.mentoring.dao.GenericDAOImpl;
 
 /**
  * Created by Stélio Moiane on 11/9/16.
@@ -44,6 +44,16 @@ public class DistrictDAOImpl extends GenericDAOImpl<District> implements Distric
         return values;
     }
 
+    @Override
+    public District getPopulatedEntity(Cursor cursor) {
+
+        District district = new District(cursor.getLong(cursor.getColumnIndex("id")),
+                cursor.getString(cursor.getColumnIndex("province")),
+                cursor.getString(cursor.getColumnIndex("district")));
+
+        return district;
+    }
+
 
     @Override
     public List<District> findAll() {
@@ -53,14 +63,10 @@ public class DistrictDAOImpl extends GenericDAOImpl<District> implements Distric
         List<District> districts = new ArrayList<>();
 
         while (cursor.moveToNext()) {
-
-            districts.add(new District(cursor.getLong(cursor.getColumnIndex("id")),
-                    cursor.getString(cursor.getColumnIndex("province")),
-                    cursor.getString(cursor.getColumnIndex("district"))));
+            districts.add(getPopulatedEntity(cursor));
         }
 
         cursor.close();
-
         return districts;
     }
 }

@@ -1,13 +1,13 @@
 package mz.org.fgh.mentoring.service;
 
-import mz.org.fgh.mentoring.activities.ConfigurationActivity;
+import mz.org.fgh.mentoring.activities.BaseAuthenticateActivity;
 
 /**
  * Created by Stélio Moiane on 11/12/16.
  */
 public interface SyncService {
 
-   void execute();
+    void execute();
 
-   void setActivity(ConfigurationActivity activity);
+    void setActivity(final BaseAuthenticateActivity activity);
 }

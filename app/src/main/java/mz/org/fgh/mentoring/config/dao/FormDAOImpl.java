@@ -44,6 +44,19 @@ public class FormDAOImpl extends GenericDAOImpl<Form> implements FormDAO {
     }
 
     @Override
+    public Form getPopulatedEntity(Cursor cursor) {
+
+        Form form = new Form(cursor.getString(cursor.getColumnIndex("code")),
+                cursor.getString(cursor.getColumnIndex("name")),
+                cursor.getString(cursor.getColumnIndex("programmatic_area")),
+                cursor.getString(cursor.getColumnIndex("version")));
+
+        form.setId(cursor.getLong(cursor.getColumnIndex("id")));
+
+        return form;
+    }
+
+    @Override
     public List<Form> findAll() {
 
         SQLiteDatabase database = getReadableDatabase();
@@ -52,17 +65,11 @@ public class FormDAOImpl extends GenericDAOImpl<Form> implements FormDAO {
         List<Form> forms = new ArrayList<>();
 
         while (cursor.moveToNext()) {
-
-            Form form = new Form(cursor.getString(cursor.getColumnIndex("code")),
-                    cursor.getString(cursor.getColumnIndex("name")),
-                    cursor.getString(cursor.getColumnIndex("programmatic_area")),
-                    cursor.getString(cursor.getColumnIndex("version")));
-
-            form.setId(cursor.getLong(cursor.getColumnIndex("id")));
-
+            Form form = getPopulatedEntity(cursor);
             forms.add(form);
         }
 
+        cursor.close();
         return forms;
     }
 }

@@ -63,7 +63,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:background="#00695C"
-            android:text="Logar"
+            android:text="Entrar"
             android:textColor="#fff"
             android:textStyle="bold" />
 

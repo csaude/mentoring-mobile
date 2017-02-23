@@ -14,8 +14,8 @@ import java.util.List;
 
 import mz.org.fgh.mentoring.R;
 import mz.org.fgh.mentoring.activities.MentoringActivity;
-import mz.org.fgh.mentoring.config.dao.TutoredDao;
-import mz.org.fgh.mentoring.config.dao.TutoredDaoImpl;
+import mz.org.fgh.mentoring.config.dao.TutoredDAO;
+import mz.org.fgh.mentoring.config.dao.TutoredDAOImpl;
 import mz.org.fgh.mentoring.model.Tutored;
 
 
@@ -32,8 +32,8 @@ public class TutoredFragment extends Fragment implements AdapterView.OnItemClick
         activity = (MentoringActivity) getActivity();
         activityBundle = activity.getBundle();
 
-        TutoredDao tutoredDao = new TutoredDaoImpl(activity);
-        List<Tutored> tutoreds = tutoredDao.findAll();
+        TutoredDAO tutoredDAO = new TutoredDAOImpl(activity);
+        List<Tutored> tutoreds = tutoredDAO.findAll();
 
         ListView tutoredsList = (ListView) view.findViewById(R.id.fragment_tutoreds);
         ArrayAdapter<Tutored> adapter = new ArrayAdapter<>(activity, android.R.layout.simple_list_item_1, tutoreds);
@@ -41,7 +41,7 @@ public class TutoredFragment extends Fragment implements AdapterView.OnItemClick
 
         tutoredsList.setOnItemClickListener(this);
 
-        tutoredDao.close();
+        tutoredDAO.close();
 
         return view;
     }

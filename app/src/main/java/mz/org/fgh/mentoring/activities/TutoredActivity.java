@@ -19,8 +19,8 @@ import mz.org.fgh.mentoring.config.dao.CareerDAO;
 import mz.org.fgh.mentoring.config.dao.CareerDAOImpl;
 import mz.org.fgh.mentoring.config.model.Career;
 import mz.org.fgh.mentoring.config.model.CareerType;
-import mz.org.fgh.mentoring.config.dao.TutoredDao;
-import mz.org.fgh.mentoring.config.dao.TutoredDaoImpl;
+import mz.org.fgh.mentoring.config.dao.TutoredDAO;
+import mz.org.fgh.mentoring.config.dao.TutoredDAOImpl;
 import mz.org.fgh.mentoring.model.Tutored;
 
 /**
@@ -30,7 +30,7 @@ import mz.org.fgh.mentoring.model.Tutored;
 public class TutoredActivity extends BaseAuthenticateActivity {
 
     private TutoredHelper tutoredHelper;
-    private TutoredDao tutoredDao;
+    private TutoredDAO tutoredDAO;
     private Button takePhoto;
     private Spinner carrerTypeSpinner;
     private Spinner positionSpinner;
@@ -64,14 +64,14 @@ public class TutoredActivity extends BaseAuthenticateActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        tutoredDao = new TutoredDaoImpl(this);
+        tutoredDAO = new TutoredDAOImpl(this);
         switch (item.getItemId()) {
             case R.id.save_tutored:
                 tutored = tutoredHelper.getTutored();
-                tutoredDao.create(tutored);
-                tutoredDao.close();
+                tutoredDAO.create(tutored);
+                tutoredDAO.close();
                 finish();
-                tutoredDao.findAll();
+                tutoredDAO.findAll();
 
         }
         return super.onOptionsItemSelected(item);

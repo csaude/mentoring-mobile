@@ -3,6 +3,7 @@ package mz.org.fgh.mentoring.service;
 import android.app.ProgressDialog;
 import android.widget.Toast;
 
+import mz.org.fgh.mentoring.activities.BaseAuthenticateActivity;
 import mz.org.fgh.mentoring.activities.ConfigurationActivity;
 import mz.org.fgh.mentoring.config.dao.FormDAO;
 import mz.org.fgh.mentoring.config.dao.FormDAOImpl;
@@ -53,11 +54,11 @@ public class FormQuestionSyncServiceImpl implements SyncService {
                                  Question question = formQuestionHelper.getQuestion();
                                  FormQuestion formQuestion = new FormQuestion(form.getCode(), question.getCode());
 
-                                 if (!formDAO.exist(form.getCode())){
+                                 if (!formDAO.exist(form.getCode())) {
                                      formDAO.create(form);
                                  }
 
-                                 if(!questionDAO.exist(question.getCode())){
+                                 if (!questionDAO.exist(question.getCode())) {
                                      questionDAO.create(question);
                                  }
 
@@ -85,7 +86,7 @@ public class FormQuestionSyncServiceImpl implements SyncService {
     }
 
     @Override
-    public void setActivity(ConfigurationActivity activity) {
-        this.activity = activity;
+    public void setActivity(BaseAuthenticateActivity activity) {
+        this.activity = (ConfigurationActivity) activity;
     }
 }

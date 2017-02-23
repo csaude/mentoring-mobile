@@ -1,6 +1,7 @@
 package mz.org.fgh.mentoring.dao;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 
 import mz.org.fgh.mentoring.model.GenericEntity;
 
@@ -28,6 +29,8 @@ public interface GenericDAO<T extends GenericEntity> {
     String getFieldName();
 
     ContentValues getContentValues(final T entity);
+
+    T getPopulatedEntity(Cursor cursor);
 
     void create(final T entity);
 

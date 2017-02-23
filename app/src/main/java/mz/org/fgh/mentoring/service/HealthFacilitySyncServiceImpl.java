@@ -3,6 +3,7 @@ package mz.org.fgh.mentoring.service;
 import android.app.ProgressDialog;
 import android.widget.Toast;
 
+import mz.org.fgh.mentoring.activities.BaseAuthenticateActivity;
 import mz.org.fgh.mentoring.activities.ConfigurationActivity;
 import mz.org.fgh.mentoring.config.dao.DistrictDAO;
 import mz.org.fgh.mentoring.config.dao.DistrictDAOImpl;
@@ -71,7 +72,7 @@ public class HealthFacilitySyncServiceImpl implements SyncService {
     }
 
     @Override
-    public void setActivity(ConfigurationActivity activity) {
-        this.activity = activity;
+    public void setActivity(BaseAuthenticateActivity activity) {
+        this.activity = (ConfigurationActivity) activity;
     }
 }

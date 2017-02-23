@@ -46,6 +46,18 @@ public class QuestionDAOImpl extends GenericDAOImpl<Question> implements Questio
     }
 
     @Override
+    public Question getPopulatedEntity(Cursor cursor) {
+
+        Question question = new Question(cursor.getString(cursor.getColumnIndex("code")),
+                cursor.getString(cursor.getColumnIndex("question")),
+                QuestionType.valueOf(cursor.getString(cursor.getColumnIndex("question_type"))),
+                QuestionCategory.valueOf(cursor.getString(cursor.getColumnIndex("question_category"))));
+        question.setId(cursor.getLong(cursor.getColumnIndex("id")));
+
+        return question;
+    }
+
+    @Override
     public List<Question> findQuestionByForm(String formCode) {
         List<Question> questions = new ArrayList<>();
 
@@ -56,17 +68,11 @@ public class QuestionDAOImpl extends GenericDAOImpl<Question> implements Questio
         Cursor cursor = database.rawQuery(QUERY.findQuestionByForm, params);
 
         while (cursor.moveToNext()) {
-
-            Question question = new Question(cursor.getString(cursor.getColumnIndex("code")),
-                    cursor.getString(cursor.getColumnIndex("question")),
-                    QuestionType.valueOf(cursor.getString(cursor.getColumnIndex("question_type"))),
-                    QuestionCategory.valueOf(cursor.getString(cursor.getColumnIndex("question_category"))));
-            question.setId(cursor.getLong(cursor.getColumnIndex("id")));
-
+            Question question = getPopulatedEntity(cursor);
             questions.add(question);
-
         }
 
+        cursor.close();
         return questions;
     }
 }

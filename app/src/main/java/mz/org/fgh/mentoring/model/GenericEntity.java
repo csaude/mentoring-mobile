@@ -1,6 +1,7 @@
 package mz.org.fgh.mentoring.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Created by Stélio Moiane on 11/16/16.
@@ -12,6 +13,8 @@ public abstract class GenericEntity implements Serializable {
     private String code;
 
     private String uuid;
+
+    private Date createdAt;
 
     public Long getId() {
         return id;
@@ -35,5 +38,13 @@ public abstract class GenericEntity implements Serializable {
 
     public void setUuid(String uuid) {
         this.uuid = uuid;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
     }
 }

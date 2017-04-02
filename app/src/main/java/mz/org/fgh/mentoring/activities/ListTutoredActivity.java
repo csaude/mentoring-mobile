@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -105,8 +104,6 @@ public class ListTutoredActivity extends BaseAuthenticateActivity implements Sea
         SyncService syncService = new TutoredSyncServiceImpl(new TutoredDAOImpl(this));
         syncService.setActivity(this);
         syncService.execute();
-
-        Toast.makeText(this, "a sincronizar dados....", Toast.LENGTH_SHORT).show();
 
         return super.onOptionsItemSelected(item);
     }

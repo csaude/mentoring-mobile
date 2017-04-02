@@ -57,10 +57,14 @@ public class Tutored extends GenericEntity {
         this.career = career;
     }
 
+    public String getFullName() {
+        return this.name + " " + this.surname;
+    }
+
 
     @Override
     public String toString() {
-        return getId() + "-" + name + " " + surname;
+        return name + " " + surname;
     }
 }
 

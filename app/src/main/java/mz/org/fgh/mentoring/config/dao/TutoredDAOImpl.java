@@ -21,10 +21,6 @@ public class TutoredDAOImpl extends GenericDAOImpl<Tutored> implements TutoredDA
         super(context);
     }
 
-    private static final String TABLE_NAME = "tutoreds";
-    private static final String FIELD_NAME = "tutored";
-
-
     @Override
     public String getTableName() {
         return TABLE_NAME;

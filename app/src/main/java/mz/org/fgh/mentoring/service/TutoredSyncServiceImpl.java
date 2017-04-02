@@ -49,7 +49,7 @@ public class TutoredSyncServiceImpl implements SyncService {
         tutoredBeanResource.setTutoreds(tutoreds);
 
         Call<TutoredBeanResource> call = syncDataService.syncTutoreds(tutoredBeanResource);
-        final ProgressDialog dialog = ProgressDialog.show(activity, "Aguarde", "A receber dados....", true, true);
+        final ProgressDialog dialog = ProgressDialog.show(activity, "Aguarde", "A enviar dados....", true, true);
 
 
         call.enqueue(new Callback<TutoredBeanResource>() {

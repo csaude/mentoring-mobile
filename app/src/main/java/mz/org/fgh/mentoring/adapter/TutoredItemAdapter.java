@@ -28,7 +28,7 @@ public class TutoredItemAdapter extends BaseAdapter {
     private CareerDAO careerDAO;
 
     public TutoredItemAdapter(Context context, List<Tutored> tutoreds) {
-        this.context=context;
+        this.context = context;
         this.tutoreds = tutoreds;
         careerDAO = new CareerDAOImpl(context);
     }
@@ -55,33 +55,35 @@ public class TutoredItemAdapter extends BaseAdapter {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         View newView = view;
 
-        if(newView==null){
-          newView =  layoutInflater.inflate(R.layout.list_items_tutoreds, viewGroup, false);
+        if (newView == null) {
+            newView = layoutInflater.inflate(R.layout.list_items_tutoreds, viewGroup, false);
         }
+
         TextView name = (TextView) newView.findViewById(R.id.item_name);
         name.setText(tutored.getName().concat(" ").concat(tutored.getSurname()));
-        TextView  phoneNumber  = (TextView) newView.findViewById(R.id.item_phone);
+        TextView phoneNumber = (TextView) newView.findViewById(R.id.item_phone);
         TextView carrerText = (TextView) newView.findViewById(R.id.item_carrer);
         carrerText.setText(career.getPosition());
-        phoneNumber.setText(tutored.getPhoneNumber());
+        phoneNumber.setText("( " + tutored.getPhoneNumber() + " )");
         Button button = (Button) newView.findViewById(R.id.item_foto);
 
-        if(!tutored.getName().isEmpty()) {
+        if (!tutored.getName().isEmpty()) {
             button.setText(tutored.getName().substring(0, 1));
         }
         return newView;
     }
+
     public void filter(String text) {
         tutoredArrayList.clear();
 
         if (text.length() == 0) {
             tutoredArrayList.addAll(tutoreds);
         }
-            for (Tutored t : tutoredArrayList) {
-                if (t.getName().toLowerCase().contains(text)) {
-                    tutoredArrayList.add(t);
-                }
+        for (Tutored t : tutoredArrayList) {
+            if (t.getName().toLowerCase().contains(text)) {
+                tutoredArrayList.add(t);
             }
-            notifyDataSetChanged();
+        }
+        notifyDataSetChanged();
     }
 }

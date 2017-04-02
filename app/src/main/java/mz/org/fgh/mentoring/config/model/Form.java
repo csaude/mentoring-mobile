@@ -23,8 +23,16 @@ public class Form extends GenericEntity {
         this.version = version;
     }
 
+    public Form() {
+
+    }
+
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getProgrammaticArea() {

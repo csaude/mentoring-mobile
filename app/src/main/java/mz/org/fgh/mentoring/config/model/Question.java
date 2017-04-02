@@ -19,7 +19,7 @@ public class Question extends GenericEntity {
         this.questionType = questionType;
         this.questionCategory = questionCategory;
     }
-
+    
     public String getQuestion() {
         return question;
     }

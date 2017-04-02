@@ -52,6 +52,7 @@ public class FormDAOImpl extends GenericDAOImpl<Form> implements FormDAO {
                 cursor.getString(cursor.getColumnIndex("version")));
 
         form.setId(cursor.getLong(cursor.getColumnIndex("id")));
+        form.setUuid(cursor.getString(cursor.getColumnIndex("uuid")));
 
         return form;
     }

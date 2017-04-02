@@ -1,34 +1,35 @@
 package mz.org.fgh.mentoring.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.Toast;
 
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import mz.org.fgh.mentoring.R;
 import mz.org.fgh.mentoring.adapter.SwipeAdapter;
+import mz.org.fgh.mentoring.config.dao.AnswerDAO;
+import mz.org.fgh.mentoring.config.dao.AnswerDAOImpl;
 import mz.org.fgh.mentoring.config.dao.QuestionDAOImpl;
+import mz.org.fgh.mentoring.config.model.Answer;
 import mz.org.fgh.mentoring.config.model.Form;
 import mz.org.fgh.mentoring.config.model.HealthFacility;
 import mz.org.fgh.mentoring.config.model.Question;
 import mz.org.fgh.mentoring.model.Tutored;
+import mz.org.fgh.mentoring.process.dao.MentorshipDAO;
+import mz.org.fgh.mentoring.process.dao.MentorshipDAOImpl;
+import mz.org.fgh.mentoring.process.model.Mentorship;
+import mz.org.fgh.mentoring.util.DateUtil;
 
 public class MentoringActivity extends BaseAuthenticateActivity {
 
     private Bundle bundle = new Bundle();
     private SwipeAdapter adapter;
-    private List<Question> questions;
-
 
     @Override
     protected void onMentoringCreate(Bundle bundle) {
         setContentView(R.layout.activity_mentoring);
-
-        questions = new QuestionDAOImpl(this).findQuestionByForm("MT00000007");
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
 
@@ -40,42 +41,41 @@ public class MentoringActivity extends BaseAuthenticateActivity {
         return this.bundle;
     }
 
-    public List<Question> getQuestions() {
-        return questions;
-    }
-
     public void submitProcess() {
-        List<String> answers = new ArrayList<>();
-
-        for (Question question : questions) {
-            bundle.getString(question.getCode());
-            answers.add(bundle.getString(question.getCode()));
-        }
 
         Tutored tutored = (Tutored) bundle.getSerializable("tutored");
         Form form = (Form) bundle.getSerializable("form");
+        List<Question> questions = new QuestionDAOImpl(this).findQuestionByForm(form.getCode());
         HealthFacility healthFacility = (HealthFacility) bundle.getSerializable("healthFacility");
 
+        Mentorship mentorship = new Mentorship();
+        mentorship.setStartDate(DateUtil.parse(getIntent().getStringExtra("startDate")));
+        mentorship.setEndDate(new Date());
+        mentorship.setTutored(tutored);
+        mentorship.setForm(form);
+        mentorship.setHealthFacility(healthFacility);
 
-        Toast.makeText(this, answers + " -- turando: " + tutored.getName() + "-- formulario: " + form.getName() + "-- HF " + healthFacility.getHealthFacility(), Toast.LENGTH_SHORT).show();
-    }
+        MentorshipDAO mentorshipDAO = new MentorshipDAOImpl(this);
+        mentorshipDAO.create(mentorship);
+        mentorshipDAO.close();
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.mentoring_menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
+        AnswerDAO answerDAO = new AnswerDAOImpl(this);
+        for (Question question : questions) {
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+            Answer answer = question.getQuestionType().getAnswer();
+            answer.setValue(bundle.getString(question.getCode()));
 
-        switch (item.getItemId()) {
-            case R.id.mentoring_menu_sync:
-                Toast.makeText(this, "Processos enviados....", Toast.LENGTH_SHORT).show();
-                break;
+            answer.setForm(form);
+            answer.setMentorship(mentorship);
+            answer.setQuestion(question);
+
+            answerDAO.create(answer);
         }
 
-        return true;
+        answerDAO.close();
+
+        startActivity(new Intent(this, ListMentorshipActivity.class));
+        finish();
     }
 
     public SwipeAdapter getAdapter() {

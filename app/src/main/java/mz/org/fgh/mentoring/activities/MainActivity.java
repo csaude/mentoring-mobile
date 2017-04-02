@@ -7,7 +7,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.Arrays;
 
@@ -46,18 +45,14 @@ public class MainActivity extends BaseAuthenticateActivity implements AdapterVie
 
         switch (item.getItemType()) {
             case MENTORING_PROCESS:
-
-                startActivity(new Intent(MainActivity.this, MentoringActivity.class));
-                Toast.makeText(this, item.getItemTitle() + " Foi clicado", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(MainActivity.this, ListMentorshipActivity.class));
                 break;
 
             case TUDOREDS:
-                Intent goToTutoredList = new Intent(MainActivity.this, ListTutoredActivity.class);
-                startActivity(goToTutoredList);
+                startActivity(new Intent(MainActivity.this, ListTutoredActivity.class));
                 break;
 
             case REPORTS:
-                Toast.makeText(this, item.getItemTitle() + " Foi clicado", Toast.LENGTH_SHORT).show();
                 break;
         }
     }

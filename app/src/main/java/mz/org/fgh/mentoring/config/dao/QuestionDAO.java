@@ -15,7 +15,7 @@ public interface QuestionDAO extends GenericDAO<Question> {
 
     class QUERY {
 
-        public static final String findQuestionByForm = "SELECT q.id, q.code, q.question, q.question_type, q.question_category FROM " + TABLE_NAME + " q " +
+        public static final String findQuestionByForm = "SELECT q.id, q.uuid, q.code, q.question, q.question_type, q.question_category FROM " + TABLE_NAME + " q " +
                 "INNER JOIN form_questions fq ON q.code = fq.question_code " +
                 "INNER JOIN forms f on f.code = fq.form_code " +
                 "WHERE f.code = ?;";

@@ -11,6 +11,10 @@ import mz.org.fgh.mentoring.model.Tutored;
  */
 
 public interface TutoredDAO extends GenericDAO<Tutored> {
+
+    String TABLE_NAME = "tutoreds";
+    String FIELD_NAME = "uuid";
+
     class QUERY {
         public static final String findAll = "SELECT t.id, t.code, t.name, t.surname, t.phoneNumber, c.position, t.carrer_id, t.uuid FROM tutoreds t INNER JOIN careers c ON t.carrer_id=c.id;";
         public static final String findAllWithNoCode = "SELECT t.id, t.code, t.name, t.surname, t.phoneNumber, c.position, t.carrer_id, t.uuid FROM tutoreds t INNER JOIN careers c ON t.carrer_id=c.id where t.code is null;";

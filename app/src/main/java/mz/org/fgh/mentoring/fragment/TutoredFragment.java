@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -36,7 +35,8 @@ public class TutoredFragment extends Fragment implements AdapterView.OnItemClick
         List<Tutored> tutoreds = tutoredDAO.findAll();
 
         ListView tutoredsList = (ListView) view.findViewById(R.id.fragment_tutoreds);
-        ArrayAdapter<Tutored> adapter = new ArrayAdapter<>(activity, android.R.layout.simple_list_item_1, tutoreds);
+        tutoredsList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        ArrayAdapter<Tutored> adapter = new ArrayAdapter<>(activity, android.R.layout.simple_list_item_single_choice, tutoreds);
         tutoredsList.setAdapter(adapter);
 
         tutoredsList.setOnItemClickListener(this);
@@ -50,6 +50,5 @@ public class TutoredFragment extends Fragment implements AdapterView.OnItemClick
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Tutored tutored = (Tutored) parent.getItemAtPosition(position);
         activityBundle.putSerializable("tutored", tutored);
-        Toast.makeText(activity, "O tutorando " + tutored.getName() + " foi seleccionado", Toast.LENGTH_SHORT).show();
     }
 }

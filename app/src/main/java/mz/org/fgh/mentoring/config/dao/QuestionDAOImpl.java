@@ -52,7 +52,9 @@ public class QuestionDAOImpl extends GenericDAOImpl<Question> implements Questio
                 cursor.getString(cursor.getColumnIndex("question")),
                 QuestionType.valueOf(cursor.getString(cursor.getColumnIndex("question_type"))),
                 QuestionCategory.valueOf(cursor.getString(cursor.getColumnIndex("question_category"))));
+
         question.setId(cursor.getLong(cursor.getColumnIndex("id")));
+        question.setUuid(cursor.getString(cursor.getColumnIndex("uuid")));
 
         return question;
     }

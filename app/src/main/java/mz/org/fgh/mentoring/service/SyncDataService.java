@@ -2,6 +2,7 @@ package mz.org.fgh.mentoring.service;
 
 import mz.org.fgh.mentoring.model.GenericWrapper;
 import mz.org.fgh.mentoring.model.TutoredBeanResource;
+import mz.org.fgh.mentoring.process.model.MentorshipBeanResource;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -23,4 +24,7 @@ public interface SyncDataService {
 
     @POST("tutoreds/sync")
     Call<TutoredBeanResource> syncTutoreds(@Body final TutoredBeanResource tutoredBeanResource);
+
+    @POST("mentorship/sync")
+    Call<MentorshipBeanResource> syncMentorships(@Body final MentorshipBeanResource mentorshipBeanResource);
 }

@@ -90,12 +90,12 @@ public class ConfigurationActivity extends BaseAuthenticateActivity {
         switch (item.getItemId()) {
             case R.id.config_menu_ok:
                 if (ipField.getText().length() == 0) {
-                    ipField.setError("Servidor invalido!");
+                    ipField.setError("Endereço invalido!");
                     return true;
                 }
 
                 SharedPreferences.Editor editor = application.getSharedPreferences().edit();
-                editor.putString( getResources().getString(R.string.serve_address), ipField.getText().toString());
+                editor.putString(getResources().getString(R.string.serve_address), ipField.getText().toString());
                 editor.commit();
 
                 Toast.makeText(this, "Endereçao do servidor actulizado!", Toast.LENGTH_SHORT).show();

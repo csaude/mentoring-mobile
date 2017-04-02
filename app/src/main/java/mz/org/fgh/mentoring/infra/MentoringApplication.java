@@ -23,7 +23,7 @@ public class MentoringApplication extends Application {
         sharedPreferences = getSharedPreferences(MentoringApplication.class.getName(), 0);
         retrofit = new Retrofit.Builder().baseUrl("http://" +
                 sharedPreferences.getString(getResources().getString(R.string.serve_address), "localhost") +
-                ":8081/mentoring-integ/services/").addConverterFactory(GsonConverterFactory.create())
+                "/mentoring-integ/services/").addConverterFactory(GsonConverterFactory.create())
                 .build();
     }
 

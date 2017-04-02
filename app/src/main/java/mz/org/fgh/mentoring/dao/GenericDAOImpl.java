@@ -6,10 +6,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.Date;
 import java.util.UUID;
 
 import mz.org.fgh.mentoring.model.GenericEntity;
-import mz.org.fgh.mentoring.model.Tutored;
+import mz.org.fgh.mentoring.util.DateUtil;
 
 /**
  * Created by Stélio Moiane on 11/9/16.
@@ -32,6 +33,8 @@ public abstract class GenericDAOImpl<T extends GenericEntity> extends SQLiteOpen
         db.execSQL(FORM_TABLE);
         db.execSQL(QUESTION_TABLE);
         db.execSQL(FORM_QUESTION_TABLE);
+        db.execSQL(MENTORSHIP_TABLE);
+        db.execSQL(ANSWER_TABLE);
     }
 
     @Override
@@ -46,9 +49,11 @@ public abstract class GenericDAOImpl<T extends GenericEntity> extends SQLiteOpen
         ContentValues values = getContentValues(entity);
         String uuid = UUID.randomUUID().toString().replace("-", "");
 
-        if(entity instanceof Tutored){
-            values.put("uuid", uuid);
-        }
+        entity.setUuid(uuid);
+        entity.setCreatedAt(new Date());
+
+        values.put("uuid", entity.getUuid());
+        values.put("created_at", DateUtil.format(entity.getCreatedAt()));
 
         database.insert(getTableName(), null, values);
     }
@@ -67,17 +72,24 @@ public abstract class GenericDAOImpl<T extends GenericEntity> extends SQLiteOpen
     @Override
     public boolean exist(String name) {
 
-        SQLiteDatabase database = getReadableDatabase();
-
-        String[] params = new String[]{name};
-        Cursor cursor = database.rawQuery("SELECT * FROM " + getTableName() + " where " + getFieldName() + " = ? ", params);
+        Cursor cursor = getCursorByParam(name);
         int result = cursor.getCount();
 
         return result > 0;
     }
 
+    private Cursor getCursorByParam(String param) {
+        SQLiteDatabase database = getReadableDatabase();
+        return database.rawQuery("SELECT * FROM " + getTableName() + " WHERE " + getFieldName() + " = ? ", new String[]{param});
+    }
+
     @Override
     public void close() {
         super.close();
+    }
+
+    @Override
+    public T findByUuid(String uuid) {
+        return getPopulatedEntity(getCursorByParam(uuid));
     }
 }

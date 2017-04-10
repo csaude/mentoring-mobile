@@ -3,25 +3,20 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:paddingLeft="12dp"
-    android:paddingTop="8dp">
+    android:padding="8dp">
 
-
-    <Button
-        android:id="@+id/item_foto"
-        android:layout_width="52dp"
-        android:layout_height="52dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="8dp"
-        android:layout_marginRight="16dp"
-        android:background="@drawable/botton_style"
-        android:elevation="8dp"
-        android:stateListAnimator="@null"
+    <TextView
+        android:id="@+id/tutored_icon"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/back_ground"
+        android:padding="12dp"
         android:text="S"
-        android:textColor="#ffffff"
-        android:textSize="24dp"
-        android:visibility="visible" />
+        android:textAlignment="center"
+        android:textColor="#fff"
+        android:textSize="7pt"
+        android:textStyle="bold" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -64,7 +59,7 @@
             android:id="@+id/item_carrer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="8dp"
+            android:paddingTop="4dp"
             android:text="Carreira"
             android:textSize="13sp"
             android:textStyle="bold" />

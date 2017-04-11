@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <include layout="@layout/include_toolbar" />
 
-    <EditText
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <EditText
             android:id="@+id/tutored_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -23,19 +28,19 @@
             android:id="@+id/tutored_phone_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
             android:hint="Telefone" />
+
         <Spinner
             android:id="@+id/tutored_carrer"
-            android:layout_height="wrap_content"
             android:layout_width="fill_parent"
-            android:theme="@style/AppTheme"
-            android:elevation="6dp">
-        </Spinner>
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp" />
 
-    <Spinner
-        android:id="@+id/tutored_position"
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
-        android:animationCache="false">
-    </Spinner>
+        <Spinner
+            android:id="@+id/tutored_position"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
 </LinearLayout>

@@ -5,10 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import mz.org.fgh.mentoring.R;
@@ -22,9 +20,8 @@ import mz.org.fgh.mentoring.model.Tutored;
  */
 
 public class TutoredItemAdapter extends BaseAdapter {
-    private final List<Tutored> tutoreds;
-    private final Context context;
-    private ArrayList<Tutored> tutoredArrayList = new ArrayList<>();
+    private List<Tutored> tutoreds;
+    private Context context;
     private CareerDAO careerDAO;
 
     public TutoredItemAdapter(Context context, List<Tutored> tutoreds) {
@@ -39,51 +36,42 @@ public class TutoredItemAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int i) {
-        return tutoreds.get(i);
+    public Tutored getItem(int position) {
+        return tutoreds.get(position);
     }
 
     @Override
-    public long getItemId(int i) {
-        return tutoreds.get(i).getId();
+    public long getItemId(int position) {
+        return tutoreds.get(position).getId();
     }
 
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
-        Tutored tutored = tutoreds.get(i);
+    public View getView(int position, View convertView, ViewGroup parent) {
+
+        Tutored tutored = tutoreds.get(position);
         Career career = careerDAO.findCareerById(tutored.getCarrerId());
-        LayoutInflater layoutInflater = LayoutInflater.from(context);
-        View newView = view;
 
-        if (newView == null) {
-            newView = layoutInflater.inflate(R.layout.list_items_tutoreds, viewGroup, false);
+        LayoutInflater layoutInflater = LayoutInflater.from(context);
+        View view = convertView;
+
+        if (view == null) {
+            view = layoutInflater.inflate(R.layout.list_items_tutoreds, parent, false);
         }
 
-        TextView name = (TextView) newView.findViewById(R.id.item_name);
+        TextView name = (TextView) view.findViewById(R.id.item_name);
         name.setText(tutored.getName().concat(" ").concat(tutored.getSurname()));
-        TextView phoneNumber = (TextView) newView.findViewById(R.id.item_phone);
-        TextView carrerText = (TextView) newView.findViewById(R.id.item_carrer);
+
+        TextView phoneNumber = (TextView) view.findViewById(R.id.item_phone);
+        TextView carrerText = (TextView) view.findViewById(R.id.item_carrer);
         carrerText.setText(career.getPosition());
         phoneNumber.setText("( " + tutored.getPhoneNumber() + " )");
-        Button button = (Button) newView.findViewById(R.id.item_foto);
+
+        TextView tutoredIcon = (TextView) view.findViewById(R.id.tutored_icon);
 
         if (!tutored.getName().isEmpty()) {
-            button.setText(tutored.getName().substring(0, 1));
+            tutoredIcon.setText(tutored.getName().substring(0, 1));
         }
-        return newView;
-    }
 
-    public void filter(String text) {
-        tutoredArrayList.clear();
-
-        if (text.length() == 0) {
-            tutoredArrayList.addAll(tutoreds);
-        }
-        for (Tutored t : tutoredArrayList) {
-            if (t.getName().toLowerCase().contains(text)) {
-                tutoredArrayList.add(t);
-            }
-        }
-        notifyDataSetChanged();
+        return view;
     }
 }

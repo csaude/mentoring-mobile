@@ -5,9 +5,11 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -24,41 +26,36 @@ import mz.org.fgh.mentoring.service.TutoredSyncServiceImpl;
  * Created by Eusebio Jose Maposse on 14-Nov-16.
  */
 
-public class ListTutoredActivity extends BaseAuthenticateActivity implements SearchView.OnQueryTextListener {
+public class ListTutoredActivity extends BaseAuthenticateActivity implements SearchView.OnQueryTextListener, View.OnClickListener {
 
     private ListView tutoredList;
-    private Button newTutored;
+    private Button newTutoredBtn;
     private SearchView searchView;
-    TutoredItemAdapter tutoredItemAdapter;
-    private List<Tutored> tutoreds;
     private TutoredDAO tutoredDAO;
 
     @Override
     protected void onMentoringCreate(Bundle bundle) {
         setContentView(R.layout.list_tutoreds);
-        findViewById();
-        findAllTutored();
-        tutoredItemAdapter = new TutoredItemAdapter(ListTutoredActivity.this, tutoreds);
-        tutoredList.setAdapter(tutoredItemAdapter);
-        getTutored();
-        goTutoredForm();
-    }
 
-    private void findViewById() {
         tutoredList = (ListView) findViewById(R.id.tutored_list);
-        newTutored = (Button) findViewById(R.id.new_tutored);
+        newTutoredBtn = (Button) findViewById(R.id.new_tutored);
         searchView = (SearchView) findViewById(R.id.simpleSearchView);
-        searchView.setOnQueryTextListener(ListTutoredActivity.this);
-    }
+        searchView.setOnQueryTextListener(this);
 
-    private void goTutoredForm() {
-        newTutored.setOnClickListener(new View.OnClickListener() {
+        tutoredDAO = new TutoredDAOImpl(this);
+        List<Tutored> tutoreds = tutoredDAO.findAllWithNoCode();
+
+        TutoredItemAdapter adapter = new TutoredItemAdapter(this, tutoreds);
+        tutoredList.setAdapter(adapter);
+
+        tutoredList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View view) {
-                Intent go = new Intent(ListTutoredActivity.this, TutoredActivity.class);
-                startActivity(go);
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(ListTutoredActivity.this, "fuck u zebas", Toast.LENGTH_SHORT).show();
             }
         });
+
+        newTutoredBtn.setOnClickListener(this);
     }
 
     @Override
@@ -69,33 +66,13 @@ public class ListTutoredActivity extends BaseAuthenticateActivity implements Sea
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        findAllTutored();
-    }
-
-
-    private void getTutored() {
-        tutoredDAO.close();
-        this.tutoredList.setAdapter(tutoredItemAdapter);
-    }
-
-    @Override
     public boolean onQueryTextSubmit(String query) {
         return false;
     }
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        tutoredItemAdapter.filter(newText);
         return false;
-    }
-
-    private void findAllTutored() {
-        tutoredDAO = new TutoredDAOImpl(this);
-        tutoreds = tutoredDAO.findAllWithNoCode();
-        tutoredItemAdapter = new TutoredItemAdapter(ListTutoredActivity.this, tutoreds);
-        tutoredList.setAdapter(tutoredItemAdapter);
     }
 
     @Override
@@ -106,5 +83,10 @@ public class ListTutoredActivity extends BaseAuthenticateActivity implements Sea
         syncService.execute();
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View view) {
+        startActivity(new Intent(this, TutoredActivity.class));
     }
 }

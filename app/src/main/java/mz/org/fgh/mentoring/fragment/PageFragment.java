@@ -71,7 +71,7 @@ public class PageFragment extends Fragment implements View.OnClickListener, Adap
         String value = (String) parent.getItemAtPosition(position);
 
         if (activityBundle != null)
-            activityBundle.putString(question.getCode(), value);
+            activityBundle.putString(question.getUuid(), value);
     }
 
     @Override

@@ -18,6 +18,8 @@ public class UserContext {
 
     private String email;
 
+    private String phoneNumber;
+
     public Long getId() {
         return this.id;
     }
@@ -58,4 +60,11 @@ public class UserContext {
         this.email = email;
     }
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
 }

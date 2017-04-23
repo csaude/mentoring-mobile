@@ -9,6 +9,6 @@ import mz.org.fgh.mentoring.dao.GenericDAO;
 public interface FormQuestionDAO extends GenericDAO<FormQuestion> {
 
     String TABLE_NAME = "form_questions";
-    String FIELD_NAME = "form_code";
+    String FIELD_NAME = "form_uuid";
 
 }

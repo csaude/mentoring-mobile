@@ -22,4 +22,9 @@ public class BooleanAnswer extends Answer {
     public void setValue(final String value) {
         this.booleanValue = Boolean.valueOf(value);
     }
+
+    @Override
+    public String getValue() {
+        return String.valueOf(booleanValue);
+    }
 }

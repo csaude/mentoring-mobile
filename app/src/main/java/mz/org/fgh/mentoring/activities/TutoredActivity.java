@@ -1,26 +1,26 @@
 package mz.org.fgh.mentoring.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import mz.org.fgh.mentoring.helpers.TutoredHelper;
 import mz.org.fgh.mentoring.R;
 import mz.org.fgh.mentoring.config.dao.CareerDAO;
 import mz.org.fgh.mentoring.config.dao.CareerDAOImpl;
-import mz.org.fgh.mentoring.config.model.Career;
-import mz.org.fgh.mentoring.config.model.CareerType;
 import mz.org.fgh.mentoring.config.dao.TutoredDAO;
 import mz.org.fgh.mentoring.config.dao.TutoredDAOImpl;
+import mz.org.fgh.mentoring.config.model.Career;
+import mz.org.fgh.mentoring.config.model.CareerType;
+import mz.org.fgh.mentoring.helpers.TutoredHelper;
 import mz.org.fgh.mentoring.model.Tutored;
 
 /**
@@ -31,11 +31,8 @@ public class TutoredActivity extends BaseAuthenticateActivity {
 
     private TutoredHelper tutoredHelper;
     private TutoredDAO tutoredDAO;
-    private Button takePhoto;
     private Spinner carrerTypeSpinner;
     private Spinner positionSpinner;
-    private List<Career> careers;
-    private List<Career> positions;
     private CareerDAO careerDAO;
     private ArrayAdapter carrerAdapter;
     private ArrayAdapter positionAdapter;
@@ -45,14 +42,12 @@ public class TutoredActivity extends BaseAuthenticateActivity {
     @Override
     protected void onMentoringCreate(Bundle bundle) {
         setContentView(R.layout.tutored_activity);
-        tutoredHelper = new TutoredHelper(TutoredActivity.this);
-        findViewById();
-        getCarrer();
-    }
 
-    private void findViewById() {
         carrerTypeSpinner = (Spinner) findViewById(R.id.tutored_carrer);
         positionSpinner = (Spinner) findViewById(R.id.tutored_position);
+
+        tutoredHelper = new TutoredHelper(TutoredActivity.this);
+        getCarrer();
     }
 
     @Override
@@ -66,13 +61,13 @@ public class TutoredActivity extends BaseAuthenticateActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         tutoredDAO = new TutoredDAOImpl(this);
         switch (item.getItemId()) {
+
             case R.id.save_tutored:
                 tutored = tutoredHelper.getTutored();
                 tutoredDAO.create(tutored);
                 tutoredDAO.close();
+                startActivity(new Intent(this, ListTutoredActivity.class));
                 finish();
-                tutoredDAO.findAll();
-
         }
         return super.onOptionsItemSelected(item);
     }
@@ -104,7 +99,6 @@ public class TutoredActivity extends BaseAuthenticateActivity {
                 Career career = (Career) adapterView.getItemAtPosition(position);
 
                 tutored.setCareer(career);
-                tutored.setCarrerId(Long.valueOf(career.getId()));
             }
 
             @Override

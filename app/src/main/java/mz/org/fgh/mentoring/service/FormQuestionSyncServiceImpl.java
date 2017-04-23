@@ -14,7 +14,6 @@ import mz.org.fgh.mentoring.config.dao.QuestionDAOImpl;
 import mz.org.fgh.mentoring.config.model.Form;
 import mz.org.fgh.mentoring.config.model.FormQuestion;
 import mz.org.fgh.mentoring.config.model.Question;
-import mz.org.fgh.mentoring.helpers.FormQuestionHelper;
 import mz.org.fgh.mentoring.infra.MentoringApplication;
 import mz.org.fgh.mentoring.model.GenericWrapper;
 import retrofit2.Call;
@@ -48,22 +47,20 @@ public class FormQuestionSyncServiceImpl implements SyncService {
                              QuestionDAO questionDAO = new QuestionDAOImpl(activity);
                              FormQuestionDAO formQuestionDAO = new FormQuestionDAOImpl(activity);
 
-                             for (FormQuestionHelper formQuestionHelper : wrapper.getFormQuestions()) {
+                             for (FormQuestion formQuestion : wrapper.getFormQuestions()) {
 
-                                 Form form = formQuestionHelper.getForm().getForm();
-                                 Question question = formQuestionHelper.getQuestion();
-                                 FormQuestion formQuestion = new FormQuestion(form.getCode(), question.getCode());
+                                 Form form = formQuestion.getForm();
+                                 Question question = formQuestion.getQuestion();
 
-                                 if (!formDAO.exist(form.getCode())) {
+                                 if (!formDAO.exist(form.getUuid())) {
                                      formDAO.create(form);
                                  }
 
-                                 if (!questionDAO.exist(question.getCode())) {
+                                 if (!questionDAO.exist(question.getUuid())) {
                                      questionDAO.create(question);
                                  }
 
                                  formQuestionDAO.create(formQuestion);
-
                              }
 
                              Toast.makeText(activity, formDAO.findAll().size() + " Formularios foram sincronizadas com sucesso!", Toast.LENGTH_SHORT).show();

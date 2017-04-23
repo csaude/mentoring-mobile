@@ -12,11 +12,12 @@ public class Form extends GenericEntity {
 
     private String name;
 
-    private String programmaticArea;
+    private ProgrammaticArea programmaticArea;
 
     private String version;
 
-    public Form(String code, String name, String programmaticArea, String version) {
+    public Form(String uuid, String code, String name, ProgrammaticArea programmaticArea, String version) {
+        this.setUuid(uuid);
         this.setCode(code);
         this.name = name;
         this.programmaticArea = programmaticArea;
@@ -24,7 +25,6 @@ public class Form extends GenericEntity {
     }
 
     public Form() {
-
     }
 
     public String getName() {
@@ -35,7 +35,7 @@ public class Form extends GenericEntity {
         this.name = name;
     }
 
-    public String getProgrammaticArea() {
+    public ProgrammaticArea getProgrammaticArea() {
         return programmaticArea;
     }
 

@@ -11,20 +11,15 @@ import mz.org.fgh.mentoring.model.GenericEntity;
  */
 public class FormQuestion extends GenericEntity {
 
-    private String formCode;
+    private Form form;
 
-    private String questionCode;
+    private Question question;
 
-    public FormQuestion(String formCode, String questionCode) {
-        this.formCode = formCode;
-        this.questionCode = questionCode;
+    public Form getForm() {
+        return form;
     }
 
-    public String getFormCode() {
-        return formCode;
-    }
-
-    public String getQuestionCode() {
-        return questionCode;
+    public Question getQuestion() {
+        return question;
     }
 }

@@ -11,8 +11,16 @@ public class District extends GenericEntity {
 
     private String district;
 
-    public District(final Long id, final String province, final String district) {
+    public District() {
+    }
+
+    public District(final String uuid) {
+        this.setUuid(uuid);
+    }
+
+    public District(final Long id, final String uuid, final String province, final String district) {
         this.setId(id);
+        this.setUuid(uuid);
         this.province = province;
         this.district = district;
     }

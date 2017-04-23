@@ -13,8 +13,6 @@ public class Tutored extends GenericEntity {
 
     private String phoneNumber;
 
-    private Long carrerId;
-
     private Career career;
 
     public String getName() {
@@ -39,14 +37,6 @@ public class Tutored extends GenericEntity {
 
     public void setSurname(String surname) {
         this.surname = surname;
-    }
-
-    public Long getCarrerId() {
-        return carrerId;
-    }
-
-    public void setCarrerId(Long carrerId) {
-        this.carrerId = carrerId;
     }
 
     public Career getCareer() {

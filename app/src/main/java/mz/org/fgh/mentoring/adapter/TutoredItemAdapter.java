@@ -12,7 +12,6 @@ import java.util.List;
 import mz.org.fgh.mentoring.R;
 import mz.org.fgh.mentoring.config.dao.CareerDAO;
 import mz.org.fgh.mentoring.config.dao.CareerDAOImpl;
-import mz.org.fgh.mentoring.config.model.Career;
 import mz.org.fgh.mentoring.model.Tutored;
 
 /**
@@ -49,7 +48,6 @@ public class TutoredItemAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         Tutored tutored = tutoreds.get(position);
-        Career career = careerDAO.findCareerById(tutored.getCarrerId());
 
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         View view = convertView;
@@ -59,11 +57,11 @@ public class TutoredItemAdapter extends BaseAdapter {
         }
 
         TextView name = (TextView) view.findViewById(R.id.item_name);
-        name.setText(tutored.getName().concat(" ").concat(tutored.getSurname()));
+        name.setText(tutored.getFullName());
 
         TextView phoneNumber = (TextView) view.findViewById(R.id.item_phone);
         TextView carrerText = (TextView) view.findViewById(R.id.item_carrer);
-        carrerText.setText(career.getPosition());
+        carrerText.setText(tutored.getCareer().getPosition());
         phoneNumber.setText("( " + tutored.getPhoneNumber() + " )");
 
         TextView tutoredIcon = (TextView) view.findViewById(R.id.tutored_icon);

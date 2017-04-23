@@ -9,16 +9,10 @@ public class HealthFacility extends GenericEntity {
 
     private District district;
 
-    private Long districtId;
-
     private String healthFacility;
 
     public void setDistrict(District district) {
         this.district = district;
-    }
-
-    public void setDistrictId(Long districtId) {
-        this.districtId = districtId;
     }
 
     public void setHealthFacility(String healthFacility) {
@@ -27,10 +21,6 @@ public class HealthFacility extends GenericEntity {
 
     public District getDistrict() {
         return district;
-    }
-
-    public Long getDistrictId() {
-        return districtId;
     }
 
     public String getHealthFacility() {

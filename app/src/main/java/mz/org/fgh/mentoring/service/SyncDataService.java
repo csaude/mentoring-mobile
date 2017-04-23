@@ -25,6 +25,6 @@ public interface SyncDataService {
     @POST("tutoreds/sync")
     Call<TutoredBeanResource> syncTutoreds(@Body final TutoredBeanResource tutoredBeanResource);
 
-    @POST("mentorship/sync")
+    @POST("mentorships/sync")
     Call<MentorshipBeanResource> syncMentorships(@Body final MentorshipBeanResource mentorshipBeanResource);
 }

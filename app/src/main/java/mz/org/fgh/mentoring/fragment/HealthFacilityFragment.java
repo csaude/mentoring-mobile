@@ -46,7 +46,7 @@ public class HealthFacilityFragment extends Fragment {
         final Spinner healthFacilitySpinner = (Spinner) view.findViewById(R.id.fragment_health_facility);
 
 
-        ArrayAdapter<String> provinceAdapter = new ArrayAdapter<String>(activity, android.R.layout.simple_spinner_dropdown_item, getProvinces(districts));
+        ArrayAdapter<String> provinceAdapter = new ArrayAdapter<>(activity, android.R.layout.simple_spinner_dropdown_item, getProvinces(districts));
         provinceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         provinceSpinner.setAdapter(provinceAdapter);
 
@@ -54,7 +54,7 @@ public class HealthFacilityFragment extends Fragment {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                ArrayAdapter<District> districtAdapter = new ArrayAdapter<District>(activity, android.R.layout.simple_spinner_dropdown_item, districts);
+                ArrayAdapter<District> districtAdapter = new ArrayAdapter<>(activity, android.R.layout.simple_spinner_dropdown_item, districts);
                 districtAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 districtSpinner.setAdapter(districtAdapter);
             }
@@ -69,9 +69,9 @@ public class HealthFacilityFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 District district = (District) parent.getItemAtPosition(position);
-                List<HealthFacility> facilities = getHealthFacilities(healthFacilities, district.getId());
+                List<HealthFacility> facilities = getHealthFacilities(healthFacilities, district.getUuid());
 
-                ArrayAdapter<HealthFacility> healthFacilityAdapter = new ArrayAdapter<HealthFacility>(activity, android.R.layout.simple_spinner_dropdown_item, facilities);
+                ArrayAdapter<HealthFacility> healthFacilityAdapter = new ArrayAdapter<>(activity, android.R.layout.simple_spinner_dropdown_item, facilities);
                 healthFacilityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 healthFacilitySpinner.setAdapter(healthFacilityAdapter);
             }
@@ -115,12 +115,12 @@ public class HealthFacilityFragment extends Fragment {
         return provinces;
     }
 
-    private List<HealthFacility> getHealthFacilities(final List<HealthFacility> healthFacilities, final Long districId) {
+    private List<HealthFacility> getHealthFacilities(final List<HealthFacility> healthFacilities, final String districtUuid) {
 
         List<HealthFacility> facilities = new ArrayList<>();
 
         for (HealthFacility healthFacility : healthFacilities) {
-            if (healthFacility.getDistrictId() == districId) {
+            if (healthFacility.getDistrict().getUuid().equals(districtUuid)) {
                 facilities.add(healthFacility);
             }
         }

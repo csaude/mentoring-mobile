@@ -72,7 +72,11 @@ public class AnswerDAOImpl extends GenericDAOImpl<Answer> implements AnswerDAO {
         Form form = new Form();
         form.setUuid(cursor.getString(cursor.getColumnIndex("form_uuid")));
 
-        Question question = new Question(cursor.getString(cursor.getColumnIndex("code")), null, QuestionType.valueOf(cursor.getString(cursor.getColumnIndex("question_type"))), null);
+        Question question = new Question(cursor.getString(cursor.getColumnIndex("question_uuid")),
+                cursor.getString(cursor.getColumnIndex("code")),
+                null,
+                QuestionType.valueOf(cursor.getString(cursor.getColumnIndex("question_type"))), null);
+
         Answer answer = question.getQuestionType().getAnswer();
 
         answer.setMentorship(mentorship);
@@ -108,6 +112,14 @@ public class AnswerDAOImpl extends GenericDAOImpl<Answer> implements AnswerDAO {
             answers.add(getPopulatedEntity(cursor));
         }
 
+        cursor.close();
         return answers;
+    }
+
+    @Override
+    public void deleteByMentorshipUuids(List<String> mentorshipsUuids) {
+        for (String mentorshipUuid : mentorshipsUuids) {
+            delete("mentorship_uuid = ?", mentorshipUuid);
+        }
     }
 }

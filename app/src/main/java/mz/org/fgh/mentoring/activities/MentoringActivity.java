@@ -45,7 +45,7 @@ public class MentoringActivity extends BaseAuthenticateActivity {
 
         Tutored tutored = (Tutored) bundle.getSerializable("tutored");
         Form form = (Form) bundle.getSerializable("form");
-        List<Question> questions = new QuestionDAOImpl(this).findQuestionByForm(form.getCode());
+        List<Question> questions = new QuestionDAOImpl(this).findQuestionByForm(form.getUuid());
         HealthFacility healthFacility = (HealthFacility) bundle.getSerializable("healthFacility");
 
         Mentorship mentorship = new Mentorship();
@@ -63,7 +63,7 @@ public class MentoringActivity extends BaseAuthenticateActivity {
         for (Question question : questions) {
 
             Answer answer = question.getQuestionType().getAnswer();
-            answer.setValue(bundle.getString(question.getCode()));
+            answer.setValue(bundle.getString(question.getUuid()));
 
             answer.setForm(form);
             answer.setMentorship(mentorship);

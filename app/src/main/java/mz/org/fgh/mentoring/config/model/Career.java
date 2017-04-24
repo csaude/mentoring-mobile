@@ -11,6 +11,13 @@ public class Career extends GenericEntity {
 
     private String position;
 
+    public Career() {
+    }
+
+    public Career(final String uuid) {
+        this.setUuid(uuid);
+    }
+
     public CareerType getCareerType() {
         return careerType;
     }

@@ -48,6 +48,7 @@ public class DistrictDAOImpl extends GenericDAOImpl<District> implements Distric
     public District getPopulatedEntity(Cursor cursor) {
 
         District district = new District(cursor.getLong(cursor.getColumnIndex("id")),
+                cursor.getString(cursor.getColumnIndex("uuid")),
                 cursor.getString(cursor.getColumnIndex("province")),
                 cursor.getString(cursor.getColumnIndex("district")));
 

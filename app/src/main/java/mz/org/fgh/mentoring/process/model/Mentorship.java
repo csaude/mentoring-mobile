@@ -4,11 +4,8 @@
 
 package mz.org.fgh.mentoring.process.model;
 
-import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 
-import mz.org.fgh.mentoring.config.model.Answer;
 import mz.org.fgh.mentoring.config.model.Form;
 import mz.org.fgh.mentoring.config.model.HealthFacility;
 import mz.org.fgh.mentoring.model.GenericEntity;
@@ -28,8 +25,6 @@ public class Mentorship extends GenericEntity {
     private Form form;
 
     private HealthFacility healthFacility;
-
-    private List<Answer> answers;
 
     public Date getStartDate() {
         return startDate;
@@ -69,13 +64,5 @@ public class Mentorship extends GenericEntity {
 
     public void setHealthFacility(HealthFacility healthFacility) {
         this.healthFacility = healthFacility;
-    }
-
-    public void setAnswers(List<Answer> answers) {
-        this.answers = answers;
-    }
-
-    public List<Answer> getAnswers() {
-        return Collections.unmodifiableList(answers);
     }
 }

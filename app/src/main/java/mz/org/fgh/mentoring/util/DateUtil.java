@@ -12,7 +12,7 @@ public class DateUtil {
     private static SimpleDateFormat dateFormat;
 
     static {
-        dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
     }
 
     public static String format(Date date) {

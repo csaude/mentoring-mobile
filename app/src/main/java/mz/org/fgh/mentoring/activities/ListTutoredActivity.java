@@ -9,7 +9,6 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -43,7 +42,7 @@ public class ListTutoredActivity extends BaseAuthenticateActivity implements Sea
         searchView.setOnQueryTextListener(this);
 
         tutoredDAO = new TutoredDAOImpl(this);
-        List<Tutored> tutoreds = tutoredDAO.findAllWithNoCode();
+        List<Tutored> tutoreds = tutoredDAO.findAll();
 
         TutoredItemAdapter adapter = new TutoredItemAdapter(this, tutoreds);
         tutoredList.setAdapter(adapter);
@@ -51,7 +50,6 @@ public class ListTutoredActivity extends BaseAuthenticateActivity implements Sea
         tutoredList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(ListTutoredActivity.this, "fuck u zebas", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -88,5 +86,6 @@ public class ListTutoredActivity extends BaseAuthenticateActivity implements Sea
     @Override
     public void onClick(View view) {
         startActivity(new Intent(this, TutoredActivity.class));
+        finish();
     }
 }

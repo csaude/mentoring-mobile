@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
+import mz.org.fgh.mentoring.config.model.Career;
 import mz.org.fgh.mentoring.config.model.Form;
 import mz.org.fgh.mentoring.config.model.HealthFacility;
 import mz.org.fgh.mentoring.dao.GenericDAOImpl;
@@ -63,6 +64,12 @@ public class MentorshipDAOImpl extends GenericDAOImpl<Mentorship> implements Men
         tutored.setUuid(cursor.getString(cursor.getColumnIndex("tutored_uuid")));
         tutored.setName(cursor.getString(cursor.getColumnIndex("tutored_name")));
         tutored.setSurname(cursor.getString(cursor.getColumnIndex("tutored_surname")));
+        tutored.setPhoneNumber(cursor.getString(cursor.getColumnIndex("tutored_phone_number")));
+
+        Career carrer = new Career();
+        carrer.setUuid(cursor.getString((cursor.getColumnIndex("tutored_career_uuid"))));
+        tutored.setCareer(carrer);
+
         mentorship.setTutored(tutored);
 
         HealthFacility healthFacility = new HealthFacility();
@@ -91,5 +98,12 @@ public class MentorshipDAOImpl extends GenericDAOImpl<Mentorship> implements Men
 
         cursor.close();
         return mentorships;
+    }
+
+    @Override
+    public void deleteByUuids(final List<String> uuids) {
+        for (String uuid : uuids) {
+            delete("uuid = ?", uuid);
+        }
     }
 }

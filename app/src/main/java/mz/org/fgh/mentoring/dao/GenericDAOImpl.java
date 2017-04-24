@@ -47,9 +47,12 @@ public abstract class GenericDAOImpl<T extends GenericEntity> extends SQLiteOpen
         SQLiteDatabase database = getWritableDatabase();
 
         ContentValues values = getContentValues(entity);
-        String uuid = UUID.randomUUID().toString().replace("-", "");
 
-        entity.setUuid(uuid);
+        if (entity.getUuid() == null || entity.getUuid().isEmpty()) {
+            String uuid = UUID.randomUUID().toString().replace("-", "");
+            entity.setUuid(uuid);
+        }
+
         entity.setCreatedAt(new Date());
 
         values.put("uuid", entity.getUuid());
@@ -74,13 +77,18 @@ public abstract class GenericDAOImpl<T extends GenericEntity> extends SQLiteOpen
 
         Cursor cursor = getCursorByParam(name);
         int result = cursor.getCount();
+        cursor.close();
 
         return result > 0;
     }
 
     private Cursor getCursorByParam(String param) {
         SQLiteDatabase database = getReadableDatabase();
-        return database.rawQuery("SELECT * FROM " + getTableName() + " WHERE " + getFieldName() + " = ? ", new String[]{param});
+
+        Cursor cursor = database.rawQuery("SELECT * FROM " + getTableName() + " WHERE " + getFieldName() + " = ? ", new String[]{param});
+        cursor.moveToFirst();
+
+        return cursor;
     }
 
     @Override
@@ -91,5 +99,12 @@ public abstract class GenericDAOImpl<T extends GenericEntity> extends SQLiteOpen
     @Override
     public T findByUuid(String uuid) {
         return getPopulatedEntity(getCursorByParam(uuid));
+    }
+
+
+    @Override
+    public void delete(final String whereClause, final String param) {
+        SQLiteDatabase database = getWritableDatabase();
+        database.delete(getTableName(), whereClause, new String[]{param});
     }
 }

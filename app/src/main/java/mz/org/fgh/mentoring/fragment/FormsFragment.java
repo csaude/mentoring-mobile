@@ -50,6 +50,6 @@ public class FormsFragment extends Fragment implements AdapterView.OnItemClickLi
         Form form = (Form) parent.getItemAtPosition(position);
 
         activityBundle.putSerializable("form", form);
-        activity.getAdapter().setQuestions(new QuestionDAOImpl(activity).findQuestionByForm(form.getCode()));
+        activity.getAdapter().setQuestions(new QuestionDAOImpl(activity).findQuestionByForm(form.getUuid()));
     }
 }

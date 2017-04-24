@@ -19,6 +19,8 @@ public abstract class Answer extends GenericEntity {
 
     public abstract void setValue(String value);
 
+    public abstract String getValue();
+
     public Form getForm() {
         return this.form;
     }

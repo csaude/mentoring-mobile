@@ -31,8 +31,8 @@ public class FormQuestionDAOImpl extends GenericDAOImpl<FormQuestion> implements
 
         ContentValues values = new ContentValues();
 
-        values.put("form_code", entity.getFormCode());
-        values.put("question_code", entity.getQuestionCode());
+        values.put("form_uuid", entity.getForm().getUuid());
+        values.put("question_uuid", entity.getQuestion().getUuid());
 
         return values;
     }

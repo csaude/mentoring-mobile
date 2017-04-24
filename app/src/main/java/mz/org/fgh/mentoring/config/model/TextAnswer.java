@@ -22,4 +22,9 @@ public class TextAnswer extends Answer {
     public void setValue(final String value) {
         this.textValue = value;
     }
+
+    @Override
+    public String getValue() {
+        return getTextValue();
+    }
 }

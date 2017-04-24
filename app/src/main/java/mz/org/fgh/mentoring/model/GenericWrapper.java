@@ -1,26 +1,26 @@
 package mz.org.fgh.mentoring.model;
 
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
 import mz.org.fgh.mentoring.config.model.Career;
+import mz.org.fgh.mentoring.config.model.FormQuestion;
 import mz.org.fgh.mentoring.config.model.HealthFacility;
-import mz.org.fgh.mentoring.helpers.FormQuestionHelper;
 
 /**
  * Created by Stélio Moiane on 10/25/16.
  */
 public class GenericWrapper {
 
-    @SerializedName("healthFacility")
+    @JsonProperty("healthFacility")
     private List<HealthFacility> healthFacilities;
 
-    @SerializedName("career")
+    @JsonProperty("career")
     private List<Career> careers;
 
-    @SerializedName("formQuestion")
-    private List<FormQuestionHelper> formQuestions;
+    @JsonProperty("formQuestion")
+    private List<FormQuestion> formQuestions;
 
     public List<HealthFacility> getHealthFacilities() {
         return this.healthFacilities;
@@ -30,7 +30,7 @@ public class GenericWrapper {
         return this.careers;
     }
 
-    public List<FormQuestionHelper> getFormQuestions() {
+    public List<FormQuestion> getFormQuestions() {
         return this.formQuestions;
     }
 }

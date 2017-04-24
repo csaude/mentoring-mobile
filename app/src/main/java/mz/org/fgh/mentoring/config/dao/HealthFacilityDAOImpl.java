@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
+import mz.org.fgh.mentoring.config.model.District;
 import mz.org.fgh.mentoring.config.model.HealthFacility;
 import mz.org.fgh.mentoring.dao.GenericDAOImpl;
 
@@ -35,7 +36,7 @@ public class HealthFacilityDAOImpl extends GenericDAOImpl<HealthFacility> implem
     public ContentValues getContentValues(HealthFacility healthFacility) {
         ContentValues values = new ContentValues();
 
-        values.put("district_id", healthFacility.getDistrict().getId());
+        values.put("district_uuid", healthFacility.getDistrict().getUuid());
         values.put("health_facility", healthFacility.getHealthFacility());
 
         return values;
@@ -45,9 +46,11 @@ public class HealthFacilityDAOImpl extends GenericDAOImpl<HealthFacility> implem
     public HealthFacility getPopulatedEntity(Cursor cursor) {
 
         HealthFacility healthFacility = new HealthFacility();
+        District district = new District(cursor.getString(cursor.getColumnIndex("district_uuid")));
+        healthFacility.setDistrict(district);
+
         healthFacility.setId(cursor.getLong(cursor.getColumnIndex("id")));
         healthFacility.setUuid(cursor.getString(cursor.getColumnIndex("uuid")));
-        healthFacility.setDistrictId(cursor.getLong(cursor.getColumnIndex("district_id")));
         healthFacility.setHealthFacility(cursor.getString(cursor.getColumnIndex("health_facility")));
 
         return healthFacility;

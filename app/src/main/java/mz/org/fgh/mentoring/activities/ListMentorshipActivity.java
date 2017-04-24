@@ -23,6 +23,7 @@ import mz.org.fgh.mentoring.util.DateUtil;
 public class ListMentorshipActivity extends BaseAuthenticateActivity implements View.OnClickListener {
 
     private Button newMentorshipBtn;
+    private ListView mentorshipListView;
 
     @Override
     protected void onMentoringCreate(Bundle bundle) {
@@ -30,14 +31,16 @@ public class ListMentorshipActivity extends BaseAuthenticateActivity implements 
         setContentView(R.layout.activity_list_mentorship);
 
         newMentorshipBtn = (Button) findViewById(R.id.new_mentorship);
-        ListView mentorshipListView = (ListView) findViewById(R.id.mentorship_list);
-
-        List<Mentorship> mentorships = new MentorshipDAOImpl(this).findAll();
-
-        MentorshipAdapter adapter = new MentorshipAdapter(this, mentorships);
-        mentorshipListView.setAdapter(adapter);
+        mentorshipListView = (ListView) findViewById(R.id.mentorship_list);
+        setMentorships();
 
         newMentorshipBtn.setOnClickListener(this);
+    }
+
+    public void setMentorships() {
+        List<Mentorship> mentorships = new MentorshipDAOImpl(this).findAll();
+        MentorshipAdapter adapter = new MentorshipAdapter(this, mentorships);
+        mentorshipListView.setAdapter(adapter);
     }
 
     @Override

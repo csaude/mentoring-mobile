@@ -44,7 +44,7 @@ public class CareerDAOImpl extends GenericDAOImpl<Career> implements CareerDAO {
     @Override
     public Career getPopulatedEntity(Cursor cursor) {
 
-        Career career = new Career();
+        Career career = new Career(cursor.getString(cursor.getColumnIndex("uuid")));
         career.setId(cursor.getLong(cursor.getColumnIndex("id")));
         career.setCareerType(CareerType.valueOf(cursor.getString(cursor.getColumnIndex("career_type"))));
         career.setPosition(cursor.getString(cursor.getColumnIndex("position")));
@@ -97,23 +97,7 @@ public class CareerDAOImpl extends GenericDAOImpl<Career> implements CareerDAO {
         }
 
         cursor.close();
+
         return careers;
-    }
-
-
-    @Override
-    public Career findCareerById(Long carrerId) {
-        SQLiteDatabase database = getReadableDatabase();
-        String[] params = new String[]{Long.toString(carrerId)};
-
-        Cursor cursor = database.rawQuery(QUERY.findCareerById, params);
-
-        Career career = new Career();
-        while (cursor.moveToNext()) {
-            career = getPopulatedEntity(cursor);
-        }
-
-        cursor.close();
-        return career;
     }
 }

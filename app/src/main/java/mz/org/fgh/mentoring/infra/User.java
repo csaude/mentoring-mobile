@@ -8,7 +8,9 @@ import mz.org.fgh.mentoring.model.GenericEntity;
 public class User extends GenericEntity {
 
     private String username;
+
     private String password;
+
     private boolean isLogged;
 
     public String getUsername() {

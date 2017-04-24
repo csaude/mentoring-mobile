@@ -11,7 +11,7 @@ import mz.org.fgh.mentoring.dao.GenericDAO;
 public interface FormDAO extends GenericDAO<Form> {
 
     String TABLE_NAME = "forms";
-    String FIELD_NAME = "code";
+    String FIELD_NAME = "uuid";
 
     class QUERY {
         public static final String findAll = "SELECT * FROM " + TABLE_NAME;

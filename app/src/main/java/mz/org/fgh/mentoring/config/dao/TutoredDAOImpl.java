@@ -38,8 +38,8 @@ public class TutoredDAOImpl extends GenericDAOImpl<Tutored> implements TutoredDA
         values.put("code", tutored.getCode());
         values.put("name", tutored.getName());
         values.put("surname", tutored.getSurname());
-        values.put("phoneNumber", tutored.getPhoneNumber());
-        values.put("carrer_id", tutored.getCarrerId());
+        values.put("phone_number", tutored.getPhoneNumber());
+        values.put("career_uuid", tutored.getCareer().getUuid());
 
         return values;
     }
@@ -52,12 +52,11 @@ public class TutoredDAOImpl extends GenericDAOImpl<Tutored> implements TutoredDA
         tutored.setCode(cursor.getString(cursor.getColumnIndex("code")));
         tutored.setName(cursor.getString(cursor.getColumnIndex("name")));
         tutored.setSurname(cursor.getString(cursor.getColumnIndex("surname")));
-        tutored.setPhoneNumber(cursor.getString(cursor.getColumnIndex("phoneNumber")));
-        tutored.setCarrerId(cursor.getLong(cursor.getColumnIndex("carrer_id")));
+        tutored.setPhoneNumber(cursor.getString(cursor.getColumnIndex("phone_number")));
         tutored.setUuid(cursor.getString(cursor.getColumnIndex("uuid")));
 
-        Career career = new Career();
-        career.setId(tutored.getCarrerId());
+        Career career = new Career(cursor.getString(cursor.getColumnIndex("career_uuid")));
+        career.setPosition(cursor.getString(cursor.getColumnIndex("position")));
         tutored.setCareer(career);
 
         return tutored;
@@ -67,23 +66,6 @@ public class TutoredDAOImpl extends GenericDAOImpl<Tutored> implements TutoredDA
     public List<Tutored> findAll() {
         SQLiteDatabase database = getReadableDatabase();
         Cursor cursor = database.rawQuery(TutoredDAO.QUERY.findAll, null);
-
-        List<Tutored> tutoreds = new ArrayList<>();
-
-        while (cursor.moveToNext()) {
-            Tutored tutored = getPopulatedEntity(cursor);
-            tutoreds.add(tutored);
-        }
-
-        cursor.close();
-        return tutoreds;
-    }
-
-    @Override
-    public List<Tutored> findAllWithNoCode() {
-
-        SQLiteDatabase database = getReadableDatabase();
-        Cursor cursor = database.rawQuery(QUERY.findAllWithNoCode, null);
 
         List<Tutored> tutoreds = new ArrayList<>();
 

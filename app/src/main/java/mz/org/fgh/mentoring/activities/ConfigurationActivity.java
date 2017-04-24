@@ -1,6 +1,5 @@
 package mz.org.fgh.mentoring.activities;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.view.ActionMode;
 import android.view.Menu;
@@ -37,7 +36,7 @@ public class ConfigurationActivity extends BaseAuthenticateActivity {
 
         configItems = (ListView) findViewById(R.id.config_items);
 
-        adapter = new ArrayAdapter<Location>(this, android.R.layout.simple_list_item_multiple_choice, Arrays.asList(Location.HEALTH_FACILITIES, Location.CAREERS, Location.FORMS));
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_multiple_choice, Arrays.asList(Location.HEALTH_FACILITIES, Location.CAREERS, Location.FORMS));
         configItems.setAdapter(adapter);
 
         configItems.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
@@ -94,12 +93,13 @@ public class ConfigurationActivity extends BaseAuthenticateActivity {
                     return true;
                 }
 
-                SharedPreferences.Editor editor = application.getSharedPreferences().edit();
-                editor.putString(getResources().getString(R.string.serve_address), ipField.getText().toString());
-                editor.commit();
+                application.getSharedPreferences().edit()
+                        .putString(getResources().getString(R.string.serve_address), ipField.getText().toString())
+                        .apply();
+
+                application.updateRetrofit();
 
                 Toast.makeText(this, "Endereçao do servidor actulizado!", Toast.LENGTH_SHORT).show();
-                finish();
                 break;
         }
 

@@ -16,10 +16,10 @@ public interface QuestionDAO extends GenericDAO<Question> {
     class QUERY {
 
         public static final String findQuestionByForm = "SELECT q.id, q.uuid, q.code, q.question, q.question_type, q.question_category FROM " + TABLE_NAME + " q " +
-                "INNER JOIN form_questions fq ON q.code = fq.question_code " +
-                "INNER JOIN forms f on f.code = fq.form_code " +
-                "WHERE f.code = ?;";
+                "INNER JOIN form_questions fq ON q.uuid = fq.question_uuid " +
+                "INNER JOIN forms f on f.uuid = fq.form_uuid " +
+                "WHERE f.uuid = ?;";
     }
 
-    List<Question> findQuestionByForm(final String formCode);
+    List<Question> findQuestionByForm(final String uuid);
 }

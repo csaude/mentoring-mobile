@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mz.org.fgh.mentoring.config.model.Form;
+import mz.org.fgh.mentoring.config.model.ProgrammaticArea;
 import mz.org.fgh.mentoring.dao.GenericDAOImpl;
 
 /**
@@ -37,7 +38,7 @@ public class FormDAOImpl extends GenericDAOImpl<Form> implements FormDAO {
 
         values.put("code", entity.getCode());
         values.put("name", entity.getName());
-        values.put("programmatic_area", entity.getProgrammaticArea());
+        values.put("programmatic_area_uuid", entity.getProgrammaticArea().getUuid());
         values.put("version", entity.getVersion());
 
         return values;
@@ -46,13 +47,15 @@ public class FormDAOImpl extends GenericDAOImpl<Form> implements FormDAO {
     @Override
     public Form getPopulatedEntity(Cursor cursor) {
 
-        Form form = new Form(cursor.getString(cursor.getColumnIndex("code")),
+        ProgrammaticArea programmaticArea = new ProgrammaticArea(cursor.getString(cursor.getColumnIndex("programmatic_area_uuid")));
+
+        Form form = new Form(cursor.getString(cursor.getColumnIndex("uuid")),
+                cursor.getString(cursor.getColumnIndex("code")),
                 cursor.getString(cursor.getColumnIndex("name")),
-                cursor.getString(cursor.getColumnIndex("programmatic_area")),
+                programmaticArea,
                 cursor.getString(cursor.getColumnIndex("version")));
 
         form.setId(cursor.getLong(cursor.getColumnIndex("id")));
-        form.setUuid(cursor.getString(cursor.getColumnIndex("uuid")));
 
         return form;
     }

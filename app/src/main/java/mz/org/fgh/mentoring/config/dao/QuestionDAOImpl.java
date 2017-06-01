@@ -37,7 +37,6 @@ public class QuestionDAOImpl extends GenericDAOImpl<Question> implements Questio
 
         ContentValues values = new ContentValues();
 
-        values.put("code", entity.getCode());
         values.put("question", entity.getQuestion());
         values.put("question_type", entity.getQuestionType().name());
         values.put("question_category", entity.getQuestionCategory().name());
@@ -49,7 +48,6 @@ public class QuestionDAOImpl extends GenericDAOImpl<Question> implements Questio
     public Question getPopulatedEntity(Cursor cursor) {
 
         Question question = new Question(cursor.getString(cursor.getColumnIndex("uuid")),
-                cursor.getString(cursor.getColumnIndex("code")),
                 cursor.getString(cursor.getColumnIndex("question")),
                 QuestionType.valueOf(cursor.getString(cursor.getColumnIndex("question_type"))),
                 QuestionCategory.valueOf(cursor.getString(cursor.getColumnIndex("question_category"))));

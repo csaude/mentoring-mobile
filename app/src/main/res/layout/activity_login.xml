@@ -52,20 +52,35 @@
             android:id="@+id/login_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
             android:hint="Password"
             android:password="true"
             android:singleLine="true" />
 
-        <Button
-            android:id="@+id/login_loginButton"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="#00695C"
-            android:text="Entrar"
-            android:textColor="#fff"
-            android:textStyle="bold" />
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/login_loginButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="#00695C"
+                android:text="Entrar"
+                android:textColor="#fff"
+                android:textStyle="bold" />
+
+            <ProgressBar
+                android:id="@+id/login_progress_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="11dp"
+                android:indeterminateOnly="true"/>
+
+        </RelativeLayout>
 
     </LinearLayout>
 

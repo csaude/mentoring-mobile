@@ -22,8 +22,7 @@
             android:id="@+id/tutored_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/simpleSearchView"
-            android:textSize="14dp" />
+            android:layout_below="@+id/simpleSearchView" />
 
         <Button
             android:id="@+id/new_tutored"

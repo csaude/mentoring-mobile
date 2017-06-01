@@ -12,8 +12,6 @@ public abstract class GenericEntity implements Serializable {
 
     private Long id;
 
-    private String code;
-    
     private String uuid;
 
     private Date createdAt;
@@ -24,14 +22,6 @@ public abstract class GenericEntity implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
     }
 
     public String getUuid() {

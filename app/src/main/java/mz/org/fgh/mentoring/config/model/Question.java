@@ -16,9 +16,8 @@ public class Question extends GenericEntity {
     public Question() {
     }
 
-    public Question(String uuid, String code, String question, QuestionType questionType, QuestionCategory questionCategory) {
+    public Question(String uuid, String question, QuestionType questionType, QuestionCategory questionCategory) {
         this.setUuid(uuid);
-        this.setCode(code);
         this.question = question;
         this.questionType = questionType;
         this.questionCategory = questionCategory;

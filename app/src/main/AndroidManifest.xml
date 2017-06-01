@@ -37,6 +37,11 @@
             android:label="@string/title_activity_list_mentorship"
             android:theme="@style/AppTheme" >
         </activity>
+        <activity
+            android:name=".activities.TutorUpdateActivity"
+            android:label="@string/title_activity_tutor_update"
+            android:theme="@style/AppTheme" >
+        </activity>
     </application>
 
 </manifest>

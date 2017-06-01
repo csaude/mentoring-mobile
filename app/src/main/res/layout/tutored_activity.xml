@@ -16,31 +16,41 @@
             android:id="@+id/tutored_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Nome" />
+            android:background="@drawable/fields_background"
+            android:hint="Nome"
+            android:padding="8dp" />
 
         <EditText
             android:id="@+id/tutored_surname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Apelido" />
+            android:layout_marginTop="10dp"
+            android:background="@drawable/fields_background"
+            android:hint="Apelido"
+            android:padding="8dp" />
 
         <EditText
             android:id="@+id/tutored_phone_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
-            android:hint="Telefone" />
+            android:layout_marginTop="10dp"
+            android:background="@drawable/fields_background"
+            android:hint="Telefone"
+            android:padding="8dp" />
 
         <Spinner
             android:id="@+id/tutored_carrer"
+            style="@style/spinner_style"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp" />
+            android:layout_height="wrap_content" />
 
         <Spinner
             android:id="@+id/tutored_position"
+            style="@style/spinner_style"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp" />
 
     </LinearLayout>
 </LinearLayout>

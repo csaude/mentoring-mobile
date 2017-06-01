@@ -7,7 +7,9 @@ import android.view.MenuItem;
 import mz.org.fgh.mentoring.R;
 import mz.org.fgh.mentoring.activities.ConfigurationActivity;
 import mz.org.fgh.mentoring.config.model.Location;
+import mz.org.fgh.mentoring.infra.MentoringApplication;
 import mz.org.fgh.mentoring.service.SyncService;
+import mz.org.fgh.mentoring.service.TutoredServiceImpl;
 
 /**
  * Created by Stélio Moiane on 10/24/16.
@@ -43,6 +45,10 @@ public class ConfigCallback implements ActionMode.Callback {
                     syncService.setActivity(activity);
                     syncService.execute();
                 }
+
+                MentoringApplication application = (MentoringApplication) activity.getApplication();
+                TutoredServiceImpl tutoredService = new TutoredServiceImpl(activity, application.getRetrofit());
+                tutoredService.processFindTutoredByUser(application.getAuth().getUser().getUuid());
 
                 return true;
         }

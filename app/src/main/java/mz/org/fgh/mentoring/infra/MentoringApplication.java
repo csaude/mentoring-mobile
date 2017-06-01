@@ -3,10 +3,13 @@ package mz.org.fgh.mentoring.infra;
 import android.app.Application;
 import android.content.SharedPreferences;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import mz.org.fgh.mentoring.R;
+import java.io.IOException;
+
+import mz.org.fgh.mentoring.util.ServerConfig;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
@@ -18,25 +21,28 @@ public class MentoringApplication extends Application {
     private Auth auth;
     private SharedPreferences sharedPreferences;
     private Retrofit retrofit;
+    private ObjectMapper mapper;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        auth = new Auth(this);
+
         sharedPreferences = getSharedPreferences(MentoringApplication.class.getName(), 0);
 
-        setUpRetrofit();
+        mapper = new ObjectMapper();
+
+        auth = new Auth(this, getUserContext(UserContext.USER_CONTEXT));
+
+        setUpRetrofit(ServerConfig.MENTORING);
     }
 
-    private void setUpRetrofit() {
+    public void setUpRetrofit(final ServerConfig serverConfig) {
 
-        ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true)
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-        retrofit = new Retrofit.Builder().baseUrl("http://" +
-                sharedPreferences.getString(getResources().getString(R.string.serve_address), "localhost") +
-                "/mentoring-integ/services/").addConverterFactory(JacksonConverterFactory.create(mapper))
+        retrofit = new Retrofit.Builder().baseUrl("http://" + serverConfig.getAddress() +
+                serverConfig.getService()).addConverterFactory(JacksonConverterFactory.create(mapper))
                 .build();
     }
 
@@ -52,7 +58,40 @@ public class MentoringApplication extends Application {
         return this.retrofit;
     }
 
-    public void updateRetrofit() {
-        setUpRetrofit();
+    public void setUser(final UserContext user) {
+        user.setLogged(true);
+        auth.setUser(user);
+        String userContext = "";
+
+        try {
+            userContext = mapper.writeValueAsString(user);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        sharedPreferences.edit().putString(UserContext.USER_CONTEXT, userContext).apply();
+    }
+
+    private UserContext getUserContext(String key) {
+        String jsonUserContext = sharedPreferences.getString(key, "");
+
+        if (jsonUserContext.isEmpty()) {
+            return new UserContext();
+        }
+
+        UserContext userContext = null;
+
+        try {
+            userContext = mapper.readValue(jsonUserContext, UserContext.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return userContext;
+    }
+
+    public void logout() {
+        auth.setUser(new UserContext());
+        sharedPreferences.edit().remove(UserContext.USER_CONTEXT).apply();
     }
 }

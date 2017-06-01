@@ -16,9 +16,8 @@ public class Form extends GenericEntity {
 
     private String version;
 
-    public Form(String uuid, String code, String name, ProgrammaticArea programmaticArea, String version) {
+    public Form(String uuid, String name, ProgrammaticArea programmaticArea, String version) {
         this.setUuid(uuid);
-        this.setCode(code);
         this.name = name;
         this.programmaticArea = programmaticArea;
         this.version = version;

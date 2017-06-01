@@ -22,6 +22,9 @@ public class GenericWrapper {
     @JsonProperty("formQuestion")
     private List<FormQuestion> formQuestions;
 
+    @JsonProperty("tutored")
+    private List<Tutored> tutoreds;
+
     public List<HealthFacility> getHealthFacilities() {
         return this.healthFacilities;
     }
@@ -32,5 +35,9 @@ public class GenericWrapper {
 
     public List<FormQuestion> getFormQuestions() {
         return this.formQuestions;
+    }
+
+    public List<Tutored> getTutoreds() {
+        return tutoreds;
     }
 }

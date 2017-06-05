@@ -16,11 +16,11 @@ public interface GenericDAO<T extends GenericEntity> {
 
     String CAREER_TABLE = "CREATE TABLE careers(id INTEGER PRIMARY KEY, career_type TEXT, position TEXT, uuid TEXT UNIQUE, created_at TEXT);";
 
-    String TUTORED_TABLE = "CREATE TABLE tutoreds(id INTEGER PRIMARY KEY, code TEXT, name TEXT, surname TEXT, phone_number TEXT, career_uuid TEXT, uuid TEXT UNIQUE, created_at TEXT, FOREIGN KEY(career_uuid) REFERENCES careers(uuid));";
+    String TUTORED_TABLE = "CREATE TABLE tutoreds(id INTEGER PRIMARY KEY, name TEXT, surname TEXT, phone_number TEXT, career_uuid TEXT, uuid TEXT UNIQUE, created_at TEXT, FOREIGN KEY(career_uuid) REFERENCES careers(uuid));";
 
-    String FORM_TABLE = "CREATE TABLE forms(id INTEGER PRIMARY KEY, code TEXT, name TEXT, description TEXT, programmatic_area_uuid TEXT, version INTEGER, uuid TEXT UNIQUE, created_at TEXT);";
+    String FORM_TABLE = "CREATE TABLE forms(id INTEGER PRIMARY KEY, name TEXT, description TEXT, programmatic_area_uuid TEXT, version INTEGER, uuid TEXT UNIQUE, created_at TEXT);";
 
-    String QUESTION_TABLE = "CREATE TABLE questions(id INTEGER PRIMARY KEY, code TEXT, question TEXT, question_type TEXT, question_category TEXT, uuid TEXT UNIQUE, created_at TEXT);";
+    String QUESTION_TABLE = "CREATE TABLE questions(id INTEGER PRIMARY KEY, question TEXT, question_type TEXT, question_category TEXT, uuid TEXT UNIQUE, created_at TEXT);";
 
     String FORM_QUESTION_TABLE = "CREATE TABLE form_questions(id INTEGER PRIMARY KEY, form_uuid TEXT, question_uuid TEXT, uuid TEXT UNIQUE, created_at TEXT, FOREIGN KEY(form_uuid) REFERENCES forms(uuid), FOREIGN KEY(question_uuid) REFERENCES questions(uuid));";
 

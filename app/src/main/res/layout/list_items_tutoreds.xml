@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/item_selected"
     android:orientation="horizontal"
     android:padding="8dp">
 
@@ -16,7 +17,7 @@
         android:textAlignment="center"
         android:textColor="#fff"
         android:textSize="7pt"
-        android:textStyle="bold" />
+        android:textStyle="bold|italic" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -36,8 +37,8 @@
                 android:layout_weight="1"
                 android:text="Nome"
                 android:textColor="#00695C"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textSize="7pt"
+                android:textStyle="bold|italic" />
 
             <TextView
                 android:id="@+id/item_phone"
@@ -49,7 +50,7 @@
                 android:paddingTop="8dp"
                 android:text="Telefone"
                 android:textAlignment="textEnd"
-                android:textSize="13sp"
+                android:textSize="5pt"
                 android:textStyle="italic" />
 
         </LinearLayout>
@@ -61,8 +62,8 @@
             android:layout_height="wrap_content"
             android:paddingTop="4dp"
             android:text="Carreira"
-            android:textSize="13sp"
-            android:textStyle="bold" />
+            android:textSize="5pt"
+            android:textStyle="bold|italic" />
 
     </LinearLayout>
 </LinearLayout>

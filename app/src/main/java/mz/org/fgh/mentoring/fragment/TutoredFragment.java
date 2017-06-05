@@ -6,13 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.List;
 
 import mz.org.fgh.mentoring.R;
 import mz.org.fgh.mentoring.activities.MentoringActivity;
+import mz.org.fgh.mentoring.adapter.TutoredItemAdapter;
 import mz.org.fgh.mentoring.config.dao.TutoredDAO;
 import mz.org.fgh.mentoring.config.dao.TutoredDAOImpl;
 import mz.org.fgh.mentoring.model.Tutored;
@@ -35,8 +35,7 @@ public class TutoredFragment extends Fragment implements AdapterView.OnItemClick
         List<Tutored> tutoreds = tutoredDAO.findAll();
 
         ListView tutoredsList = (ListView) view.findViewById(R.id.fragment_tutoreds);
-        tutoredsList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-        ArrayAdapter<Tutored> adapter = new ArrayAdapter<>(activity, android.R.layout.simple_list_item_single_choice, tutoreds);
+        TutoredItemAdapter adapter = new TutoredItemAdapter(activity, tutoreds);
         tutoredsList.setAdapter(adapter);
 
         tutoredsList.setOnItemClickListener(this);
@@ -48,6 +47,7 @@ public class TutoredFragment extends Fragment implements AdapterView.OnItemClick
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        view.setSelected(true);
         Tutored tutored = (Tutored) parent.getItemAtPosition(position);
         activityBundle.putSerializable("tutored", tutored);
     }

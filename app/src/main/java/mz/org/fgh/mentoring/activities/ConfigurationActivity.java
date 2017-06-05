@@ -1,5 +1,6 @@
 package mz.org.fgh.mentoring.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.view.ActionMode;
 import android.view.Menu;
@@ -8,7 +9,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckedTextView;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -25,21 +25,18 @@ public class ConfigurationActivity extends BaseAuthenticateActivity {
     private ListView configItems;
     private ActionMode actionMode;
     private ArrayAdapter<Location> adapter;
-    private EditText ipField;
     private List<Location> selectedItems;
 
     @Override
     protected void onMentoringCreate(Bundle bundle) {
         setContentView(R.layout.activity_configuration);
 
-        ipField = (EditText) findViewById(R.id.config_server_ip);
-
         configItems = (ListView) findViewById(R.id.config_items);
 
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_multiple_choice, Arrays.asList(Location.HEALTH_FACILITIES, Location.CAREERS, Location.FORMS));
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_single_choice, Arrays.asList(Location.HEALTH_FACILITIES, Location.CAREERS, Location.FORMS));
         configItems.setAdapter(adapter);
 
-        configItems.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        configItems.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
         configItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -63,8 +60,6 @@ public class ConfigurationActivity extends BaseAuthenticateActivity {
                 }
             }
         });
-
-        ipField.setText(application.getSharedPreferences().getString(getResources().getString(R.string.serve_address), ""));
     }
 
     public void setActionMode(ActionMode actionMode) {
@@ -88,18 +83,10 @@ public class ConfigurationActivity extends BaseAuthenticateActivity {
 
         switch (item.getItemId()) {
             case R.id.config_menu_ok:
-                if (ipField.getText().length() == 0) {
-                    ipField.setError("Endereço invalido!");
-                    return true;
-                }
 
-                application.getSharedPreferences().edit()
-                        .putString(getResources().getString(R.string.serve_address), ipField.getText().toString())
-                        .apply();
-
-                application.updateRetrofit();
-
-                Toast.makeText(this, "Endereçao do servidor actulizado!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Actualização de metadados completa!", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(ConfigurationActivity.this, MainActivity.class));
+                finish();
                 break;
         }
 

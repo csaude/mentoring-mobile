@@ -8,14 +8,18 @@ import android.content.Context;
 public class Auth {
 
     private Context context;
-    private User user;
+    private UserContext user;
 
-    public Auth(Context context) {
+    public Auth(final Context context, final UserContext user) {
         this.context = context;
-        this.user = new User();
+        this.user = user;
     }
 
-    public User getUser() {
+    public UserContext getUser() {
         return user;
+    }
+
+    public void setUser(final UserContext user) {
+        this.user = user;
     }
 }

@@ -14,7 +14,7 @@ public interface AnswerDAO extends GenericDAO<Answer> {
     String FIELD_NAME = "uuid";
 
     class QUERY {
-        public static final String findByMentorshipUuid = "SELECT a.form_uuid, a.mentorship_uuid, a.question_uuid, a.uuid, a.text_value, a.boolean_value, q.question_type, q.code FROM " + TABLE_NAME + " a " +
+        public static final String findByMentorshipUuid = "SELECT a.form_uuid, a.mentorship_uuid, a.question_uuid, a.uuid, a.text_value, a.boolean_value, q.question_type FROM " + TABLE_NAME + " a " +
                 "INNER JOIN questions q ON a.question_uuid = q.uuid " +
                 "WHERE a.mentorship_uuid = ?;";
 

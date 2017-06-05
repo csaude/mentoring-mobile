@@ -1,5 +1,7 @@
 package mz.org.fgh.mentoring.model;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 import mz.org.fgh.mentoring.config.model.Career;
 
 /**
@@ -14,6 +16,9 @@ public class Tutored extends GenericEntity {
     private String phoneNumber;
 
     private Career career;
+
+    public Tutored() {
+    }
 
     public String getName() {
         return name;

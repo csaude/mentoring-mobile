@@ -8,6 +8,7 @@ import java.util.Date;
 
 import mz.org.fgh.mentoring.config.model.Form;
 import mz.org.fgh.mentoring.config.model.HealthFacility;
+import mz.org.fgh.mentoring.config.model.Tutor;
 import mz.org.fgh.mentoring.model.GenericEntity;
 import mz.org.fgh.mentoring.model.Tutored;
 
@@ -25,6 +26,8 @@ public class Mentorship extends GenericEntity {
     private Form form;
 
     private HealthFacility healthFacility;
+
+    private Tutor tutor;
 
     public Date getStartDate() {
         return startDate;
@@ -64,5 +67,13 @@ public class Mentorship extends GenericEntity {
 
     public void setHealthFacility(HealthFacility healthFacility) {
         this.healthFacility = healthFacility;
+    }
+
+    public Tutor getTutor() {
+        return tutor;
+    }
+
+    public void setTutor(Tutor tutor) {
+        this.tutor = tutor;
     }
 }

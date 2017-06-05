@@ -35,7 +35,6 @@ public class TutoredDAOImpl extends GenericDAOImpl<Tutored> implements TutoredDA
     public ContentValues getContentValues(Tutored tutored) {
         ContentValues values = new ContentValues();
 
-        values.put("code", tutored.getCode());
         values.put("name", tutored.getName());
         values.put("surname", tutored.getSurname());
         values.put("phone_number", tutored.getPhoneNumber());
@@ -49,7 +48,6 @@ public class TutoredDAOImpl extends GenericDAOImpl<Tutored> implements TutoredDA
         Tutored tutored = new Tutored();
 
         tutored.setId(cursor.getLong(cursor.getColumnIndex("id")));
-        tutored.setCode(cursor.getString(cursor.getColumnIndex("code")));
         tutored.setName(cursor.getString(cursor.getColumnIndex("name")));
         tutored.setSurname(cursor.getString(cursor.getColumnIndex("surname")));
         tutored.setPhoneNumber(cursor.getString(cursor.getColumnIndex("phone_number")));

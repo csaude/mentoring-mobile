@@ -5,13 +5,12 @@ import android.widget.Toast;
 
 import java.util.List;
 
-import mz.org.fgh.mentoring.activities.BaseAuthenticateActivity;
-import mz.org.fgh.mentoring.activities.ListTutoredActivity;
+import mz.org.fgh.mentoring.activities.BaseActivity;
 import mz.org.fgh.mentoring.config.dao.TutoredDAO;
 import mz.org.fgh.mentoring.infra.MentoringApplication;
+import mz.org.fgh.mentoring.infra.UserContext;
 import mz.org.fgh.mentoring.model.Tutored;
 import mz.org.fgh.mentoring.model.TutoredBeanResource;
-import mz.org.fgh.mentoring.model.UserContext;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -23,7 +22,7 @@ import retrofit2.Retrofit;
 
 public class TutoredSyncServiceImpl implements SyncService {
 
-    private ListTutoredActivity activity;
+    private BaseActivity activity;
     private TutoredDAO tutoredDAO;
 
 
@@ -44,7 +43,6 @@ public class TutoredSyncServiceImpl implements SyncService {
         TutoredBeanResource tutoredBeanResource = new TutoredBeanResource();
 
         UserContext userContext = new UserContext();
-        userContext.setId(1L);
         tutoredBeanResource.setUserContext(userContext);
         tutoredBeanResource.setTutoreds(tutoreds);
 
@@ -60,7 +58,7 @@ public class TutoredSyncServiceImpl implements SyncService {
                              TutoredBeanResource body = response.body();
 
                              if (body.getTutored() != null) {
-                                 Toast.makeText(activity, body.getTutored().getCode() + " Ok", Toast.LENGTH_SHORT).show();
+                                 Toast.makeText(activity, body.getTutored().getName() + " Ok", Toast.LENGTH_SHORT).show();
                              } else {
                                  Toast.makeText(activity, body.getTutoreds().size() + " Ok", Toast.LENGTH_SHORT).show();
                              }
@@ -79,7 +77,7 @@ public class TutoredSyncServiceImpl implements SyncService {
     }
 
     @Override
-    public void setActivity(BaseAuthenticateActivity activity) {
-        this.activity = (ListTutoredActivity) activity;
+    public void setActivity(BaseActivity activity) {
+        this.activity = activity;
     }
 }

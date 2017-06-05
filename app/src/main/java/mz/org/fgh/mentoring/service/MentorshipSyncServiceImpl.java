@@ -8,13 +8,13 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import mz.org.fgh.mentoring.activities.BaseAuthenticateActivity;
+import mz.org.fgh.mentoring.activities.BaseActivity;
 import mz.org.fgh.mentoring.activities.ListMentorshipActivity;
 import mz.org.fgh.mentoring.config.dao.AnswerDAO;
 import mz.org.fgh.mentoring.config.model.Answer;
 import mz.org.fgh.mentoring.helpers.MentorshipHelper;
 import mz.org.fgh.mentoring.infra.MentoringApplication;
-import mz.org.fgh.mentoring.model.UserContext;
+import mz.org.fgh.mentoring.infra.UserContext;
 import mz.org.fgh.mentoring.process.dao.MentorshipDAO;
 import mz.org.fgh.mentoring.process.model.Mentorship;
 import mz.org.fgh.mentoring.process.model.MentorshipBeanResource;
@@ -29,7 +29,7 @@ import retrofit2.Retrofit;
  */
 public class MentorshipSyncServiceImpl implements SyncService {
 
-    private BaseAuthenticateActivity activity;
+    private BaseActivity activity;
     private MentorshipDAO mentorshipDAO;
     private AnswerDAO answerDAO;
 
@@ -54,8 +54,10 @@ public class MentorshipSyncServiceImpl implements SyncService {
 
         List<MentorshipHelper> mentorshipHelpers = new ArrayList<>();
 
+        UserContext user = ((MentoringApplication) activity.getApplication()).getAuth().getUser();
 
         for (Mentorship mentorship : mentorships) {
+            mentorship.setTutor(user.getTutor());
             List<Answer> answers = answerDAO.findByMentorshipUuid(mentorship.getUuid());
             MentorshipHelper mentorshipHelper = new MentorshipHelper();
             mentorshipHelper.setMentorship(mentorship);
@@ -67,10 +69,7 @@ public class MentorshipSyncServiceImpl implements SyncService {
 
         MentorshipBeanResource mentorshipBeanResource = new MentorshipBeanResource();
 
-        UserContext userContext = new UserContext();
-        userContext.setId(1L);
-        userContext.setPhoneNumber("+258822546100");
-        mentorshipBeanResource.setUserContext(userContext);
+        mentorshipBeanResource.setUserContext(user);
         mentorshipBeanResource.setMentorships(mentorshipHelpers);
 
         Call<MentorshipBeanResource> call = syncDataService.syncMentorships(mentorshipBeanResource);
@@ -120,7 +119,7 @@ public class MentorshipSyncServiceImpl implements SyncService {
     }
 
     @Override
-    public void setActivity(BaseAuthenticateActivity activity) {
+    public void setActivity(BaseActivity activity) {
         this.activity = activity;
     }
 }

@@ -73,7 +73,6 @@ public class AnswerDAOImpl extends GenericDAOImpl<Answer> implements AnswerDAO {
         form.setUuid(cursor.getString(cursor.getColumnIndex("form_uuid")));
 
         Question question = new Question(cursor.getString(cursor.getColumnIndex("question_uuid")),
-                cursor.getString(cursor.getColumnIndex("code")),
                 null,
                 QuestionType.valueOf(cursor.getString(cursor.getColumnIndex("question_type"))), null);
 

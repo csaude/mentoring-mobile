@@ -21,4 +21,8 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="spinner_style">
+        <item name="android:background">@drawable/selectors_background</item>
+    </style>
+
 </resources>

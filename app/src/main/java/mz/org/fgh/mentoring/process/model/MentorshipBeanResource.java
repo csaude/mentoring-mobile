@@ -1,7 +1,5 @@
 package mz.org.fgh.mentoring.process.model;
 
-import com.google.gson.annotations.SerializedName;
-
 import java.util.Collections;
 import java.util.List;
 
@@ -13,10 +11,8 @@ import mz.org.fgh.mentoring.model.BeanResource;
  */
 public class MentorshipBeanResource extends BeanResource {
 
-    @SerializedName("mentorships")
     private List<MentorshipHelper> mentorships;
 
-    @SerializedName("mentorshipUuids")
     private List<String> mentorshipUuids;
 
     public MentorshipBeanResource() {

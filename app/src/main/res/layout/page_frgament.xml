@@ -15,10 +15,11 @@
 
     <Spinner
         android:id="@+id/answer_value"
+        style="@style/spinner_style"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/text_view"
-        android:layout_marginStart="7dp"
+        android:layout_margin="16dp"
         android:layout_marginTop="50dp" />
 
     <Button
@@ -26,7 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_margin="20dp"
+        android:layout_margin="16dp"
         android:background="#00695C"
         android:text="Submeter"
         android:textColor="#fff"

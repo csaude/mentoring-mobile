@@ -14,25 +14,28 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Provincia:"
-            android:textSize="10pt"
-            android:textStyle="bold" />
+            android:textColor="#000"
+            android:textSize="8pt"
+            android:textStyle="bold|italic" />
 
         <Spinner
             android:id="@+id/fragment_province"
+            style="@style/spinner_style"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="Distrito:"
-            android:textSize="10pt"
-            android:textStyle="bold" />
+            android:textColor="#000"
+            android:textSize="8pt"
+            android:textStyle="bold|italic" />
 
         <Spinner
             android:id="@+id/fragment_distric"
+            style="@style/spinner_style"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -41,11 +44,13 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="Unidade Sanitária:"
-            android:textSize="10pt"
-            android:textStyle="bold" />
+            android:textColor="#000"
+            android:textSize="8pt"
+            android:textStyle="bold|italic" />
 
         <Spinner
             android:id="@+id/fragment_health_facility"
+            style="@style/spinner_style"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

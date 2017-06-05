@@ -11,11 +11,11 @@ import mz.org.fgh.mentoring.dao.GenericDAO;
 public interface QuestionDAO extends GenericDAO<Question> {
 
     String TABLE_NAME = "questions";
-    String FIELD_NAME = "code";
+    String FIELD_NAME = "uuid";
 
     class QUERY {
 
-        public static final String findQuestionByForm = "SELECT q.id, q.uuid, q.code, q.question, q.question_type, q.question_category FROM " + TABLE_NAME + " q " +
+        public static final String findQuestionByForm = "SELECT q.id, q.uuid, q.question, q.question_type, q.question_category FROM " + TABLE_NAME + " q " +
                 "INNER JOIN form_questions fq ON q.uuid = fq.question_uuid " +
                 "INNER JOIN forms f on f.uuid = fq.form_uuid " +
                 "WHERE f.uuid = ?;";

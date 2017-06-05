@@ -1,10 +1,10 @@
 package mz.org.fgh.mentoring.service;
 
 import android.app.ProgressDialog;
+import android.util.Log;
 import android.widget.Toast;
 
-import mz.org.fgh.mentoring.activities.BaseAuthenticateActivity;
-import mz.org.fgh.mentoring.activities.ConfigurationActivity;
+import mz.org.fgh.mentoring.activities.BaseActivity;
 import mz.org.fgh.mentoring.config.dao.FormDAO;
 import mz.org.fgh.mentoring.config.dao.FormDAOImpl;
 import mz.org.fgh.mentoring.config.dao.FormQuestionDAO;
@@ -25,7 +25,7 @@ import retrofit2.Retrofit;
  * Created by Stélio Moiane on 11/16/16.
  */
 public class FormQuestionSyncServiceImpl implements SyncService {
-    private ConfigurationActivity activity;
+    private BaseActivity activity;
 
     @Override
     public void execute() {
@@ -34,7 +34,8 @@ public class FormQuestionSyncServiceImpl implements SyncService {
         Retrofit retrofit = application.getRetrofit();
         SyncDataService syncDataService = retrofit.create(SyncDataService.class);
         Call<GenericWrapper> call = syncDataService.formQuestions();
-        final ProgressDialog dialog = ProgressDialog.show(activity, "Aguarde", "A receber dados...", true, true);
+
+        final ProgressDialog dialog = ProgressDialog.show(activity, "Aguarde", "A receber dados....", true, true);
 
         call.enqueue(new Callback<GenericWrapper>() {
 
@@ -42,6 +43,11 @@ public class FormQuestionSyncServiceImpl implements SyncService {
                          public void onResponse(Call<GenericWrapper> call, Response<GenericWrapper> response) {
 
                              GenericWrapper wrapper = response.body();
+
+                             if (wrapper == null) {
+                                 Toast.makeText(activity, "Problemas com a sincronização de dados. Verifique o endereço do servidor!", Toast.LENGTH_LONG).show();
+                                 return;
+                             }
 
                              FormDAO formDAO = new FormDAOImpl(activity);
                              QuestionDAO questionDAO = new QuestionDAOImpl(activity);
@@ -60,22 +66,21 @@ public class FormQuestionSyncServiceImpl implements SyncService {
                                      questionDAO.create(question);
                                  }
 
-                                 formQuestionDAO.create(formQuestion);
+                                 if (!formQuestionDAO.exist(formQuestion.getUuid())) {
+                                     formQuestionDAO.create(formQuestion);
+                                 }
                              }
-
-                             Toast.makeText(activity, formDAO.findAll().size() + " Formularios foram sincronizadas com sucesso!", Toast.LENGTH_SHORT).show();
-
-                             dialog.dismiss();
 
                              formDAO.close();
                              questionDAO.close();
                              formQuestionDAO.close();
+                             dialog.dismiss();
                          }
 
                          @Override
                          public void onFailure(Call<GenericWrapper> call, Throwable t) {
                              dialog.dismiss();
-                             Toast.makeText(activity, t.getMessage(), Toast.LENGTH_SHORT).show();
+                             Log.e("Connection:--", t.getMessage());
                          }
                      }
         );
@@ -83,7 +88,7 @@ public class FormQuestionSyncServiceImpl implements SyncService {
     }
 
     @Override
-    public void setActivity(BaseAuthenticateActivity activity) {
-        this.activity = (ConfigurationActivity) activity;
+    public void setActivity(BaseActivity activity) {
+        this.activity = activity;
     }
 }

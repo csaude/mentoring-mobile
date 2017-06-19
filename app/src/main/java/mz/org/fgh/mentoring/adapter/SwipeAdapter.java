@@ -3,6 +3,7 @@ package mz.org.fgh.mentoring.adapter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ import mz.org.fgh.mentoring.fragment.TutoredFragment;
 /**
  * Created by Stélio Moiane on 11/14/16.
  */
-public class SwipeAdapter extends FragmentStatePagerAdapter {
+public class SwipeAdapter extends FragmentStatePagerAdapter{
 
     private List<Question> questions = new ArrayList<>();
     private int position;

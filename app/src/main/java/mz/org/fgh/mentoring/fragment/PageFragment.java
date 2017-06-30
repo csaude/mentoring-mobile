@@ -2,26 +2,36 @@ package mz.org.fgh.mentoring.fragment;
 
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.Spinner;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
+import butterknife.BindView;
+import butterknife.OnClick;
 import mz.org.fgh.mentoring.R;
 import mz.org.fgh.mentoring.activities.MentoringActivity;
 import mz.org.fgh.mentoring.adapter.SwipeAdapter;
 import mz.org.fgh.mentoring.config.model.Question;
+import mz.org.fgh.mentoring.model.QuestionAnswer;
 
-public class PageFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
+public class PageFragment extends BaseFragment {
 
-    private TextView textView;
-    private Button saveBtn;
-    private Spinner answerValue;
+    @BindView(R.id.text_view)
+    TextView textView;
+
+    @BindView(R.id.save_btn)
+    Button saveBtn;
+
+    @BindView(R.id.fragment_page_competent)
+    RadioButton competentRd;
+
+    @BindView(R.id.fragment_page_unsatisfactory)
+    RadioButton unsatisfactoryRd;
+
+    @BindView(R.id.fragment_page_non_applicable)
+    RadioButton nonApplicabletRd;
+
     private MentoringActivity activity;
     private Bundle activityBundle;
     private Question question;
@@ -29,52 +39,55 @@ public class PageFragment extends Fragment implements View.OnClickListener, Adap
     public PageFragment() {
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.page_frgament, container, false);
-        textView = (TextView) view.findViewById(R.id.text_view);
-        answerValue = (Spinner) view.findViewById(R.id.answer_value);
+    @Override
+    public void onCreateView() {
 
         activity = (MentoringActivity) getActivity();
         activityBundle = activity.getBundle();
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(activity, R.array.question_answers, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        answerValue.setAdapter(adapter);
-
         final Bundle bundle = getArguments();
         question = (Question) bundle.get(SwipeAdapter.QUESTION);
+
         boolean isLastPage = bundle.getBoolean(SwipeAdapter.LAST_PAGE);
         textView.setText(question.getQuestion());
-
-        saveBtn = (Button) view.findViewById(R.id.save_btn);
 
         if (!isLastPage) {
             saveBtn.setVisibility(View.GONE);
         }
-
-        saveBtn.setOnClickListener(this);
-        answerValue.setOnItemSelectedListener(this);
-
-        return view;
     }
 
     @Override
-    public void onClick(View view) {
+    public int getResourceId() {
+        return R.layout.page_frgament;
+    }
+
+    @OnClick(R.id.save_btn)
+    public void onClickSaveBtn() {
         activity.submitProcess();
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        String value = (String) parent.getItemAtPosition(position);
+    @OnClick(R.id.fragment_page_competent)
+    public void onClickCompentent(View view) {
 
-        if (activityBundle != null)
-            activityBundle.putString(question.getUuid(), value);
+        if (((RadioButton) view).isChecked()) {
+            activityBundle.putString(question.getUuid(), QuestionAnswer.COMPETENT.getValue());
+        }
     }
 
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
+    @OnClick(R.id.fragment_page_unsatisfactory)
+    public void onClickUnSatosfactory(View view) {
+
+        if (((RadioButton) view).isChecked()) {
+            activityBundle.putString(question.getUuid(), QuestionAnswer.UNSATISFATORY.getValue());
+        }
+    }
+
+    @OnClick(R.id.fragment_page_non_applicable)
+    public void onClickNonApplicable(View view) {
+
+        if (((RadioButton) view).isChecked()) {
+            activityBundle.putString(question.getUuid(), QuestionAnswer.NON_APPICABLE.getValue());
+        }
     }
 }

@@ -17,6 +17,8 @@ public class MentorshipHelper {
 
     private String endDate;
 
+    private String performedDate;
+
     private List<AnswerHelper> answers;
 
     public MentorshipHelper() {
@@ -53,6 +55,14 @@ public class MentorshipHelper {
 
     public void setEndDate(String endDate) {
         this.endDate = endDate;
+    }
+
+    public String getPerformedDate() {
+        return performedDate;
+    }
+
+    public void setPerformedDate(String performedDate) {
+        this.performedDate = performedDate;
     }
 
     public void prepareAnswerHelper(List<Answer> answers) {

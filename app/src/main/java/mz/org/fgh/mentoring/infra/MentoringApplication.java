@@ -9,6 +9,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 
+import mz.org.fgh.mentoring.component.DaggerMentoringComponent;
+import mz.org.fgh.mentoring.component.MentoringComponent;
+import mz.org.fgh.mentoring.module.MentoringModule;
 import mz.org.fgh.mentoring.util.ServerConfig;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
@@ -22,6 +25,8 @@ public class MentoringApplication extends Application {
     private SharedPreferences sharedPreferences;
     private Retrofit retrofit;
     private ObjectMapper mapper;
+    private MentoringComponent mentoringComponent;
+
 
     @Override
     public void onCreate() {
@@ -32,6 +37,8 @@ public class MentoringApplication extends Application {
         mapper = new ObjectMapper();
 
         auth = new Auth(this, getUserContext(UserContext.USER_CONTEXT));
+
+        mentoringComponent = DaggerMentoringComponent.builder().mentoringModule(new MentoringModule(this)).build();
 
         setUpRetrofit(ServerConfig.MENTORING);
     }
@@ -93,5 +100,9 @@ public class MentoringApplication extends Application {
     public void logout() {
         auth.setUser(new UserContext());
         sharedPreferences.edit().remove(UserContext.USER_CONTEXT).apply();
+    }
+
+    public MentoringComponent getMentoringComponent() {
+        return mentoringComponent;
     }
 }

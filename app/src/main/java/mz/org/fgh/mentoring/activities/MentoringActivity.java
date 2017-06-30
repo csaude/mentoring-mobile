@@ -20,6 +20,7 @@ import mz.org.fgh.mentoring.model.Tutored;
 import mz.org.fgh.mentoring.process.dao.MentorshipDAO;
 import mz.org.fgh.mentoring.process.dao.MentorshipDAOImpl;
 import mz.org.fgh.mentoring.process.model.Mentorship;
+import mz.org.fgh.mentoring.process.model.Month;
 import mz.org.fgh.mentoring.util.DateUtil;
 
 public class MentoringActivity extends BaseAuthenticateActivity {
@@ -51,6 +52,8 @@ public class MentoringActivity extends BaseAuthenticateActivity {
         Mentorship mentorship = new Mentorship();
         mentorship.setStartDate(DateUtil.parse(getIntent().getStringExtra("startDate")));
         mentorship.setEndDate(new Date());
+        mentorship.setPerformedDate(DateUtil.parse(bundle.getString("performedDate"), DateUtil.NORMAL_PATTERN));
+        mentorship.setReferredMonth((Month) bundle.getSerializable("month"));
         mentorship.setTutored(tutored);
         mentorship.setForm(form);
         mentorship.setHealthFacility(healthFacility);

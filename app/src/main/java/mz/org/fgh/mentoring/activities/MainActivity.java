@@ -10,23 +10,37 @@ import android.widget.ListView;
 
 import java.util.Arrays;
 
+import javax.inject.Inject;
+
 import mz.org.fgh.mentoring.R;
 import mz.org.fgh.mentoring.adapter.ItemAdapter;
+import mz.org.fgh.mentoring.component.MentoringComponent;
 import mz.org.fgh.mentoring.config.model.Tutor;
 import mz.org.fgh.mentoring.model.ItemType;
 import mz.org.fgh.mentoring.model.MentoringItem;
+import mz.org.fgh.mentoring.service.LoadMetadataService;
 
 public class MainActivity extends BaseAuthenticateActivity implements AdapterView.OnItemClickListener {
 
     private ListView listItems;
 
+    @Inject
+    LoadMetadataService loadMetadataService;
+
     @Override
     protected void onMentoringCreate(Bundle bundle) {
         setContentView(R.layout.activity_main);
+
+        MentoringComponent mentoringComponent = application.getMentoringComponent();
+        mentoringComponent.inject(this);
+
         listItems = (ListView) findViewById(R.id.main_items);
+        listItems.setOnItemClickListener(this);
+
         loadMainItems();
 
-        listItems.setOnItemClickListener(this);
+
+        loadMetadataService.load(this, application.getAuth().getUser());
     }
 
     private void loadMainItems() {

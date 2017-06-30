@@ -4,6 +4,10 @@ import android.app.ProgressDialog;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.util.List;
+
+import javax.inject.Inject;
+
 import mz.org.fgh.mentoring.activities.BaseActivity;
 import mz.org.fgh.mentoring.config.dao.CareerDAO;
 import mz.org.fgh.mentoring.config.dao.CareerDAOImpl;
@@ -18,9 +22,16 @@ import retrofit2.Retrofit;
 /**
  * Created by Stélio Moiane on 11/12/16.
  */
-public class CareerSyncServiceImpl implements SyncService {
+public class CareerSyncServiceImpl implements SyncService, CareerSyncService {
+
+    @Inject
+    CareerDAO careerDAO;
 
     private BaseActivity activity;
+
+    @Inject
+    public CareerSyncServiceImpl() {
+    }
 
     @Override
     public void execute() {
@@ -37,26 +48,14 @@ public class CareerSyncServiceImpl implements SyncService {
                          @Override
                          public void onResponse(Call<GenericWrapper> call, Response<GenericWrapper> response) {
 
-                             GenericWrapper wrapper = response.body();
+                             GenericWrapper data = response.body();
 
-                             if (wrapper == null) {
+                             if (data == null) {
                                  Toast.makeText(activity, "Problemas com a sincronização de dados. Verifique o endereço do servidor!", Toast.LENGTH_LONG).show();
                                  return;
                              }
 
-                             CareerDAO careerDAO = new CareerDAOImpl(activity);
-
-                             for (Career career : wrapper.getCareers()) {
-
-                                 if (!careerDAO.exist(career.getCareerType(), career.getPosition())) {
-                                     
-                                     if (!careerDAO.exist(career.getUuid())) {
-                                         careerDAO.create(career);
-                                     }
-                                 }
-                             }
-
-                             careerDAO.close();
+                             processCarres(data.getCareers());
                              dialog.dismiss();
                          }
 
@@ -73,5 +72,27 @@ public class CareerSyncServiceImpl implements SyncService {
     @Override
     public void setActivity(BaseActivity activity) {
         this.activity = activity;
+    }
+
+    @Override
+    public void processCarres(List<Career> careers) {
+
+        //TODO: remove when complete the Injection refactory
+
+        if (activity != null) {
+            this.careerDAO = new CareerDAOImpl(activity);
+        }
+
+        for (Career career : careers) {
+
+            if (!this.careerDAO.exist(career.getCareerType(), career.getPosition())) {
+
+                if (!this.careerDAO.exist(career.getUuid())) {
+                    this.careerDAO.create(career);
+                }
+            }
+        }
+
+        this.careerDAO.close();
     }
 }

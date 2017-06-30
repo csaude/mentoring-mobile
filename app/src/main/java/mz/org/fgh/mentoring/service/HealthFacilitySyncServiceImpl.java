@@ -4,6 +4,10 @@ import android.app.ProgressDialog;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.util.List;
+
+import javax.inject.Inject;
+
 import mz.org.fgh.mentoring.activities.BaseActivity;
 import mz.org.fgh.mentoring.config.dao.DistrictDAO;
 import mz.org.fgh.mentoring.config.dao.DistrictDAOImpl;
@@ -20,9 +24,19 @@ import retrofit2.Retrofit;
 /**
  * Created by Stélio Moiane on 11/12/16.
  */
-public class HealthFacilitySyncServiceImpl implements SyncService {
+public class HealthFacilitySyncServiceImpl implements SyncService, HealthFacilitySyncService {
 
     private BaseActivity activity;
+
+    @Inject
+    DistrictDAO districtDAO;
+
+    @Inject
+    HealthFacilityDAO healthFacilityDAO;
+
+    @Inject
+    public HealthFacilitySyncServiceImpl() {
+    }
 
     @Override
     public void execute() {
@@ -39,28 +53,14 @@ public class HealthFacilitySyncServiceImpl implements SyncService {
                          @Override
                          public void onResponse(Call<GenericWrapper> call, Response<GenericWrapper> response) {
 
-                             GenericWrapper wrapper = response.body();
-                             if (wrapper == null) {
+                             GenericWrapper data = response.body();
+                             if (data == null) {
                                  Toast.makeText(activity, "Problemas com a sincronização de dados. Verifique o endereço do servidor!", Toast.LENGTH_LONG).show();
                                  return;
                              }
 
-                             DistrictDAO districtDAO = new DistrictDAOImpl(activity);
-                             HealthFacilityDAO healthFacilityDAO = new HealthFacilityDAOImpl(activity);
+                             processHealthFacilities(data.getHealthFacilities());
 
-                             for (HealthFacility healthFacility : wrapper.getHealthFacilities()) {
-
-                                 if (!districtDAO.exist(healthFacility.getDistrict().getDistrict())) {
-                                     districtDAO.create(healthFacility.getDistrict());
-                                 }
-
-                                 if (!healthFacilityDAO.exist(healthFacility.getHealthFacility())) {
-                                     healthFacilityDAO.create(healthFacility);
-                                 }
-                             }
-
-                             districtDAO.close();
-                             healthFacilityDAO.close();
                              dialog.dismiss();
                          }
 
@@ -72,6 +72,30 @@ public class HealthFacilitySyncServiceImpl implements SyncService {
                      }
         );
 
+    }
+
+    @Override
+    public void processHealthFacilities(List<HealthFacility> healthFacilities) {
+
+        //TODO: remove when implement Injection in all services
+        if (activity != null) {
+            districtDAO = new DistrictDAOImpl(activity);
+            healthFacilityDAO = new HealthFacilityDAOImpl(activity);
+        }
+
+        for (HealthFacility healthFacility : healthFacilities) {
+
+            if (!districtDAO.exist(healthFacility.getDistrict().getDistrict())) {
+                districtDAO.create(healthFacility.getDistrict());
+            }
+
+            if (!healthFacilityDAO.exist(healthFacility.getHealthFacility())) {
+                healthFacilityDAO.create(healthFacility);
+            }
+        }
+
+        districtDAO.close();
+        healthFacilityDAO.close();
     }
 
     @Override

@@ -24,7 +24,7 @@ public interface GenericDAO<T extends GenericEntity> {
 
     String FORM_QUESTION_TABLE = "CREATE TABLE form_questions(id INTEGER PRIMARY KEY, form_uuid TEXT, question_uuid TEXT, uuid TEXT UNIQUE, created_at TEXT, FOREIGN KEY(form_uuid) REFERENCES forms(uuid), FOREIGN KEY(question_uuid) REFERENCES questions(uuid));";
 
-    String MENTORSHIP_TABLE = "CREATE TABLE mentorships(id INTEGER PRIMARY KEY, form_uuid TEXT, tutored_uuid TEXT, health_facility_uuid TEXT, uuid TEXT UNIQUE, start_date TEXT, end_date TEXT, created_at TEXT, FOREIGN KEY(form_uuid) REFERENCES forms(uuid), FOREIGN KEY(tutored_uuid) REFERENCES tutoreds(uuid), FOREIGN KEY(health_facility_uuid) REFERENCES health_facilities(uuid));";
+    String MENTORSHIP_TABLE = "CREATE TABLE mentorships(id INTEGER PRIMARY KEY, form_uuid TEXT, tutored_uuid TEXT, health_facility_uuid TEXT, uuid TEXT UNIQUE, start_date TEXT, end_date TEXT, performed_date TEXT, referred_month TEXT, created_at TEXT, FOREIGN KEY(form_uuid) REFERENCES forms(uuid), FOREIGN KEY(tutored_uuid) REFERENCES tutoreds(uuid), FOREIGN KEY(health_facility_uuid) REFERENCES health_facilities(uuid));";
 
     String ANSWER_TABLE = "CREATE TABLE answers(id INTEGER PRIMARY KEY, form_uuid TEXT, mentorship_uuid TEXT, question_uuid TEXT, uuid TEXT UNIQUE, created_at TEXT, text_value TEXT, boolean_value INTEGER, FOREIGN KEY(form_uuid) REFERENCES forms(uuid), FOREIGN KEY(mentorship_uuid) REFERENCES mentorships(uuid), FOREIGN KEY(question_uuid) REFERENCES questions(uuid));";
 

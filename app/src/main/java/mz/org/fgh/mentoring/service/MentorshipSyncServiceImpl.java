@@ -63,6 +63,7 @@ public class MentorshipSyncServiceImpl implements SyncService {
             mentorshipHelper.setMentorship(mentorship);
             mentorshipHelper.setStartDate(DateUtil.format(mentorship.getStartDate()));
             mentorshipHelper.setEndDate(DateUtil.format(mentorship.getEndDate()));
+            mentorshipHelper.setPerformedDate(DateUtil.format(mentorship.getPerformedDate(), DateUtil.NORMAL_PATTERN));
             mentorshipHelper.prepareAnswerHelper(answers);
             mentorshipHelpers.add(mentorshipHelper);
         }
@@ -73,8 +74,11 @@ public class MentorshipSyncServiceImpl implements SyncService {
         mentorshipBeanResource.setMentorships(mentorshipHelpers);
 
         Call<MentorshipBeanResource> call = syncDataService.syncMentorships(mentorshipBeanResource);
-        final ProgressDialog dialog = ProgressDialog.show(activity, "Aguarde", "A enviar dados....", true, true);
-
+        final ProgressDialog dialog = new ProgressDialog(activity);
+        dialog.setCancelable(false);
+        dialog.setTitle("Aguarde");
+        dialog.setMessage("A enviar dados....");
+        dialog.show();
 
         call.enqueue(new Callback<MentorshipBeanResource>() {
                          @Override
@@ -96,6 +100,7 @@ public class MentorshipSyncServiceImpl implements SyncService {
                                          }
                                      })
                                      .setIcon(android.R.drawable.ic_dialog_info)
+                                     .setCancelable(false)
                                      .show();
                          }
 
@@ -111,6 +116,7 @@ public class MentorshipSyncServiceImpl implements SyncService {
                                          }
                                      })
                                      .setIcon(android.R.drawable.ic_dialog_info)
+                                     .setCancelable(false)
                                      .show();
                          }
                      }

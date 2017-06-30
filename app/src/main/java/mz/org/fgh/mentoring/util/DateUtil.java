@@ -9,10 +9,14 @@ import java.util.Date;
  */
 public class DateUtil {
 
+    public static final String NORMAL_PATTERN = "dd-MM-yyyy";
+
+    public static final String HOURS_PATTERN = "dd-MM-yyyy HH:mm:ss";
+
     private static SimpleDateFormat dateFormat;
 
     static {
-        dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        dateFormat = new SimpleDateFormat(HOURS_PATTERN);
     }
 
     public static String format(Date date) {
@@ -24,6 +28,19 @@ public class DateUtil {
 
         try {
             finalDate = dateFormat.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return finalDate;
+    }
+
+    public static Date parse(String date, String pattern) {
+        Date finalDate = null;
+
+        try {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+            finalDate = simpleDateFormat.parse(date);
         } catch (ParseException e) {
             e.printStackTrace();
         }

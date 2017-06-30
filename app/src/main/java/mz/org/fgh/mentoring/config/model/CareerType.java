@@ -25,7 +25,9 @@ public enum CareerType{
 
     HEALTH_ASSOCIATE_DEGREE_N1("Técnico Superior de Saúde N1"),
 
-    HEALTH_ASSOCIATE_DEGREE_N2("Técnico Superior de Saúde N2");
+    HEALTH_ASSOCIATE_DEGREE_N2("Técnico Superior de Saúde N2"),
+
+    SERVICE_AGENT("Agente de Serviço");
 
     private String description;
 

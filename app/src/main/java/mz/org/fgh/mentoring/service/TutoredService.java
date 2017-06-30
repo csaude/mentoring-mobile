@@ -1,15 +1,13 @@
 package mz.org.fgh.mentoring.service;
 
-import mz.org.fgh.mentoring.model.GenericWrapper;
-import retrofit2.Call;
-import retrofit2.http.GET;
-import retrofit2.http.Path;
+import java.util.List;
+
+import mz.org.fgh.mentoring.model.Tutored;
 
 /**
- * Created by Stélio Moiane on 5/31/17.
+ * Created by Stélio Moiane on 6/29/17.
  */
 public interface TutoredService {
 
-    @GET("tutoreds/{userUuid}")
-    Call<GenericWrapper> findTutoredsByUser(@Path("userUuid") final String userUuid);
+    void processFoundTutoredByUser(final List<Tutored> tutoreds);
 }

@@ -21,6 +21,10 @@ public class Mentorship extends GenericEntity {
 
     private Date endDate;
 
+    private Date performedDate;
+
+    private Month referredMonth;
+
     private Tutored tutored;
 
     private Form form;
@@ -43,6 +47,22 @@ public class Mentorship extends GenericEntity {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    public Date getPerformedDate() {
+        return performedDate;
+    }
+
+    public void setPerformedDate(Date performedDate) {
+        this.performedDate = performedDate;
+    }
+
+    public Month getReferredMonth() {
+        return referredMonth;
+    }
+
+    public void setReferredMonth(Month referredMonth) {
+        this.referredMonth = referredMonth;
     }
 
     public Tutored getTutored() {

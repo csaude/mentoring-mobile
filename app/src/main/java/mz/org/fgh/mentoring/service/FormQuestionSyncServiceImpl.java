@@ -4,6 +4,10 @@ import android.app.ProgressDialog;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.util.List;
+
+import javax.inject.Inject;
+
 import mz.org.fgh.mentoring.activities.BaseActivity;
 import mz.org.fgh.mentoring.config.dao.FormDAO;
 import mz.org.fgh.mentoring.config.dao.FormDAOImpl;
@@ -24,8 +28,22 @@ import retrofit2.Retrofit;
 /**
  * Created by Stélio Moiane on 11/16/16.
  */
-public class FormQuestionSyncServiceImpl implements SyncService {
+public class FormQuestionSyncServiceImpl implements SyncService, FormQuestionSyncService {
+
+    @Inject
+    FormDAO formDAO;
+
+    @Inject
+    QuestionDAO questionDAO;
+
+    @Inject
+    FormQuestionDAO formQuestionDAO;
+
     private BaseActivity activity;
+
+    @Inject
+    public FormQuestionSyncServiceImpl() {
+    }
 
     @Override
     public void execute() {
@@ -42,38 +60,14 @@ public class FormQuestionSyncServiceImpl implements SyncService {
                          @Override
                          public void onResponse(Call<GenericWrapper> call, Response<GenericWrapper> response) {
 
-                             GenericWrapper wrapper = response.body();
+                             GenericWrapper data = response.body();
 
-                             if (wrapper == null) {
+                             if (data == null) {
                                  Toast.makeText(activity, "Problemas com a sincronização de dados. Verifique o endereço do servidor!", Toast.LENGTH_LONG).show();
                                  return;
                              }
 
-                             FormDAO formDAO = new FormDAOImpl(activity);
-                             QuestionDAO questionDAO = new QuestionDAOImpl(activity);
-                             FormQuestionDAO formQuestionDAO = new FormQuestionDAOImpl(activity);
-
-                             for (FormQuestion formQuestion : wrapper.getFormQuestions()) {
-
-                                 Form form = formQuestion.getForm();
-                                 Question question = formQuestion.getQuestion();
-
-                                 if (!formDAO.exist(form.getUuid())) {
-                                     formDAO.create(form);
-                                 }
-
-                                 if (!questionDAO.exist(question.getUuid())) {
-                                     questionDAO.create(question);
-                                 }
-
-                                 if (!formQuestionDAO.exist(formQuestion.getUuid())) {
-                                     formQuestionDAO.create(formQuestion);
-                                 }
-                             }
-
-                             formDAO.close();
-                             questionDAO.close();
-                             formQuestionDAO.close();
+                             processFormQuestions(data.getFormQuestions());
                              dialog.dismiss();
                          }
 
@@ -90,5 +84,39 @@ public class FormQuestionSyncServiceImpl implements SyncService {
     @Override
     public void setActivity(BaseActivity activity) {
         this.activity = activity;
+    }
+
+    @Override
+    public void processFormQuestions(List<FormQuestion> formQuestions) {
+
+        //TODO: remove when complete Injection refactory
+
+        if (activity != null) {
+            formDAO = new FormDAOImpl(activity);
+            questionDAO = new QuestionDAOImpl(activity);
+            formQuestionDAO = new FormQuestionDAOImpl(activity);
+        }
+
+        for (FormQuestion formQuestion : formQuestions) {
+
+            Form form = formQuestion.getForm();
+            Question question = formQuestion.getQuestion();
+
+            if (!formDAO.exist(form.getUuid())) {
+                formDAO.create(form);
+            }
+
+            if (!questionDAO.exist(question.getUuid())) {
+                questionDAO.create(question);
+            }
+
+            if (!formQuestionDAO.exist(formQuestion.getUuid())) {
+                formQuestionDAO.create(formQuestion);
+            }
+        }
+
+        formDAO.close();
+        questionDAO.close();
+        formQuestionDAO.close();
     }
 }

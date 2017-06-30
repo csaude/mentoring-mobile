@@ -72,14 +72,6 @@
                 android:textColor="#fff"
                 android:textStyle="bold" />
 
-            <ProgressBar
-                android:id="@+id/login_progress_bar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="11dp"
-                android:indeterminateOnly="true"/>
-
         </RelativeLayout>
 
     </LinearLayout>

@@ -14,6 +14,7 @@ import mz.org.fgh.mentoring.config.model.HealthFacility;
 import mz.org.fgh.mentoring.dao.GenericDAOImpl;
 import mz.org.fgh.mentoring.model.Tutored;
 import mz.org.fgh.mentoring.process.model.Mentorship;
+import mz.org.fgh.mentoring.process.model.Month;
 import mz.org.fgh.mentoring.util.DateUtil;
 
 /**
@@ -44,6 +45,8 @@ public class MentorshipDAOImpl extends GenericDAOImpl<Mentorship> implements Men
         values.put("health_facility_uuid", mentorship.getHealthFacility().getUuid());
         values.put("start_date", DateUtil.format(mentorship.getStartDate()));
         values.put("end_date", DateUtil.format(mentorship.getEndDate()));
+        values.put("performed_date", DateUtil.format(mentorship.getPerformedDate(), DateUtil.NORMAL_PATTERN));
+        values.put("referred_month", mentorship.getReferredMonth().name());
 
         return values;
     }
@@ -79,6 +82,8 @@ public class MentorshipDAOImpl extends GenericDAOImpl<Mentorship> implements Men
         mentorship.setStartDate(DateUtil.parse(cursor.getString(cursor.getColumnIndex("start_date"))));
         mentorship.setEndDate(DateUtil.parse(cursor.getString(cursor.getColumnIndex("end_date"))));
         mentorship.setCreatedAt(DateUtil.parse(cursor.getString(cursor.getColumnIndex("created_at"))));
+        mentorship.setPerformedDate(DateUtil.parse(cursor.getString(cursor.getColumnIndex("performed_date")), DateUtil.NORMAL_PATTERN));
+        mentorship.setReferredMonth(Month.valueOf(cursor.getString(cursor.getColumnIndex("referred_month"))));
 
         return mentorship;
     }

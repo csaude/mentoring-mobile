@@ -9,4 +9,12 @@
     <string name="tudoreds">Tutoreds</string>
     <string name="reports">Reports</string>
     <string name="config">configurations</string>
+    <string name="logout">Logout</string>
+    <string name="title_activity_configuration">ConfigurationActivity</string>
+
+    <string name="server_address">SERVER_ADDRESS</string>
+    <string name="title_activity_mentoring">MentoringActivity</string>
+
+    <string name="title_activity_list_mentorship">Mentoring Process</string>
+    <string name="title_activity_tutor_update">User Details</string>
 </resources>

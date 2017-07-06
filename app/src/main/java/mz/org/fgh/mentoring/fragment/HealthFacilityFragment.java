@@ -55,6 +55,7 @@ public class HealthFacilityFragment extends BaseFragment implements DatePickerDi
     private List<District> districts;
 
     private List<HealthFacility> healthFacilities;
+    private List<HealthFacility> healthFacilitiesPerDistrict;
 
     @Override
     public int getResourceId() {
@@ -114,8 +115,8 @@ public class HealthFacilityFragment extends BaseFragment implements DatePickerDi
 
         District district = districts.get(position);
 
-        List<HealthFacility> facilities = getHealthFacilities(healthFacilities, district.getUuid());
-        ArrayAdapter<HealthFacility> healthFacilityAdapter = new ArrayAdapter<>(activity, android.R.layout.simple_spinner_dropdown_item, facilities);
+        healthFacilitiesPerDistrict = getHealthFacilities(healthFacilities, district.getUuid());
+        ArrayAdapter<HealthFacility> healthFacilityAdapter = new ArrayAdapter<>(activity, android.R.layout.simple_spinner_dropdown_item, healthFacilitiesPerDistrict);
         healthFacilityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         healthFacilitySpinner.setAdapter(healthFacilityAdapter);
@@ -123,7 +124,7 @@ public class HealthFacilityFragment extends BaseFragment implements DatePickerDi
 
     @OnItemSelected(R.id.fragment_health_facility)
     public void onSelectHealthFacility(final int position) {
-        HealthFacility healthFacility = healthFacilities.get(position);
+        HealthFacility healthFacility = healthFacilitiesPerDistrict.get(position);
         Bundle activityBundle = activity.getBundle();
         activityBundle.putSerializable("healthFacility", healthFacility);
     }

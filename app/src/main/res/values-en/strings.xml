@@ -17,4 +17,14 @@
 
     <string name="title_activity_list_mentorship">Mentoring Process</string>
     <string name="title_activity_tutor_update">User Details</string>
+
+    <string name="tutored_must_be_selected">The tutored must be selected!</string>
+    <string name="form_must_be_selected">The form must be selected!</string>
+    <string name="submit">Submit</string>
+    <string name="password">Password</string>
+    <string name="enter">Enter</string>
+    <string name="health_facility_must_be_selected">The health facility must selected!</string>
+    <string name="referred_month_must_be_selected">The referred month must be selected!</string>
+    <string name="performed_date_must_be_selected">The Performed date must be selected!</string>
+
 </resources>

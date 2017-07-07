@@ -25,4 +25,14 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="title_activity_list_mentorship">Processos de Mentoria</string>
     <string name="title_activity_tutor_update">Detalhes do Utilizador</string>
+
+    <string name="tutored_must_be_selected">O tutorando deve ser seleccionado!</string>
+    <string name="form_must_be_selected">O formulário deve ser seleccionado!</string>
+    <string name="submit">Submeter</string>
+    <string name="password">Senha</string>
+    <string name="enter">Entrar</string>
+    <string name="health_facility_must_be_selected">A unidade sanitária de deve ser seleccionada!</string>
+    <string name="referred_month_must_be_selected">O mês de referência deve ser seleccionado!</string>
+    <string name="performed_date_must_be_selected">A data da Mentoria deve ser seleccionada!</string>
+
 </resources>

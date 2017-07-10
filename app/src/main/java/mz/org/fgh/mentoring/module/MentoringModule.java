@@ -5,7 +5,10 @@ import android.content.Context;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.greenrobot.eventbus.EventBus;
+
 import javax.inject.Named;
+import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
@@ -33,6 +36,8 @@ import mz.org.fgh.mentoring.service.LoadMetadataService;
 import mz.org.fgh.mentoring.service.LoadMetadataServiceImpl;
 import mz.org.fgh.mentoring.service.TutoredService;
 import mz.org.fgh.mentoring.service.TutoredServiceImpl;
+import mz.org.fgh.mentoring.service.UserService;
+import mz.org.fgh.mentoring.service.UserServiceImpl;
 import mz.org.fgh.mentoring.util.ServerConfig;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
@@ -46,8 +51,14 @@ public class MentoringModule {
 
     private Context context;
 
+    private final ObjectMapper mapper;
+
     public MentoringModule(Context context) {
         this.context = context;
+
+        this.mapper = new ObjectMapper();
+        this.mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true)
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
     @Provides
@@ -59,12 +70,19 @@ public class MentoringModule {
     @Named("mentoring")
     public Retrofit provideMentoringRetrofit() {
 
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true)
-                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
         Retrofit retrofit = new Retrofit.Builder().baseUrl("http://" + ServerConfig.MENTORING.getAddress() +
                 ServerConfig.MENTORING.getService()).addConverterFactory(JacksonConverterFactory.create(mapper))
+                .build();
+
+        return retrofit;
+    }
+
+    @Provides
+    @Named("account")
+    public Retrofit provideAccontRetrofit() {
+
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://" + ServerConfig.ACCOUNT_MANAGER.getAddress() +
+                ServerConfig.ACCOUNT_MANAGER.getService()).addConverterFactory(JacksonConverterFactory.create(mapper))
                 .build();
 
         return retrofit;
@@ -123,5 +141,16 @@ public class MentoringModule {
     @Provides
     public TutoredService provideTutoredService(TutoredServiceImpl tutoredServiceImpl) {
         return tutoredServiceImpl;
+    }
+
+    @Provides
+    public UserService provideUserService(UserServiceImpl userServiceImp) {
+        return userServiceImp;
+    }
+
+    @Provides
+    @Singleton
+    public EventBus provideEventBus() {
+        return EventBus.builder().build();
     }
 }

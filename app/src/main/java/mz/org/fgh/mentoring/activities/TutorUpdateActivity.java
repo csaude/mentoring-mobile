@@ -13,6 +13,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import mz.org.fgh.mentoring.R;
 import mz.org.fgh.mentoring.config.dao.CareerDAO;
@@ -105,6 +107,16 @@ public class TutorUpdateActivity extends BaseAuthenticateActivity implements Vie
 
         if (tutorPhoneNumber.getText().length() == 0) {
             tutorPhoneNumber.setError("Digite o número de telefone!");
+            return;
+        }
+
+        //validate MZ phone number
+        Pattern pattern = Pattern.compile("^\\+\\d{12}$");
+        Matcher matcher = pattern.matcher(tutorPhoneNumber.getText().toString());
+
+        if (!matcher.find()) {
+            tutorPhoneNumber.setError(getString(R.string.phone_number_invalid));
+            tutorPhoneNumber.requestFocus();
             return;
         }
 

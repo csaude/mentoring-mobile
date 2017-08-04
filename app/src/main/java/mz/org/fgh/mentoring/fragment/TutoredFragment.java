@@ -1,6 +1,8 @@
 package mz.org.fgh.mentoring.fragment;
 
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -14,9 +16,10 @@ import mz.org.fgh.mentoring.adapter.TutoredItemAdapter;
 import mz.org.fgh.mentoring.config.dao.TutoredDAO;
 import mz.org.fgh.mentoring.config.dao.TutoredDAOImpl;
 import mz.org.fgh.mentoring.model.Tutored;
+import mz.org.fgh.mentoring.validator.FragmentValidator;
 
 
-public class TutoredFragment extends BaseFragment implements AdapterView.OnItemClickListener {
+public class TutoredFragment extends BaseFragment implements AdapterView.OnItemClickListener, FragmentValidator {
 
     @BindView(R.id.fragment_tutoreds)
     ListView tutoredsList;
@@ -24,6 +27,7 @@ public class TutoredFragment extends BaseFragment implements AdapterView.OnItemC
     private Bundle activityBundle;
 
     private MentoringActivity activity;
+    private Tutored selectedTutored;
 
     @Override
     public void onCreateView() {
@@ -50,7 +54,18 @@ public class TutoredFragment extends BaseFragment implements AdapterView.OnItemC
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         view.setSelected(true);
-        Tutored tutored = (Tutored) parent.getItemAtPosition(position);
-        activityBundle.putSerializable("tutored", tutored);
+        selectedTutored = (Tutored) parent.getItemAtPosition(position);
+        activityBundle.putSerializable("tutored", selectedTutored);
+    }
+
+    @Override
+    public void validate(ViewPager viewPager, int position) {
+
+        if (selectedTutored != null) {
+            return;
+        }
+
+        viewPager.setCurrentItem(position);
+        Snackbar.make(getView(), getString(R.string.tutored_must_be_selected), Snackbar.LENGTH_SHORT).show();
     }
 }

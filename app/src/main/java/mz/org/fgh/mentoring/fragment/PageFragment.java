@@ -2,6 +2,8 @@ package mz.org.fgh.mentoring.fragment;
 
 
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
@@ -14,8 +16,9 @@ import mz.org.fgh.mentoring.activities.MentoringActivity;
 import mz.org.fgh.mentoring.adapter.SwipeAdapter;
 import mz.org.fgh.mentoring.config.model.Question;
 import mz.org.fgh.mentoring.model.QuestionAnswer;
+import mz.org.fgh.mentoring.validator.FragmentValidator;
 
-public class PageFragment extends BaseFragment {
+public class PageFragment extends BaseFragment implements FragmentValidator {
 
     @BindView(R.id.text_view)
     TextView textView;
@@ -33,8 +36,12 @@ public class PageFragment extends BaseFragment {
     RadioButton nonApplicabletRd;
 
     private MentoringActivity activity;
+
     private Bundle activityBundle;
+
     private Question question;
+
+    private QuestionAnswer answer;
 
     public PageFragment() {
     }
@@ -64,6 +71,12 @@ public class PageFragment extends BaseFragment {
 
     @OnClick(R.id.save_btn)
     public void onClickSaveBtn() {
+
+        if (answer == null) {
+            Snackbar.make(getView(), getString(R.string.none_answer_was_seleted), Snackbar.LENGTH_SHORT).show();
+            return;
+        }
+
         activity.submitProcess();
     }
 
@@ -71,7 +84,8 @@ public class PageFragment extends BaseFragment {
     public void onClickCompentent(View view) {
 
         if (((RadioButton) view).isChecked()) {
-            activityBundle.putString(question.getUuid(), QuestionAnswer.COMPETENT.getValue());
+            answer = QuestionAnswer.COMPETENT;
+            activityBundle.putString(question.getUuid(), answer.getValue());
         }
     }
 
@@ -79,7 +93,8 @@ public class PageFragment extends BaseFragment {
     public void onClickUnSatosfactory(View view) {
 
         if (((RadioButton) view).isChecked()) {
-            activityBundle.putString(question.getUuid(), QuestionAnswer.UNSATISFATORY.getValue());
+            answer = QuestionAnswer.UNSATISFATORY;
+            activityBundle.putString(question.getUuid(), answer.getValue());
         }
     }
 
@@ -87,7 +102,19 @@ public class PageFragment extends BaseFragment {
     public void onClickNonApplicable(View view) {
 
         if (((RadioButton) view).isChecked()) {
-            activityBundle.putString(question.getUuid(), QuestionAnswer.NON_APPICABLE.getValue());
+            answer = QuestionAnswer.NON_APPICABLE;
+            activityBundle.putString(question.getUuid(), answer.getValue());
         }
+    }
+
+    @Override
+    public void validate(ViewPager viewPager, int position) {
+
+        if (answer != null) {
+            return;
+        }
+
+        viewPager.setCurrentItem(position);
+        Snackbar.make(getView(), getString(R.string.none_answer_was_seleted), Snackbar.LENGTH_SHORT).show();
     }
 }

@@ -1,6 +1,8 @@
 package mz.org.fgh.mentoring.fragment;
 
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -14,8 +16,9 @@ import mz.org.fgh.mentoring.adapter.FormAdapter;
 import mz.org.fgh.mentoring.config.dao.FormDAOImpl;
 import mz.org.fgh.mentoring.config.dao.QuestionDAOImpl;
 import mz.org.fgh.mentoring.config.model.Form;
+import mz.org.fgh.mentoring.validator.FragmentValidator;
 
-public class FormsFragment extends BaseFragment implements AdapterView.OnItemClickListener {
+public class FormsFragment extends BaseFragment implements AdapterView.OnItemClickListener, FragmentValidator {
 
     @BindView(R.id.fragment_forms)
     ListView formsListView;
@@ -23,6 +26,8 @@ public class FormsFragment extends BaseFragment implements AdapterView.OnItemCli
     private MentoringActivity activity;
 
     private Bundle activityBundle;
+
+    private Form form;
 
     @Override
     public void onCreateView() {
@@ -46,10 +51,21 @@ public class FormsFragment extends BaseFragment implements AdapterView.OnItemCli
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Form form = (Form) parent.getItemAtPosition(position);
+        form = (Form) parent.getItemAtPosition(position);
         view.setSelected(true);
 
         activityBundle.putSerializable("form", form);
         activity.getAdapter().setQuestions(new QuestionDAOImpl(activity).findQuestionByForm(form.getUuid()));
+    }
+
+    @Override
+    public void validate(ViewPager viewPager, int position) {
+
+        if (form != null) {
+            return;
+        }
+
+        viewPager.setCurrentItem(position);
+        Snackbar.make(getView(), getString(R.string.form_must_be_selected), Snackbar.LENGTH_SHORT).show();
     }
 }

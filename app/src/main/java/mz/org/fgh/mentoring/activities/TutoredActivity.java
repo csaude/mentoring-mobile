@@ -2,118 +2,131 @@ package mz.org.fgh.mentoring.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import javax.inject.Inject;
+
+import butterknife.BindView;
+import butterknife.OnClick;
+import butterknife.OnItemSelected;
 import mz.org.fgh.mentoring.R;
+import mz.org.fgh.mentoring.component.MentoringComponent;
 import mz.org.fgh.mentoring.config.dao.CareerDAO;
-import mz.org.fgh.mentoring.config.dao.CareerDAOImpl;
 import mz.org.fgh.mentoring.config.dao.TutoredDAO;
-import mz.org.fgh.mentoring.config.dao.TutoredDAOImpl;
 import mz.org.fgh.mentoring.config.model.Career;
 import mz.org.fgh.mentoring.config.model.CareerType;
-import mz.org.fgh.mentoring.helpers.TutoredHelper;
 import mz.org.fgh.mentoring.model.Tutored;
+import mz.org.fgh.mentoring.validator.FieldsValidator;
+import mz.org.fgh.mentoring.validator.TextViewValidator;
 
 /**
  * Created by Eusebio Maposse on 14-Nov-16.
  */
 
-public class TutoredActivity extends BaseAuthenticateActivity {
+public class TutoredActivity extends BaseAuthenticateActivity implements FieldsValidator<Tutored> {
 
-    private TutoredHelper tutoredHelper;
-    private TutoredDAO tutoredDAO;
-    private Spinner carrerTypeSpinner;
-    private Spinner positionSpinner;
-    private CareerDAO careerDAO;
-    private ArrayAdapter carrerAdapter;
-    private ArrayAdapter positionAdapter;
+    @BindView(R.id.tutored_name)
+    EditText tudoredName;
+
+    @BindView(R.id.tutored_surname)
+    EditText tutoredSurname;
+
+    @BindView(R.id.tutored_phone_number)
+    EditText tutoredPhoneNumber;
+
+    @BindView(R.id.tutored_carrer)
+    Spinner carrerTypeSpinner;
+
+    @BindView(R.id.tutored_position)
+    Spinner positionSpinner;
+
+    @Inject
+    TutoredDAO tutoredDAO;
+
+    @Inject
+    CareerDAO careerDAO;
+
+    @Inject
+    TextViewValidator validator;
+
     private Tutored tutored;
-    List<CareerType> careerTypes = new ArrayList<>();
 
     @Override
     protected void onMentoringCreate(Bundle bundle) {
         setContentView(R.layout.tutored_activity);
 
-        carrerTypeSpinner = (Spinner) findViewById(R.id.tutored_carrer);
-        positionSpinner = (Spinner) findViewById(R.id.tutored_position);
+        MentoringComponent component = application.getMentoringComponent();
+        component.inject(this);
 
-        tutoredHelper = new TutoredHelper(TutoredActivity.this);
-        getCarrer();
+        tutored = new Tutored();
+        validator.addViews(tudoredName, tutoredSurname, tutoredPhoneNumber);
+
+        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, Arrays.asList(CareerType.values()));
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        carrerTypeSpinner.setAdapter(adapter);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.tutored_menu, menu);
-        return true;
+    @OnItemSelected(R.id.tutored_carrer)
+    public void onSelectCarrerType(int position) {
+
+        CareerType careerType = (CareerType) carrerTypeSpinner.getItemAtPosition(position);
+        List<Career> positions = careerDAO.findPositionByCarrerType(careerType);
+
+        ArrayAdapter adapter = new ArrayAdapter(TutoredActivity.this, android.R.layout.simple_spinner_item, positions);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        positionSpinner.setAdapter(adapter);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        tutoredDAO = new TutoredDAOImpl(this);
-        switch (item.getItemId()) {
+    @OnItemSelected(R.id.tutored_position)
+    public void onSelectPosition(int position) {
+        Career career = (Career) positionSpinner.getItemAtPosition(position);
+        tutored.setCareer(career);
+    }
 
-            case R.id.save_tutored:
-                tutored = tutoredHelper.getTutored();
-                tutoredDAO.create(tutored);
-                tutoredDAO.close();
-                startActivity(new Intent(this, ListTutoredActivity.class));
-                finish();
+    @OnClick(R.id.save_tutored)
+    public void saveTutored() {
+        Tutored tutored = validate();
+
+        if (tutored == null) {
+            return;
         }
-        return super.onOptionsItemSelected(item);
+
+        tutoredDAO.create(tutored);
+        tutoredDAO.close();
+
+        startActivity(new Intent(this, ListTutoredActivity.class));
+        finish();
     }
 
-    private void getCarrer() {
-        setSpinnerAdapter();
+    @Override
+    public Tutored validate() {
 
-        carrerTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                CareerType careerType = (CareerType) adapterView.getItemAtPosition(position);
-                List<Career> positions = careerDAO.findPositionByCarrerType(careerType);
+        if (!validator.isValid()) {
+            return null;
+        }
 
-                ArrayAdapter adapter = new ArrayAdapter(TutoredActivity.this, android.R.layout.simple_spinner_item, positions);
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //validate MZ phone number
+        Pattern pattern = Pattern.compile("^\\+\\d{12}$");
+        Matcher matcher = pattern.matcher(tutoredPhoneNumber.getText().toString());
 
-                positionSpinner.setAdapter(adapter);
-            }
+        if (!matcher.find()) {
+            tutoredPhoneNumber.setError(getString(R.string.phone_number_invalid));
+            tutoredPhoneNumber.requestFocus();
+            return null;
+        }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-                positionAdapter.clear();
-            }
-        });
-        positionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                tutored = tutoredHelper.getTutored();
-                Career career = (Career) adapterView.getItemAtPosition(position);
+        tutored.setName(tudoredName.getText().toString());
+        tutored.setSurname(tutoredSurname.getText().toString());
+        tutored.setPhoneNumber(tutoredPhoneNumber.getText().toString());
 
-                tutored.setCareer(career);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-                positionAdapter.clear();
-            }
-        });
+        return tutored;
     }
-
-    private void setSpinnerAdapter() {
-        careerDAO = new CareerDAOImpl(this);
-        careerTypes.addAll(Arrays.asList(CareerType.values()));
-        carrerAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, careerTypes);
-        carrerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        carrerTypeSpinner.setAdapter(carrerAdapter);
-    }
-
 }

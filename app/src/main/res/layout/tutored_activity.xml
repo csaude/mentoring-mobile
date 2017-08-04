@@ -52,5 +52,20 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp" />
 
+        <Button
+            android:id="@+id/save_tutored"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="30dp"
+            android:background="#00695C"
+            android:text="@string/submit"
+            android:textAllCaps="false"
+            android:textColor="#fff"
+            android:textStyle="bold" />
+
     </LinearLayout>
+
 </LinearLayout>

@@ -51,6 +51,5 @@ public class TutoredHelper {
         photo.setImageBitmap(smallBitmap);
         photo.setScaleType(ImageView.ScaleType.FIT_XY);
         photo.setTag(path);
-        ;
     }
 }

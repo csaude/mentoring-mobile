@@ -1,15 +1,13 @@
 package mz.org.fgh.mentoring.fragment;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.List;
 
+import butterknife.BindView;
 import mz.org.fgh.mentoring.R;
 import mz.org.fgh.mentoring.activities.MentoringActivity;
 import mz.org.fgh.mentoring.adapter.FormAdapter;
@@ -17,16 +15,17 @@ import mz.org.fgh.mentoring.config.dao.FormDAOImpl;
 import mz.org.fgh.mentoring.config.dao.QuestionDAOImpl;
 import mz.org.fgh.mentoring.config.model.Form;
 
-public class FormsFragment extends Fragment implements AdapterView.OnItemClickListener {
+public class FormsFragment extends BaseFragment implements AdapterView.OnItemClickListener {
+
+    @BindView(R.id.fragment_forms)
+    ListView formsListView;
 
     private MentoringActivity activity;
+
     private Bundle activityBundle;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        View view = inflater.inflate(R.layout.fragment_forms, container, false);
-
+    public void onCreateView() {
         activity = (MentoringActivity) getActivity();
         activityBundle = activity.getBundle();
 
@@ -34,13 +33,15 @@ public class FormsFragment extends Fragment implements AdapterView.OnItemClickLi
         List<Form> forms = formDAO.findAll();
         formDAO.close();
 
-        ListView formsListView = (ListView) view.findViewById(R.id.fragment_forms);
         FormAdapter adapter = new FormAdapter(activity, forms);
         formsListView.setAdapter(adapter);
 
         formsListView.setOnItemClickListener(this);
+    }
 
-        return view;
+    @Override
+    public int getResourceId() {
+        return R.layout.fragment_forms;
     }
 
     @Override

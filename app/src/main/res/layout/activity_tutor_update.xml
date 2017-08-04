@@ -31,7 +31,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
                         android:layout_weight="6"
-                        android:text="Nome:"
+                        android:text="@string/user_name"
                         android:textColor="#000"
                         android:textSize="7pt"
                         android:textStyle="bold|italic" />
@@ -103,7 +103,6 @@
 
             </LinearLayout>
 
-
             <Button
                 android:id="@+id/submit_tutor_btn"
                 android:layout_width="match_parent"
@@ -111,6 +110,7 @@
                 android:layout_alignParentBottom="true"
                 android:background="#00695C"
                 android:text="Submeter"
+                android:textAllCaps="false"
                 android:textColor="#fff"
                 android:textStyle="bold" />
 

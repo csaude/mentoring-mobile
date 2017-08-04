@@ -13,7 +13,7 @@ import mz.org.fgh.mentoring.R;
 import mz.org.fgh.mentoring.config.model.Tutor;
 import mz.org.fgh.mentoring.infra.UserContext;
 import mz.org.fgh.mentoring.service.TutorService;
-import mz.org.fgh.mentoring.service.UserService;
+import mz.org.fgh.mentoring.service.UserServiceResource;
 import mz.org.fgh.mentoring.util.ServerConfig;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -48,7 +48,7 @@ public class LoginActivity extends BaseActivity {
 
         application.setUpRetrofit(ServerConfig.ACCOUNT_MANAGER);
 
-        UserService userService = application.getRetrofit().create(UserService.class);
+        UserServiceResource userService = application.getRetrofit().create(UserServiceResource.class);
         Call<UserContext> loginCall = userService.login(new UserContext(username.getText().toString(), password.getText().toString()));
 
         final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);

@@ -5,6 +5,7 @@ import javax.inject.Singleton;
 import dagger.Component;
 import mz.org.fgh.mentoring.activities.ChangePasswordActivity;
 import mz.org.fgh.mentoring.activities.MainActivity;
+import mz.org.fgh.mentoring.activities.TutoredActivity;
 import mz.org.fgh.mentoring.module.MentoringModule;
 
 /**
@@ -17,4 +18,6 @@ public interface MentoringComponent {
     void inject(MainActivity activity);
 
     void inject(ChangePasswordActivity activity);
+
+    void inject(TutoredActivity activity);
 }

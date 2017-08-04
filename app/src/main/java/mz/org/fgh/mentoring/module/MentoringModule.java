@@ -39,6 +39,7 @@ import mz.org.fgh.mentoring.service.TutoredServiceImpl;
 import mz.org.fgh.mentoring.service.UserService;
 import mz.org.fgh.mentoring.service.UserServiceImpl;
 import mz.org.fgh.mentoring.util.ServerConfig;
+import mz.org.fgh.mentoring.validator.TextViewValidator;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
@@ -152,5 +153,10 @@ public class MentoringModule {
     @Singleton
     public EventBus provideEventBus() {
         return EventBus.builder().build();
+    }
+
+    @Provides
+    public TextViewValidator provideTextViewValidator() {
+        return new TextViewValidator(context);
     }
 }

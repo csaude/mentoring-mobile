@@ -35,5 +35,9 @@
     <string name="password_must_be_the_same">Passwords must be the same</string>
     <string name="new_password_must_be_filled">New Password must be filled</string>
     <string name="confirm_password_must_be_filled">The confirm Password must be filled</string>
+    <string name="title_activity_change_password">Change Password</string>
+    <string name="required_field">Field required</string>
+    <string name="phone_number_invalid">Phone Number invalid! eg:+258820000000</string>
+    <string name="none_answer_was_seleted">None Answer was selected</string>
 
 </resources>

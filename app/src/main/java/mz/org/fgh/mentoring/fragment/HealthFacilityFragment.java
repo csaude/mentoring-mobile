@@ -3,6 +3,8 @@ package mz.org.fgh.mentoring.fragment;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
+import android.support.v4.view.ViewPager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
@@ -29,8 +31,9 @@ import mz.org.fgh.mentoring.config.dao.HealthFacilityDAOImpl;
 import mz.org.fgh.mentoring.config.model.District;
 import mz.org.fgh.mentoring.config.model.HealthFacility;
 import mz.org.fgh.mentoring.process.model.Month;
+import mz.org.fgh.mentoring.validator.FragmentValidator;
 
-public class HealthFacilityFragment extends BaseFragment implements DatePickerDialog.OnDateSetListener {
+public class HealthFacilityFragment extends BaseFragment implements DatePickerDialog.OnDateSetListener, FragmentValidator {
 
     @BindView(R.id.fragment_date_picker)
     ImageButton dataPicker;
@@ -168,5 +171,16 @@ public class HealthFacilityFragment extends BaseFragment implements DatePickerDi
 
         Bundle activityBundle = activity.getBundle();
         activityBundle.putString("performedDate", date);
+    }
+
+    @Override
+    public void validate(ViewPager viewPager, int position) {
+
+        if (!performedDate.getText().toString().isEmpty()) {
+            return;
+        }
+
+        viewPager.setCurrentItem(position);
+        Snackbar.make(getView(), getString(R.string.performed_date_must_be_selected), Snackbar.LENGTH_SHORT).show();
     }
 }

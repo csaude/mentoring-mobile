@@ -35,5 +35,6 @@
     <string name="password_must_be_the_same">Passwords must be the same</string>
     <string name="new_password_must_be_filled">New Password must be filled</string>
     <string name="confirm_password_must_be_filled">The confirm Password must be filled</string>
+    <string name="title_activity_change_password">Change Password</string>
 
 </resources>

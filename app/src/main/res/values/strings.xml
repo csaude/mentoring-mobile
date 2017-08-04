@@ -36,7 +36,7 @@
     <string name="performed_date_must_be_selected">A data da Mentoria deve ser seleccionada!</string>
     <string name="user_details">Detalhes de Utilizador</string>
     <string name="change_password">Alterar a Senha</string>
-    <string name="title_activity_change_password">ChangePasswordActivity</string>
+    <string name="title_activity_change_password">Alteração de Senha</string>
     <string name="user_name">Nome</string>
     <string name="new_password">Nova Senha</string>
     <string name="confirm_password">Confirmação da Senha</string>

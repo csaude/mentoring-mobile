@@ -7,6 +7,7 @@ import android.support.v4.view.ViewPager;
 import java.util.Date;
 import java.util.List;
 
+import butterknife.BindView;
 import mz.org.fgh.mentoring.R;
 import mz.org.fgh.mentoring.adapter.SwipeAdapter;
 import mz.org.fgh.mentoring.config.dao.AnswerDAO;
@@ -22,20 +23,29 @@ import mz.org.fgh.mentoring.process.dao.MentorshipDAOImpl;
 import mz.org.fgh.mentoring.process.model.Mentorship;
 import mz.org.fgh.mentoring.process.model.Month;
 import mz.org.fgh.mentoring.util.DateUtil;
+import mz.org.fgh.mentoring.validator.FragmentValidator;
 
-public class MentoringActivity extends BaseAuthenticateActivity {
+public class MentoringActivity extends BaseAuthenticateActivity implements ViewPager.OnPageChangeListener {
+
+    @BindView(R.id.view_pager)
+    ViewPager viewPager;
 
     private Bundle bundle = new Bundle();
+
     private SwipeAdapter adapter;
+
+    private int currentPosition;
+
+    public static final int DECREMENTER = 1;
 
     @Override
     protected void onMentoringCreate(Bundle bundle) {
         setContentView(R.layout.activity_mentoring);
 
-        ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
-
         adapter = new SwipeAdapter(getSupportFragmentManager());
+
         viewPager.setAdapter(adapter);
+        viewPager.addOnPageChangeListener(this);
     }
 
     public Bundle getBundle() {
@@ -46,6 +56,7 @@ public class MentoringActivity extends BaseAuthenticateActivity {
 
         Tutored tutored = (Tutored) bundle.getSerializable("tutored");
         Form form = (Form) bundle.getSerializable("form");
+
         List<Question> questions = new QuestionDAOImpl(this).findQuestionByForm(form.getUuid());
         HealthFacility healthFacility = (HealthFacility) bundle.getSerializable("healthFacility");
 
@@ -83,5 +94,39 @@ public class MentoringActivity extends BaseAuthenticateActivity {
 
     public SwipeAdapter getAdapter() {
         return adapter;
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        SwipeAdapter adapter = (SwipeAdapter) viewPager.getAdapter();
+        setCurrentPosition(position);
+
+        Object item = adapter.instantiateItem(viewPager, getValidatorPosition());
+
+        if (item instanceof FragmentValidator) {
+            FragmentValidator fragment = (FragmentValidator) item;
+            fragment.validate(viewPager, getValidatorPosition());
+        }
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+    }
+
+    public void setCurrentPosition(int position) {
+
+        if (position <= currentPosition) {
+            return;
+        }
+
+        currentPosition = position;
+    }
+
+    public int getValidatorPosition() {
+        return currentPosition - DECREMENTER;
     }
 }

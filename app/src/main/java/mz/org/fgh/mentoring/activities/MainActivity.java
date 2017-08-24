@@ -108,6 +108,10 @@ public class MainActivity extends BaseAuthenticateActivity implements AdapterVie
             case R.id.main_menu_tutor_details:
                 startActivity(new Intent(MainActivity.this, TutorUpdateActivity.class));
                 break;
+
+            case R.id.main_menu_change_password:
+                startActivity(new Intent(this, ChangePasswordActivity.class));
+                break;
         }
 
         return super.onOptionsItemSelected(item);

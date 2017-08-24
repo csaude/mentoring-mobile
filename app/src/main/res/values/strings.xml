@@ -25,4 +25,27 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="title_activity_list_mentorship">Processos de Mentoria</string>
     <string name="title_activity_tutor_update">Detalhes do Utilizador</string>
+
+    <string name="tutored_must_be_selected">O tutorando deve ser seleccionado!</string>
+    <string name="form_must_be_selected">O formulário deve ser seleccionado!</string>
+    <string name="submit">Submeter</string>
+    <string name="password">Senha</string>
+    <string name="enter">Entrar</string>
+    <string name="health_facility_must_be_selected">A unidade sanitária de deve ser seleccionada!</string>
+    <string name="referred_month_must_be_selected">O mês de referência deve ser seleccionado!</string>
+    <string name="performed_date_must_be_selected">A data da Mentoria deve ser seleccionada!</string>
+    <string name="user_details">Detalhes de Utilizador</string>
+    <string name="change_password">Alterar a Senha</string>
+    <string name="title_activity_change_password">Alteração de Senha</string>
+    <string name="user_name">Nome</string>
+    <string name="new_password">Nova Senha</string>
+    <string name="confirm_password">Confirmação da Senha</string>
+    <string name="password_changed_success">Senha alterada com sucesso!</string>
+    <string name="password_must_be_the_same">As senhas devem ser iguais</string>
+    <string name="new_password_must_be_filled">A nova senha deve ser preenchida</string>
+    <string name="confirm_password_must_be_filled">A nova senha de confirmação deve ser preenchida</string>
+    <string name="required_field">Campo Obrigatório</string>
+    <string name="phone_number_invalid">Número de telefone Inválido! ex:+258820000000</string>
+    <string name="none_answer_was_seleted">Nenhuma resposta foi seleccionada</string>
+
 </resources>

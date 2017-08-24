@@ -66,7 +66,8 @@
         android:layout_alignParentBottom="true"
         android:layout_margin="16dp"
         android:background="#00695C"
-        android:text="Submeter"
+        android:text="@string/submit"
+        android:textAllCaps="false"
         android:textColor="#fff"
         android:textStyle="bold" />
 

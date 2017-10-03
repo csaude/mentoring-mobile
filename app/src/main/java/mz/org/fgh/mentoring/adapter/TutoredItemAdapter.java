@@ -72,4 +72,9 @@ public class TutoredItemAdapter extends BaseAdapter {
 
         return view;
     }
+
+    public void setFilter(List<Tutored> tutoreds) {
+        this.tutoreds = tutoreds;
+        notifyDataSetChanged();
+    }
 }

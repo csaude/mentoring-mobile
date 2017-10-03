@@ -7,9 +7,13 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 import mz.org.fgh.mentoring.R;
+import mz.org.fgh.mentoring.component.MentoringComponent;
 import mz.org.fgh.mentoring.config.model.Tutor;
 import mz.org.fgh.mentoring.infra.UserContext;
 import mz.org.fgh.mentoring.service.TutorService;
@@ -18,6 +22,7 @@ import mz.org.fgh.mentoring.util.ServerConfig;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class LoginActivity extends BaseActivity {
 
@@ -27,10 +32,17 @@ public class LoginActivity extends BaseActivity {
     @BindView(R.id.login_password)
     TextView password;
 
+    @Inject
+    @Named("account")
+    Retrofit retrofit;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        MentoringComponent component = application.getMentoringComponent();
+        component.inject(this);
     }
 
     @OnClick(R.id.login_loginButton)
@@ -46,9 +58,7 @@ public class LoginActivity extends BaseActivity {
             return;
         }
 
-        application.setUpRetrofit(ServerConfig.ACCOUNT_MANAGER);
-
-        UserServiceResource userService = application.getRetrofit().create(UserServiceResource.class);
+        UserServiceResource userService = retrofit.create(UserServiceResource.class);
         Call<UserContext> loginCall = userService.login(new UserContext(username.getText().toString(), password.getText().toString()));
 
         final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);

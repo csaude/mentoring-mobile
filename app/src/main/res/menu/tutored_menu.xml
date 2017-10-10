@@ -4,9 +4,10 @@
     tools:context=".activities.TutoredActivity">
 
     <item
-        android:id="@+id/save_tutored"
-        android:icon="@mipmap/ic_done"
-        android:title="save"
-        app:showAsAction="always" />
+        android:id="@+id/action_search"
+        android:icon="@mipmap/ic_search"
+        android:title="@string/action_settings"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        app:showAsAction="always|collapseActionView" />
 
 </menu>

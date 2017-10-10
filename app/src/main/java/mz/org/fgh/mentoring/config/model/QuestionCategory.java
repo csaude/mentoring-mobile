@@ -2,17 +2,27 @@ package mz.org.fgh.mentoring.config.model;
 
 public enum QuestionCategory {
 
-	ACCURACY,
+    ACCURACY,
 
-	PUNCTUALITY,
+    PUNCTUALITY,
 
-	TOTALITY,
+    TOTALITY,
 
-	PRECISION,
+    PRECISION,
 
-	RELIABILITY,
+    RELIABILITY,
 
-	INTEGRITY,
+    INTEGRITY,
 
-	CONFIDENTIALITY;
+    CONFIDENTIALITY,
+
+    PREPARATION,
+
+    PROCEDURE,
+
+    REGISTRATION_AND_MANAGEMENT,
+
+    IMPREGNATION,
+
+    PACKING;
 }

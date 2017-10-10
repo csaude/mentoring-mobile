@@ -11,18 +11,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <SearchView
-            android:id="@+id/simpleSearchView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:iconifiedByDefault="false"
-            android:queryHint="Search here" />
-
         <ListView
             android:id="@+id/tutored_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/simpleSearchView" />
+            android:layout_height="wrap_content" />
 
         <Button
             android:id="@+id/new_tutored"
@@ -41,7 +33,6 @@
             android:visibility="visible" />
 
     </RelativeLayout>
-
 
 </LinearLayout>
 

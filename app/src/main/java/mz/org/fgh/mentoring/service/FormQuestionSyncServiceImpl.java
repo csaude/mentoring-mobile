@@ -91,6 +91,10 @@ public class FormQuestionSyncServiceImpl implements SyncService, FormQuestionSyn
 
         //TODO: remove when complete Injection refactory
 
+        if (formQuestions == null) {
+            return;
+        }
+
         if (activity != null) {
             formDAO = new FormDAOImpl(activity);
             questionDAO = new QuestionDAOImpl(activity);

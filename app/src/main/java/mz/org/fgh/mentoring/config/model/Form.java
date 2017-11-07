@@ -16,11 +16,14 @@ public class Form extends GenericEntity {
 
     private String version;
 
-    public Form(String uuid, String name, ProgrammaticArea programmaticArea, String version) {
+    private FormType formType;
+
+    public Form(String uuid, String name, ProgrammaticArea programmaticArea, String version, FormType formType) {
         this.setUuid(uuid);
         this.name = name;
         this.programmaticArea = programmaticArea;
         this.version = version;
+        this.formType = formType;
     }
 
     public Form() {
@@ -40,6 +43,10 @@ public class Form extends GenericEntity {
 
     public String getVersion() {
         return version;
+    }
+
+    public FormType getFormType() {
+        return formType;
     }
 
     @Override

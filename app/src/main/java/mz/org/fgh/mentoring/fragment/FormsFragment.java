@@ -2,20 +2,33 @@ package mz.org.fgh.mentoring.fragment;
 
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import mz.org.fgh.mentoring.R;
+import mz.org.fgh.mentoring.activities.IndicatorActivity;
 import mz.org.fgh.mentoring.activities.MentoringActivity;
 import mz.org.fgh.mentoring.adapter.FormAdapter;
+import mz.org.fgh.mentoring.component.MentoringComponent;
+import mz.org.fgh.mentoring.config.dao.FormDAO;
 import mz.org.fgh.mentoring.config.dao.FormDAOImpl;
 import mz.org.fgh.mentoring.config.dao.QuestionDAOImpl;
+import mz.org.fgh.mentoring.config.model.Answer;
 import mz.org.fgh.mentoring.config.model.Form;
+import mz.org.fgh.mentoring.config.model.FormType;
+import mz.org.fgh.mentoring.event.FormEvent;
+import mz.org.fgh.mentoring.event.MessageEvent;
 import mz.org.fgh.mentoring.validator.FragmentValidator;
 
 public class FormsFragment extends BaseFragment implements AdapterView.OnItemClickListener, FragmentValidator {
@@ -23,20 +36,29 @@ public class FormsFragment extends BaseFragment implements AdapterView.OnItemCli
     @BindView(R.id.fragment_forms)
     ListView formsListView;
 
-    private MentoringActivity activity;
+    @Inject
+    FormDAO formDAO;
 
-    private Bundle activityBundle;
+    @Inject
+    EventBus eventBus;
 
     private Form form;
 
     @Override
     public void onCreateView() {
-        activity = (MentoringActivity) getActivity();
-        activityBundle = activity.getBundle();
 
-        FormDAOImpl formDAO = new FormDAOImpl(activity);
-        List<Form> forms = formDAO.findAll();
-        formDAO.close();
+        MentoringComponent component = application.getMentoringComponent();
+        component.inject(this);
+
+        FragmentActivity activity = getActivity();
+
+        List<Form> forms = new ArrayList<>();
+
+        if (activity instanceof IndicatorActivity) {
+            forms = formDAO.findByFormType(FormType.INDICATORS);
+        } else if (activity instanceof MentoringActivity) {
+            forms = formDAO.findByFormType(FormType.MENTORING);
+        }
 
         FormAdapter adapter = new FormAdapter(activity, forms);
         formsListView.setAdapter(adapter);
@@ -54,8 +76,7 @@ public class FormsFragment extends BaseFragment implements AdapterView.OnItemCli
         form = (Form) parent.getItemAtPosition(position);
         view.setSelected(true);
 
-        activityBundle.putSerializable("form", form);
-        activity.getAdapter().setQuestions(new QuestionDAOImpl(activity).findQuestionByForm(form.getUuid()));
+        eventBus.post(new FormEvent(form));
     }
 
     @Override

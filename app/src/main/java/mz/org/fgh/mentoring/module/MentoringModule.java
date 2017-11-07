@@ -12,6 +12,8 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import mz.org.fgh.mentoring.config.dao.AnswerDAO;
+import mz.org.fgh.mentoring.config.dao.AnswerDAOImpl;
 import mz.org.fgh.mentoring.config.dao.CareerDAO;
 import mz.org.fgh.mentoring.config.dao.CareerDAOImpl;
 import mz.org.fgh.mentoring.config.dao.DistrictDAO;
@@ -26,12 +28,18 @@ import mz.org.fgh.mentoring.config.dao.QuestionDAO;
 import mz.org.fgh.mentoring.config.dao.QuestionDAOImpl;
 import mz.org.fgh.mentoring.config.dao.TutoredDAO;
 import mz.org.fgh.mentoring.config.dao.TutoredDAOImpl;
+import mz.org.fgh.mentoring.process.dao.IndicatorDAO;
+import mz.org.fgh.mentoring.process.dao.IndictorDAOImpl;
+import mz.org.fgh.mentoring.process.dao.MentorshipDAO;
+import mz.org.fgh.mentoring.process.dao.MentorshipDAOImpl;
 import mz.org.fgh.mentoring.service.CareerSyncService;
 import mz.org.fgh.mentoring.service.CareerSyncServiceImpl;
 import mz.org.fgh.mentoring.service.FormQuestionSyncService;
 import mz.org.fgh.mentoring.service.FormQuestionSyncServiceImpl;
 import mz.org.fgh.mentoring.service.HealthFacilitySyncService;
 import mz.org.fgh.mentoring.service.HealthFacilitySyncServiceImpl;
+import mz.org.fgh.mentoring.service.IndicatorService;
+import mz.org.fgh.mentoring.service.IndicatorServiceImpl;
 import mz.org.fgh.mentoring.service.LoadMetadataService;
 import mz.org.fgh.mentoring.service.LoadMetadataServiceImpl;
 import mz.org.fgh.mentoring.service.TutoredService;
@@ -125,6 +133,21 @@ public class MentoringModule {
     }
 
     @Provides
+    public MentorshipDAO provideMentorshipDAO() {
+        return new MentorshipDAOImpl(context);
+    }
+
+    @Provides
+    public IndicatorDAO provideIndicatorDAO() {
+        return new IndictorDAOImpl(context);
+    }
+
+    @Provides
+    public AnswerDAO provideAnswerDAO() {
+        return new AnswerDAOImpl(context);
+    }
+
+    @Provides
     public HealthFacilitySyncService provideHealthFacilitySyncService(HealthFacilitySyncServiceImpl healthFacilitySyncService) {
         return healthFacilitySyncService;
     }
@@ -147,6 +170,11 @@ public class MentoringModule {
     @Provides
     public UserService provideUserService(UserServiceImpl userServiceImp) {
         return userServiceImp;
+    }
+
+    @Provides
+    public IndicatorService provideIndicatorService(IndicatorServiceImpl indicatorServiceImpl) {
+        return indicatorServiceImpl;
     }
 
     @Provides

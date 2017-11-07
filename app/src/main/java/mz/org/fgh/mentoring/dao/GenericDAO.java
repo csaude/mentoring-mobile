@@ -3,6 +3,7 @@ package mz.org.fgh.mentoring.dao;
 import android.content.ContentValues;
 import android.database.Cursor;
 
+import mz.org.fgh.mentoring.config.model.FormType;
 import mz.org.fgh.mentoring.model.GenericEntity;
 
 /**
@@ -26,7 +27,13 @@ public interface GenericDAO<T extends GenericEntity> {
 
     String MENTORSHIP_TABLE = "CREATE TABLE mentorships(id INTEGER PRIMARY KEY, form_uuid TEXT, tutored_uuid TEXT, health_facility_uuid TEXT, uuid TEXT UNIQUE, start_date TEXT, end_date TEXT, performed_date TEXT, referred_month TEXT, created_at TEXT, FOREIGN KEY(form_uuid) REFERENCES forms(uuid), FOREIGN KEY(tutored_uuid) REFERENCES tutoreds(uuid), FOREIGN KEY(health_facility_uuid) REFERENCES health_facilities(uuid));";
 
-    String ANSWER_TABLE = "CREATE TABLE answers(id INTEGER PRIMARY KEY, form_uuid TEXT, mentorship_uuid TEXT, question_uuid TEXT, uuid TEXT UNIQUE, created_at TEXT, text_value TEXT, boolean_value INTEGER, FOREIGN KEY(form_uuid) REFERENCES forms(uuid), FOREIGN KEY(mentorship_uuid) REFERENCES mentorships(uuid), FOREIGN KEY(question_uuid) REFERENCES questions(uuid));";
+    String ANSWER_TABLE = "CREATE TABLE answers(id INTEGER PRIMARY KEY, form_uuid TEXT, mentorship_uuid TEXT, question_uuid TEXT, uuid TEXT UNIQUE, created_at TEXT, text_value TEXT, boolean_value INTEGER, numeric_value INTEGER, FOREIGN KEY(form_uuid) REFERENCES forms(uuid), FOREIGN KEY(mentorship_uuid) REFERENCES mentorships(uuid), FOREIGN KEY(question_uuid) REFERENCES questions(uuid));";
+
+    String INDICATOR_TABLE = "CREATE TABLE indicators(id INTEGER PRIMARY KEY, tutor_uuid TEXT, form_uuid TEXT, health_facility_uuid TEXT, uuid TEXT UNIQUE, performed_date TEXT, referred_month TEXT, created_at TEXT, FOREIGN KEY(form_uuid) REFERENCES forms(uuid), FOREIGN KEY(health_facility_uuid) REFERENCES health_facilities(uuid));";
+
+    String ALTER_FORM_TABLE = "ALTER TABLE forms ADD COLUMN form_type TEXT DEFAULT " + FormType.MENTORING + ";";
+
+    String ALTER_ANSWER_TABLE = "ALTER TABLE answers ADD COLUMN indicator_uuid TEXT;";
 
     String getTableName();
 

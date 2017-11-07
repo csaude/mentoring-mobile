@@ -8,6 +8,7 @@
     <string name="mentoring_process">Mentoring Process</string>
     <string name="tudoreds">Tutoreds</string>
     <string name="reports">Reports</string>
+    <string name="indicators">Indicators</string>
     <string name="config">configurations</string>
     <string name="logout">Logout</string>
     <string name="title_activity_configuration">ConfigurationActivity</string>
@@ -39,5 +40,9 @@
     <string name="required_field">Field required</string>
     <string name="phone_number_invalid">Phone Number invalid! eg:+258820000000</string>
     <string name="none_answer_was_seleted">None Answer was selected</string>
+    <string name="the_value_is_empty">The value is required</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="referred_month">Referred Month</string>
 
 </resources>

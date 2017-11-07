@@ -89,18 +89,6 @@ public class FormQuestionSyncServiceImpl implements SyncService, FormQuestionSyn
     @Override
     public void processFormQuestions(List<FormQuestion> formQuestions) {
 
-        //TODO: remove when complete Injection refactory
-
-        if (formQuestions == null) {
-            return;
-        }
-
-        if (activity != null) {
-            formDAO = new FormDAOImpl(activity);
-            questionDAO = new QuestionDAOImpl(activity);
-            formQuestionDAO = new FormQuestionDAOImpl(activity);
-        }
-
         for (FormQuestion formQuestion : formQuestions) {
 
             Form form = formQuestion.getForm();

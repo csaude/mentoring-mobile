@@ -17,7 +17,7 @@ import mz.org.fgh.mentoring.fragment.TutoredFragment;
 /**
  * Created by Stélio Moiane on 11/14/16.
  */
-public class SwipeAdapter extends FragmentStatePagerAdapter{
+public class SwipeAdapter extends FragmentStatePagerAdapter {
 
     private List<Question> questions = new ArrayList<>();
     private int position;
@@ -45,7 +45,9 @@ public class SwipeAdapter extends FragmentStatePagerAdapter{
                 return new HealthFacilityFragment();
         }
 
-        PageFragment fragment = new PageFragment();
+
+        Question question = questions.get(position - ADDED_PAGES);
+        Fragment fragment = question.getQuestionType().getFragment();
 
         Bundle bundle = new Bundle();
         bundle.putSerializable(QUESTION, questions.get(position - ADDED_PAGES));
@@ -67,7 +69,7 @@ public class SwipeAdapter extends FragmentStatePagerAdapter{
 
         switch (position) {
             case 0:
-                step = "Tutorandos";
+                step = "Tutorados";
                 break;
 
             case 1:

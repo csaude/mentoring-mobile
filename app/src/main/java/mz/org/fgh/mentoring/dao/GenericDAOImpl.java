@@ -35,11 +35,13 @@ public abstract class GenericDAOImpl<T extends GenericEntity> extends SQLiteOpen
         db.execSQL(FORM_QUESTION_TABLE);
         db.execSQL(MENTORSHIP_TABLE);
         db.execSQL(ANSWER_TABLE);
+        db.execSQL(INDICATOR_TABLE);
+        db.execSQL(ALTER_FORM_TABLE);
+        db.execSQL(ALTER_ANSWER_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
     }
 
     @Override

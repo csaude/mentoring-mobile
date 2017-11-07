@@ -47,6 +47,7 @@ public class MainActivity extends BaseAuthenticateActivity implements AdapterVie
         ItemAdapter itemAdapter =
                 new ItemAdapter(this, Arrays.asList(new MentoringItem(getString(R.string.mentoring_process), R.mipmap.ic_process, ItemType.MENTORING_PROCESS),
                         new MentoringItem(getString(R.string.tudoreds), R.mipmap.ic_tutored, ItemType.TUDOREDS),
+                        new MentoringItem(getString(R.string.indicators), R.mipmap.ic_indicators, ItemType.INDICATORS),
                         new MentoringItem(getString(R.string.reports), R.mipmap.ic_report, ItemType.REPORTS)));
 
         listItems.setAdapter(itemAdapter);
@@ -65,6 +66,10 @@ public class MainActivity extends BaseAuthenticateActivity implements AdapterVie
 
             case TUDOREDS:
                 startActivity(new Intent(MainActivity.this, ListTutoredActivity.class));
+                break;
+
+            case INDICATORS:
+                startActivity(new Intent(MainActivity.this, ListIndicatorsActivity.class));
                 break;
 
             case REPORTS:

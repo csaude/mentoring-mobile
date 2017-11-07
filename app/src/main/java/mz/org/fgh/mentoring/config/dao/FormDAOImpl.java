@@ -8,7 +8,9 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
+import mz.org.fgh.mentoring.config.model.Answer;
 import mz.org.fgh.mentoring.config.model.Form;
+import mz.org.fgh.mentoring.config.model.FormType;
 import mz.org.fgh.mentoring.config.model.ProgrammaticArea;
 import mz.org.fgh.mentoring.dao.GenericDAOImpl;
 import mz.org.fgh.mentoring.util.DateUtil;
@@ -40,6 +42,7 @@ public class FormDAOImpl extends GenericDAOImpl<Form> implements FormDAO {
         values.put("name", entity.getName());
         values.put("programmatic_area_uuid", entity.getProgrammaticArea().getUuid());
         values.put("version", entity.getVersion());
+        values.put("form_type", entity.getFormType() == null ? FormType.MENTORING.name() : entity.getFormType().name());
 
         return values;
     }
@@ -52,7 +55,7 @@ public class FormDAOImpl extends GenericDAOImpl<Form> implements FormDAO {
         Form form = new Form(cursor.getString(cursor.getColumnIndex("uuid")),
                 cursor.getString(cursor.getColumnIndex("name")),
                 programmaticArea,
-                cursor.getString(cursor.getColumnIndex("version")));
+                cursor.getString(cursor.getColumnIndex("version")), FormType.valueOf(cursor.getString(cursor.getColumnIndex("form_type"))));
 
         form.setId(cursor.getLong(cursor.getColumnIndex("id")));
         form.setCreatedAt(DateUtil.parse(cursor.getString(cursor.getColumnIndex("created_at"))));
@@ -71,6 +74,21 @@ public class FormDAOImpl extends GenericDAOImpl<Form> implements FormDAO {
         while (cursor.moveToNext()) {
             Form form = getPopulatedEntity(cursor);
             forms.add(form);
+        }
+
+        cursor.close();
+        return forms;
+    }
+
+    @Override
+    public List<Form> findByFormType(FormType formType) {
+
+        SQLiteDatabase database = getReadableDatabase();
+        List<Form> forms = new ArrayList<>();
+
+        Cursor cursor = database.rawQuery(QUERY.findByFormType, new String[]{formType.name()});
+        while (cursor.moveToNext()) {
+            forms.add(getPopulatedEntity(cursor));
         }
 
         cursor.close();

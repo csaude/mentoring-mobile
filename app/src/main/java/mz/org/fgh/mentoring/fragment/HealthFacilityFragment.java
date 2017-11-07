@@ -13,23 +13,31 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 
 import org.apache.commons.lang3.StringUtils;
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnItemSelected;
 import mz.org.fgh.mentoring.R;
 import mz.org.fgh.mentoring.activities.MentoringActivity;
+import mz.org.fgh.mentoring.component.MentoringComponent;
 import mz.org.fgh.mentoring.config.dao.DistrictDAO;
 import mz.org.fgh.mentoring.config.dao.DistrictDAOImpl;
 import mz.org.fgh.mentoring.config.dao.HealthFacilityDAO;
 import mz.org.fgh.mentoring.config.dao.HealthFacilityDAOImpl;
+import mz.org.fgh.mentoring.config.model.Answer;
 import mz.org.fgh.mentoring.config.model.District;
 import mz.org.fgh.mentoring.config.model.HealthFacility;
+import mz.org.fgh.mentoring.event.HealthFacilityEvent;
+import mz.org.fgh.mentoring.event.MessageEvent;
+import mz.org.fgh.mentoring.event.MonthEvent;
 import mz.org.fgh.mentoring.process.model.Month;
 import mz.org.fgh.mentoring.validator.FragmentValidator;
 
@@ -53,10 +61,16 @@ public class HealthFacilityFragment extends BaseFragment implements DatePickerDi
     @BindView(R.id.fragment_health_facility)
     Spinner healthFacilitySpinner;
 
-    private MentoringActivity activity;
+    @Inject
+    DistrictDAO districtDAO;
+
+    @Inject
+    HealthFacilityDAO healthFacilityDAO;
+
+    @Inject
+    EventBus eventBus;
 
     private List<District> districts;
-
     private List<HealthFacility> healthFacilities;
     private List<HealthFacility> healthFacilitiesPerDistrict;
 
@@ -67,21 +81,18 @@ public class HealthFacilityFragment extends BaseFragment implements DatePickerDi
 
     @Override
     public void onCreateView() {
-        activity = (MentoringActivity) getActivity();
 
-        DistrictDAO districtDAO = new DistrictDAOImpl(activity);
+        MentoringComponent component = application.getMentoringComponent();
+        component.inject(this);
+
         districts = districtDAO.findAll();
-        districtDAO.close();
-
-        HealthFacilityDAO healthFacilityDAO = new HealthFacilityDAOImpl(activity);
         healthFacilities = healthFacilityDAO.findAll();
-        healthFacilityDAO.close();
 
-        ArrayAdapter<String> provinceAdapter = new ArrayAdapter<>(activity, android.R.layout.simple_spinner_dropdown_item, getProvinces(districts));
+        ArrayAdapter<String> provinceAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, getProvinces(districts));
         provinceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         provinceSpinner.setAdapter(provinceAdapter);
 
-        ArrayAdapter monthAdapter = new ArrayAdapter(activity, android.R.layout.simple_spinner_item, Arrays.asList(Month.values()));
+        ArrayAdapter monthAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, Arrays.asList(Month.values()));
         monthAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         referredMonthSpinner.setAdapter(monthAdapter);
     }
@@ -102,13 +113,12 @@ public class HealthFacilityFragment extends BaseFragment implements DatePickerDi
     @OnItemSelected(R.id.fragment_referred_month)
     public void onSelectReferredMonth(AdapterView<?> parent, int position) {
         Month month = (Month) parent.getItemAtPosition(position);
-        Bundle activityBundle = activity.getBundle();
-        activityBundle.putSerializable("month", month);
+        eventBus.post(new MonthEvent(month));
     }
 
     @OnItemSelected(R.id.fragment_province)
     public void onSelectProvince() {
-        ArrayAdapter<District> districtAdapter = new ArrayAdapter<>(activity, android.R.layout.simple_spinner_dropdown_item, districts);
+        ArrayAdapter<District> districtAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, districts);
         districtAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         districtSpinner.setAdapter(districtAdapter);
     }
@@ -119,7 +129,7 @@ public class HealthFacilityFragment extends BaseFragment implements DatePickerDi
         District district = districts.get(position);
 
         healthFacilitiesPerDistrict = getHealthFacilities(healthFacilities, district.getUuid());
-        ArrayAdapter<HealthFacility> healthFacilityAdapter = new ArrayAdapter<>(activity, android.R.layout.simple_spinner_dropdown_item, healthFacilitiesPerDistrict);
+        ArrayAdapter<HealthFacility> healthFacilityAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, healthFacilitiesPerDistrict);
         healthFacilityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         healthFacilitySpinner.setAdapter(healthFacilityAdapter);
@@ -128,8 +138,8 @@ public class HealthFacilityFragment extends BaseFragment implements DatePickerDi
     @OnItemSelected(R.id.fragment_health_facility)
     public void onSelectHealthFacility(final int position) {
         HealthFacility healthFacility = healthFacilitiesPerDistrict.get(position);
-        Bundle activityBundle = activity.getBundle();
-        activityBundle.putSerializable("healthFacility", healthFacility);
+
+        eventBus.post(new HealthFacilityEvent(healthFacility));
     }
 
     private List<String> getProvinces(List<District> districts) {
@@ -168,9 +178,7 @@ public class HealthFacilityFragment extends BaseFragment implements DatePickerDi
                 year;
 
         performedDate.setText(date);
-
-        Bundle activityBundle = activity.getBundle();
-        activityBundle.putString("performedDate", date);
+        eventBus.post(new MessageEvent<>(date));
     }
 
     @Override

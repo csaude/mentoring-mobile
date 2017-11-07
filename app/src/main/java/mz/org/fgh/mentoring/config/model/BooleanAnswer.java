@@ -8,15 +8,7 @@ package mz.org.fgh.mentoring.config.model;
  */
 public class BooleanAnswer extends Answer {
 
-    private static final long serialVersionUID = 1L;
-
-    public static final String NAME = "BOOLEAN";
-
     private Boolean booleanValue;
-
-    public Boolean getBooleanValue() {
-        return this.booleanValue;
-    }
 
     @Override
     public void setValue(final String value) {

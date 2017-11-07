@@ -24,5 +24,7 @@ public enum QuestionCategory {
 
     IMPREGNATION,
 
-    PACKING;
+    PACKING,
+
+    NA;
 }

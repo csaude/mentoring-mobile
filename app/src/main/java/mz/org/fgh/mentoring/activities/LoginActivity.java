@@ -114,7 +114,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onFailure(Call<UserContext> call, Throwable t) {
                 progressDialog.cancel();
-                Log.i("Error connection... ", t.getMessage());
+                Log.i("Error connection... ", "");
                 Toast.makeText(LoginActivity.this, "Problemas de conexão com o servidor! Por favor Contacte o Administrador", Toast.LENGTH_SHORT).show();
             }
         });

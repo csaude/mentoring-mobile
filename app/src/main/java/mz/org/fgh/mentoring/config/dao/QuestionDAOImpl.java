@@ -72,6 +72,7 @@ public class QuestionDAOImpl extends GenericDAOImpl<Question> implements Questio
             questions.add(question);
         }
 
+        database.close();
         cursor.close();
         return questions;
     }

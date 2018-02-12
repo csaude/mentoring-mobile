@@ -11,43 +11,57 @@ import android.widget.ListView;
 import java.util.Date;
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+
+import butterknife.BindView;
 import mz.org.fgh.mentoring.R;
 import mz.org.fgh.mentoring.adapter.MentorshipAdapter;
+import mz.org.fgh.mentoring.component.MentoringComponent;
 import mz.org.fgh.mentoring.config.dao.AnswerDAOImpl;
 import mz.org.fgh.mentoring.process.dao.MentorshipDAOImpl;
 import mz.org.fgh.mentoring.process.model.Mentorship;
+import mz.org.fgh.mentoring.process.model.Session;
 import mz.org.fgh.mentoring.service.MentorshipSyncServiceImpl;
+import mz.org.fgh.mentoring.service.SessionService;
 import mz.org.fgh.mentoring.service.SyncService;
 import mz.org.fgh.mentoring.util.DateUtil;
 
 public class ListMentorshipActivity extends BaseAuthenticateActivity implements View.OnClickListener {
 
-    private Button newMentorshipBtn;
-    private ListView mentorshipListView;
+    @BindView(R.id.new_mentorship)
+    Button newMentorshipBtn;
+
+    @BindView(R.id.mentorship_list)
+    ListView mentorshipListView;
+
+    @Inject
+    SessionService sessionService;
+
+    @Inject
+    @Named("sessions")
+    SyncService syncService;
 
     @Override
     protected void onMentoringCreate(Bundle bundle) {
-
         setContentView(R.layout.activity_list_mentorship);
 
-        newMentorshipBtn = (Button) findViewById(R.id.new_mentorship);
-        mentorshipListView = (ListView) findViewById(R.id.mentorship_list);
-        setMentorships();
+        MentoringComponent component = application.getMentoringComponent();
+        component.inject(this);
 
+        setMentorships();
         newMentorshipBtn.setOnClickListener(this);
     }
 
     public void setMentorships() {
-        List<Mentorship> mentorships = new MentorshipDAOImpl(this).findAll();
-        MentorshipAdapter adapter = new MentorshipAdapter(this, mentorships);
+        List<Session> sessions = sessionService.findAllSessions();
+        MentorshipAdapter adapter = new MentorshipAdapter(this, sessions);
         mentorshipListView.setAdapter(adapter);
     }
 
     @Override
     public void onClick(View view) {
-        Intent intent = new Intent(this, MentoringActivity.class);
-        intent.putExtra("startDate", DateUtil.format(new Date()));
-        startActivity(intent);
+        startActivity(new Intent(this, MentoringActivity.class));
         finish();
     }
 
@@ -62,7 +76,6 @@ public class ListMentorshipActivity extends BaseAuthenticateActivity implements 
 
         switch (item.getItemId()) {
             case R.id.mentoring_menu_sync:
-                SyncService syncService = new MentorshipSyncServiceImpl(new MentorshipDAOImpl(this), new AnswerDAOImpl(this));
                 syncService.setActivity(this);
                 syncService.execute();
                 break;

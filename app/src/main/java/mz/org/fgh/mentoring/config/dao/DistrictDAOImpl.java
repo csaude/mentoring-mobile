@@ -67,6 +67,7 @@ public class DistrictDAOImpl extends GenericDAOImpl<District> implements Distric
             districts.add(getPopulatedEntity(cursor));
         }
 
+        database.close();
         cursor.close();
         return districts;
     }

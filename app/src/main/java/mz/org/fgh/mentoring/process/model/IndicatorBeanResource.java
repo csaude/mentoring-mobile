@@ -1,9 +1,8 @@
 package mz.org.fgh.mentoring.process.model;
 
-import java.util.Collections;
 import java.util.List;
 
-import mz.org.fgh.mentoring.helpers.IndicatorHelper;
+import mz.org.fgh.mentoring.dto.IndicatorHelper;
 import mz.org.fgh.mentoring.model.BeanResource;
 
 /**

@@ -6,6 +6,7 @@ import dagger.Component;
 import mz.org.fgh.mentoring.activities.ChangePasswordActivity;
 import mz.org.fgh.mentoring.activities.IndicatorActivity;
 import mz.org.fgh.mentoring.activities.ListIndicatorsActivity;
+import mz.org.fgh.mentoring.activities.ListMentorshipActivity;
 import mz.org.fgh.mentoring.activities.LoginActivity;
 import mz.org.fgh.mentoring.activities.MainActivity;
 import mz.org.fgh.mentoring.activities.MentoringActivity;
@@ -54,4 +55,6 @@ public interface MentoringComponent {
     void inject(TutoredFragment fragment);
 
     void inject(IndicatorHealthFacilityFragment fragment);
+
+    void inject(ListMentorshipActivity activity);
 }

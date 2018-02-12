@@ -94,8 +94,6 @@ public class IndictorDAOImpl extends GenericDAOImpl<Indicator> implements Indica
 
     @Override
     public void delete(List<String> uuids) {
-        for (String uuid : uuids) {
-            delete(FIELD_NAME + " = ?", uuid);
-        }
+        delete(FIELD_NAME + " IN (?)", uuids);
     }
 }

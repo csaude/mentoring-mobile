@@ -7,7 +7,6 @@ import android.support.v4.view.ViewPager;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -17,30 +16,27 @@ import butterknife.BindView;
 import mz.org.fgh.mentoring.R;
 import mz.org.fgh.mentoring.adapter.SwipeAdapter;
 import mz.org.fgh.mentoring.component.MentoringComponent;
-import mz.org.fgh.mentoring.config.dao.AnswerDAO;
-import mz.org.fgh.mentoring.config.dao.AnswerDAOImpl;
 import mz.org.fgh.mentoring.config.dao.QuestionDAO;
-import mz.org.fgh.mentoring.config.dao.QuestionDAOImpl;
 import mz.org.fgh.mentoring.config.model.Answer;
-import mz.org.fgh.mentoring.config.model.Form;
 import mz.org.fgh.mentoring.config.model.HealthFacility;
 import mz.org.fgh.mentoring.config.model.Question;
 import mz.org.fgh.mentoring.event.AnswerEvent;
 import mz.org.fgh.mentoring.event.FormEvent;
 import mz.org.fgh.mentoring.event.HealthFacilityEvent;
 import mz.org.fgh.mentoring.event.MessageEvent;
-import mz.org.fgh.mentoring.event.MonthEvent;
 import mz.org.fgh.mentoring.event.ProcessEvent;
 import mz.org.fgh.mentoring.event.TutoredEvent;
 import mz.org.fgh.mentoring.model.Tutored;
-import mz.org.fgh.mentoring.process.dao.MentorshipDAO;
-import mz.org.fgh.mentoring.process.dao.MentorshipDAOImpl;
 import mz.org.fgh.mentoring.process.model.Mentorship;
-import mz.org.fgh.mentoring.process.model.Month;
+import mz.org.fgh.mentoring.process.model.Session;
+import mz.org.fgh.mentoring.provider.AnswerProvider;
+import mz.org.fgh.mentoring.provider.SessionProvider;
+import mz.org.fgh.mentoring.service.SessionService;
 import mz.org.fgh.mentoring.util.DateUtil;
 import mz.org.fgh.mentoring.validator.FragmentValidator;
+import mz.org.fgh.mentoring.validator.IterationFragment;
 
-public class MentoringActivity extends BaseAuthenticateActivity implements ViewPager.OnPageChangeListener, AnswerActivity {
+public class MentoringActivity extends BaseAuthenticateActivity implements ViewPager.OnPageChangeListener, AnswerProvider, SessionProvider {
 
     @BindView(R.id.view_pager)
     ViewPager viewPager;
@@ -52,10 +48,7 @@ public class MentoringActivity extends BaseAuthenticateActivity implements ViewP
     QuestionDAO questionDAO;
 
     @Inject
-    MentorshipDAO mentorshipDAO;
-
-    @Inject
-    AnswerDAO answerDAO;
+    SessionService sessionService;
 
     private SwipeAdapter adapter;
 
@@ -65,7 +58,11 @@ public class MentoringActivity extends BaseAuthenticateActivity implements ViewP
 
     private Mentorship mentorship;
 
-    private List<Answer> answers;
+    private Session session;
+
+    private List<Question> questions;
+
+    private Tutored tutored;
 
     @Override
     protected void onMentoringCreate(Bundle bundle) {
@@ -80,27 +77,29 @@ public class MentoringActivity extends BaseAuthenticateActivity implements ViewP
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(this);
 
+        session = new Session();
         mentorship = new Mentorship();
-        answers = new ArrayList<>();
     }
 
     private void submitProcess() {
+        populateMentorship();
 
-        mentorship.setStartDate(DateUtil.parse(getIntent().getStringExtra("startDate")));
-        mentorship.setEndDate(new Date());
+        this.session.setEndDate(new Date());
+        this.session.addMentorship(mentorship);
+        this.session.setStatus();
 
-        mentorshipDAO.create(mentorship);
-
-        for (Answer answer : answers) {
-
-            answer.setForm(mentorship.getForm());
-            answer.setMentorship(mentorship);
-
-            answerDAO.create(answer);
-        }
+        sessionService.createSession(session);
 
         startActivity(new Intent(this, ListMentorshipActivity.class));
         finish();
+    }
+
+    private void populateMentorship() {
+        this.mentorship.setEndDate(new Date());
+        this.mentorship.setTutored(tutored);
+        this.mentorship.setHealthFacility(session.getHealthFacility());
+        this.mentorship.setPerformedDate(DateUtil.parse(session.getPerformedDate(), DateUtil.NORMAL_PATTERN));
+        this.mentorship.setForm(session.getForm());
     }
 
     @Override
@@ -109,8 +108,15 @@ public class MentoringActivity extends BaseAuthenticateActivity implements ViewP
 
     @Override
     public void onPageSelected(int position) {
-        SwipeAdapter adapter = (SwipeAdapter) viewPager.getAdapter();
         setCurrentPosition(position);
+
+        Object itemInstance = adapter.instantiateItem(viewPager, position);
+
+        if (itemInstance instanceof IterationFragment) {
+            IterationFragment iterationFragment = (IterationFragment) itemInstance;
+            iterationFragment.updateButtons();
+            iterationFragment.updateIterations();
+        }
 
         Object item = adapter.instantiateItem(viewPager, getValidatorPosition());
 
@@ -139,45 +145,58 @@ public class MentoringActivity extends BaseAuthenticateActivity implements ViewP
 
     @Subscribe
     public void onTutoredSelected(TutoredEvent tutoredEvent) {
-        Tutored tutored = tutoredEvent.getTutored();
-        mentorship.setTutored(tutored);
+        this.tutored = tutoredEvent.getTutored();
     }
 
     @Subscribe
     public void onFormSelected(FormEvent formEvent) {
-        Form form = formEvent.getForm();
-        mentorship.setForm(form);
-
-        adapter.setQuestions(questionDAO.findQuestionByForm(form.getUuid()));
+        session.setForm(formEvent.getForm());
+        questions = questionDAO.findQuestionByForm(session.getForm().getUuid());
+        adapter.setQuestions(questions);
     }
 
     @Subscribe
     public void onHealthFacilitySelected(HealthFacilityEvent healthFacilityEvent) {
         HealthFacility healthFacility = healthFacilityEvent.getHealthFacility();
-        mentorship.setHealthFacility(healthFacility);
-    }
-
-    @Subscribe
-    public void onMonthSelected(MonthEvent monthEvent) {
-        Month month = monthEvent.getMonth();
-        mentorship.setReferredMonth(month);
+        session.setHealthFacility(healthFacility);
     }
 
     @Subscribe
     public void onDatePerformedSelected(MessageEvent<String> datePerformedEvent) {
         String date = datePerformedEvent.getMessage();
-        mentorship.setPerformedDate(DateUtil.parse(date, DateUtil.NORMAL_PATTERN));
+        this.session.setPerformedDate(DateUtil.parse(date, DateUtil.NORMAL_PATTERN));
     }
 
     @Subscribe
     public void onAnswerSelected(AnswerEvent answerEvent) {
         Answer answer = answerEvent.getAnswer();
-        answers.add(answer);
+        this.mentorship.addAnswer(answer);
     }
 
     @Subscribe
     public void onProcessSelected(ProcessEvent processEvent) {
-        submitProcess();
+
+        switch (processEvent.getEventType()) {
+
+            case SUBMIT:
+                this.session.setReason(processEvent.getReason());
+                submitProcess();
+                break;
+
+            case CONTINUE:
+                populateMentorship();
+
+                this.session.addMentorship(mentorship);
+                this.mentorship = new Mentorship();
+
+                adapter = new SwipeAdapter(getSupportFragmentManager());
+                adapter.setQuestions(this.questions);
+                viewPager.setAdapter(adapter);
+
+                currentPosition = 3; //go to the first question...
+                viewPager.setCurrentItem(currentPosition, true);
+                break;
+        }
     }
 
     @Override
@@ -188,6 +207,11 @@ public class MentoringActivity extends BaseAuthenticateActivity implements ViewP
 
     @Override
     public List<Answer> getAnswers() {
-        return answers;
+        return this.mentorship.getAnswers();
+    }
+
+    @Override
+    public Session getSession() {
+        return this.session;
     }
 }

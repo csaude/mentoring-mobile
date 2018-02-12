@@ -5,4 +5,24 @@ package mz.org.fgh.mentoring.event;
  */
 
 public class ProcessEvent {
+
+    private EventType eventType;
+
+    private String reason;
+
+    public ProcessEvent(EventType eventType) {
+        this.eventType = eventType;
+    }
+
+    public EventType getEventType() {
+        return eventType;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
 }

@@ -9,12 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mz.org.fgh.mentoring.config.model.Answer;
-import mz.org.fgh.mentoring.config.model.BooleanAnswer;
 import mz.org.fgh.mentoring.config.model.Form;
-import mz.org.fgh.mentoring.config.model.NumericAnswer;
 import mz.org.fgh.mentoring.config.model.Question;
 import mz.org.fgh.mentoring.config.model.QuestionType;
-import mz.org.fgh.mentoring.config.model.TextAnswer;
 import mz.org.fgh.mentoring.dao.GenericDAOImpl;
 import mz.org.fgh.mentoring.process.model.Mentorship;
 
@@ -44,10 +41,10 @@ public class AnswerDAOImpl extends GenericDAOImpl<Answer> implements AnswerDAO {
     public ContentValues getContentValues(Answer answer) {
         ContentValues values = new ContentValues();
 
-        values.put("mentorship_uuid", answer.getMentorship() != null ? answer.getMentorship().getUuid() : "");
+        values.put("mentorship_uuid", answer.getMentorship() != null ? answer.getMentorship().getUuid() : null);
         values.put("form_uuid", answer.getForm().getUuid());
         values.put("question_uuid", answer.getQuestion().getUuid());
-        values.put("indicator_uuid", answer.getIndicator() != null ? answer.getIndicator().getUuid() : "");
+        values.put("indicator_uuid", answer.getIndicator() != null ? answer.getIndicator().getUuid() : null);
 
         this.setAnswerContentValue(answer, values);
 
@@ -130,15 +127,18 @@ public class AnswerDAOImpl extends GenericDAOImpl<Answer> implements AnswerDAO {
             answers.add(getPopulatedEntity(cursor));
         }
 
+        database.close();
         cursor.close();
         return answers;
     }
 
     @Override
-    public void deleteByMentorshipUuids(List<String> mentorshipsUuids) {
-        for (String mentorshipUuid : mentorshipsUuids) {
-            delete("mentorship_uuid = ?", mentorshipUuid);
-        }
+    public void deleteBySessionUuids(List<String> sessionUuids) {
+
+        SQLiteDatabase database = getWritableDatabase();
+
+        database.rawQuery(QUERY.deleteBySessionUuids, sessionUuids.toArray(new String[sessionUuids.size()]));
+        database.close();
     }
 
     @Override
@@ -151,14 +151,13 @@ public class AnswerDAOImpl extends GenericDAOImpl<Answer> implements AnswerDAO {
             answers.add(getPopulatedEntity(cursor));
         }
 
+        database.close();
         cursor.close();
         return answers;
     }
 
     @Override
     public void deleteByIndicatorUuids(List<String> indicatorsUuids) {
-        for (String indicatorUuid : indicatorsUuids) {
-            delete("indicator_uuid = ?", indicatorUuid);
-        }
+        delete("indicator_uuid IN (?)", indicatorsUuids);
     }
 }

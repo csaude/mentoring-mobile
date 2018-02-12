@@ -16,10 +16,8 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import mz.org.fgh.mentoring.R;
 import mz.org.fgh.mentoring.adapter.IndicatorSwipeAdapter;
-import mz.org.fgh.mentoring.adapter.SwipeAdapter;
 import mz.org.fgh.mentoring.component.MentoringComponent;
 import mz.org.fgh.mentoring.config.dao.AnswerDAO;
-import mz.org.fgh.mentoring.config.dao.AnswerDAOImpl;
 import mz.org.fgh.mentoring.config.dao.QuestionDAO;
 import mz.org.fgh.mentoring.config.model.Answer;
 import mz.org.fgh.mentoring.config.model.Form;
@@ -29,18 +27,15 @@ import mz.org.fgh.mentoring.event.AnswerEvent;
 import mz.org.fgh.mentoring.event.FormEvent;
 import mz.org.fgh.mentoring.event.HealthFacilityEvent;
 import mz.org.fgh.mentoring.event.MessageEvent;
-import mz.org.fgh.mentoring.event.MonthEvent;
 import mz.org.fgh.mentoring.event.ProcessEvent;
-import mz.org.fgh.mentoring.event.TutoredEvent;
-import mz.org.fgh.mentoring.model.Tutored;
 import mz.org.fgh.mentoring.process.dao.IndicatorDAO;
 import mz.org.fgh.mentoring.process.model.Indicator;
-import mz.org.fgh.mentoring.process.model.Month;
+import mz.org.fgh.mentoring.provider.AnswerProvider;
 import mz.org.fgh.mentoring.util.AnswerUtil;
 import mz.org.fgh.mentoring.util.DateUtil;
 import mz.org.fgh.mentoring.validator.FragmentValidator;
 
-public class IndicatorActivity extends BaseAuthenticateActivity implements ViewPager.OnPageChangeListener, AnswerActivity {
+public class IndicatorActivity extends BaseAuthenticateActivity implements ViewPager.OnPageChangeListener, AnswerProvider {
 
     @BindView(R.id.view_pager)
     ViewPager viewPager;

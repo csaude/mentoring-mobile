@@ -43,6 +43,7 @@ public class FormDAOImpl extends GenericDAOImpl<Form> implements FormDAO {
         values.put("programmatic_area_uuid", entity.getProgrammaticArea().getUuid());
         values.put("version", entity.getVersion());
         values.put("form_type", entity.getFormType() == null ? FormType.MENTORING.name() : entity.getFormType().name());
+        values.put("target", entity.getTarget());
 
         return values;
     }
@@ -59,6 +60,7 @@ public class FormDAOImpl extends GenericDAOImpl<Form> implements FormDAO {
 
         form.setId(cursor.getLong(cursor.getColumnIndex("id")));
         form.setCreatedAt(DateUtil.parse(cursor.getString(cursor.getColumnIndex("created_at"))));
+        form.setTarget(cursor.getInt(cursor.getColumnIndex("target")));
 
         return form;
     }
@@ -76,6 +78,7 @@ public class FormDAOImpl extends GenericDAOImpl<Form> implements FormDAO {
             forms.add(form);
         }
 
+        database.close();
         cursor.close();
         return forms;
     }
@@ -91,6 +94,7 @@ public class FormDAOImpl extends GenericDAOImpl<Form> implements FormDAO {
             forms.add(getPopulatedEntity(cursor));
         }
 
+        database.close();
         cursor.close();
         return forms;
     }

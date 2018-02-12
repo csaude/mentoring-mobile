@@ -1,7 +1,6 @@
-package mz.org.fgh.mentoring.helpers;
+package mz.org.fgh.mentoring.dto;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import mz.org.fgh.mentoring.config.model.Answer;

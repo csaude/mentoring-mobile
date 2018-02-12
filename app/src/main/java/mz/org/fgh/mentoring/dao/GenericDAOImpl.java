@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import mz.org.fgh.mentoring.model.GenericEntity;
@@ -38,6 +39,8 @@ public abstract class GenericDAOImpl<T extends GenericEntity> extends SQLiteOpen
         db.execSQL(INDICATOR_TABLE);
         db.execSQL(ALTER_FORM_TABLE);
         db.execSQL(ALTER_ANSWER_TABLE);
+        db.execSQL(SESSION_TABLE);
+        db.execSQL(ALTER_MENTORSHIP_TABLE_ADD_SESSION);
     }
 
     @Override
@@ -105,8 +108,8 @@ public abstract class GenericDAOImpl<T extends GenericEntity> extends SQLiteOpen
 
 
     @Override
-    public void delete(final String whereClause, final String param) {
+    public void delete(final String whereClause, final List<String> params) {
         SQLiteDatabase database = getWritableDatabase();
-        database.delete(getTableName(), whereClause, new String[]{param});
+        database.delete(getTableName(), whereClause, params.toArray(new String[params.size()]));
     }
 }

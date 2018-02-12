@@ -14,7 +14,7 @@ import mz.org.fgh.mentoring.config.model.HealthFacility;
 import mz.org.fgh.mentoring.dao.GenericDAOImpl;
 import mz.org.fgh.mentoring.model.Tutored;
 import mz.org.fgh.mentoring.process.model.Mentorship;
-import mz.org.fgh.mentoring.process.model.Month;
+import mz.org.fgh.mentoring.process.model.Session;
 import mz.org.fgh.mentoring.util.DateUtil;
 
 /**
@@ -43,10 +43,10 @@ public class MentorshipDAOImpl extends GenericDAOImpl<Mentorship> implements Men
         values.put("form_uuid", mentorship.getForm().getUuid());
         values.put("tutored_uuid", mentorship.getTutored().getUuid());
         values.put("health_facility_uuid", mentorship.getHealthFacility().getUuid());
-        values.put("start_date", DateUtil.format(mentorship.getStartDate()));
-        values.put("end_date", DateUtil.format(mentorship.getEndDate()));
-        values.put("performed_date", DateUtil.format(mentorship.getPerformedDate(), DateUtil.NORMAL_PATTERN));
-        values.put("referred_month", mentorship.getReferredMonth().name());
+        values.put("start_date", mentorship.getStartDate());
+        values.put("end_date", mentorship.getEndDate());
+        values.put("performed_date", mentorship.getPerformedDate());
+        values.put("session_uuid", mentorship.getSession().getUuid());
 
         return values;
     }
@@ -55,7 +55,6 @@ public class MentorshipDAOImpl extends GenericDAOImpl<Mentorship> implements Men
     public Mentorship getPopulatedEntity(Cursor cursor) {
         Mentorship mentorship = new Mentorship();
 
-        mentorship.setId(cursor.getLong(cursor.getColumnIndex("id")));
         mentorship.setUuid(cursor.getString(cursor.getColumnIndex("uuid")));
 
         Form form = new Form();
@@ -83,7 +82,6 @@ public class MentorshipDAOImpl extends GenericDAOImpl<Mentorship> implements Men
         mentorship.setEndDate(DateUtil.parse(cursor.getString(cursor.getColumnIndex("end_date"))));
         mentorship.setCreatedAt(DateUtil.parse(cursor.getString(cursor.getColumnIndex("created_at"))));
         mentorship.setPerformedDate(DateUtil.parse(cursor.getString(cursor.getColumnIndex("performed_date")), DateUtil.NORMAL_PATTERN));
-        mentorship.setReferredMonth(Month.valueOf(cursor.getString(cursor.getColumnIndex("referred_month"))));
 
         return mentorship;
     }
@@ -93,7 +91,7 @@ public class MentorshipDAOImpl extends GenericDAOImpl<Mentorship> implements Men
 
         SQLiteDatabase database = getReadableDatabase();
 
-        Cursor cursor = database.rawQuery(MentorshipDAO.QUERY.findAll, null);
+        Cursor cursor = database.rawQuery(QUERY.findAll, null);
         List<Mentorship> mentorships = new ArrayList<>();
 
         while (cursor.moveToNext()) {
@@ -101,14 +99,28 @@ public class MentorshipDAOImpl extends GenericDAOImpl<Mentorship> implements Men
             mentorships.add(mentorship);
         }
 
+        database.close();
         cursor.close();
         return mentorships;
     }
 
     @Override
-    public void deleteByUuids(final List<String> uuids) {
-        for (String uuid : uuids) {
-            delete("uuid = ?", uuid);
+    public void deleteBySessionUuids(final List<String> sessionUuids) {
+        delete("session_uuid IN (?)", sessionUuids);
+    }
+
+    @Override
+    public List<Mentorship> findBySession(Session session) {
+        SQLiteDatabase database = getReadableDatabase();
+
+        List<Mentorship> mentorships = new ArrayList<>();
+        Cursor cursor = database.rawQuery(QUERY.findBySession, new String[]{session.getUuid()});
+
+        while (cursor.moveToNext()) {
+            Mentorship mentorship = getPopulatedEntity(cursor);
+            mentorships.add(mentorship);
         }
+
+        return mentorships;
     }
 }

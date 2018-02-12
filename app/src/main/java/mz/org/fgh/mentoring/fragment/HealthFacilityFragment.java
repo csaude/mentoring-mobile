@@ -2,10 +2,9 @@ package mz.org.fgh.mentoring.fragment;
 
 
 import android.app.DatePickerDialog;
-import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
-import android.widget.AdapterView;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -16,7 +15,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
@@ -25,20 +23,15 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnItemSelected;
+import butterknife.OnTouch;
 import mz.org.fgh.mentoring.R;
-import mz.org.fgh.mentoring.activities.MentoringActivity;
 import mz.org.fgh.mentoring.component.MentoringComponent;
 import mz.org.fgh.mentoring.config.dao.DistrictDAO;
-import mz.org.fgh.mentoring.config.dao.DistrictDAOImpl;
 import mz.org.fgh.mentoring.config.dao.HealthFacilityDAO;
-import mz.org.fgh.mentoring.config.dao.HealthFacilityDAOImpl;
-import mz.org.fgh.mentoring.config.model.Answer;
 import mz.org.fgh.mentoring.config.model.District;
 import mz.org.fgh.mentoring.config.model.HealthFacility;
 import mz.org.fgh.mentoring.event.HealthFacilityEvent;
 import mz.org.fgh.mentoring.event.MessageEvent;
-import mz.org.fgh.mentoring.event.MonthEvent;
-import mz.org.fgh.mentoring.process.model.Month;
 import mz.org.fgh.mentoring.validator.FragmentValidator;
 
 public class HealthFacilityFragment extends BaseFragment implements DatePickerDialog.OnDateSetListener, FragmentValidator {
@@ -48,9 +41,6 @@ public class HealthFacilityFragment extends BaseFragment implements DatePickerDi
 
     @BindView(R.id.fragment_performed_date)
     EditText performedDate;
-
-    @BindView(R.id.fragment_referred_month)
-    Spinner referredMonthSpinner;
 
     @BindView(R.id.fragment_province)
     Spinner provinceSpinner;
@@ -74,6 +64,10 @@ public class HealthFacilityFragment extends BaseFragment implements DatePickerDi
     private List<HealthFacility> healthFacilities;
     private List<HealthFacility> healthFacilitiesPerDistrict;
 
+    private boolean facilitySelected = false;
+
+    private HealthFacility healthFacility;
+
     @Override
     public int getResourceId() {
         return R.layout.fragment_health_facility;
@@ -91,10 +85,6 @@ public class HealthFacilityFragment extends BaseFragment implements DatePickerDi
         ArrayAdapter<String> provinceAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, getProvinces(districts));
         provinceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         provinceSpinner.setAdapter(provinceAdapter);
-
-        ArrayAdapter monthAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, Arrays.asList(Month.values()));
-        monthAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        referredMonthSpinner.setAdapter(monthAdapter);
     }
 
     @OnClick(R.id.fragment_date_picker)
@@ -108,12 +98,6 @@ public class HealthFacilityFragment extends BaseFragment implements DatePickerDi
                 instance.get(Calendar.DAY_OF_MONTH));
 
         datePickerDialog.show();
-    }
-
-    @OnItemSelected(R.id.fragment_referred_month)
-    public void onSelectReferredMonth(AdapterView<?> parent, int position) {
-        Month month = (Month) parent.getItemAtPosition(position);
-        eventBus.post(new MonthEvent(month));
     }
 
     @OnItemSelected(R.id.fragment_province)
@@ -136,10 +120,20 @@ public class HealthFacilityFragment extends BaseFragment implements DatePickerDi
     }
 
     @OnItemSelected(R.id.fragment_health_facility)
-    public void onSelectHealthFacility(final int position) {
-        HealthFacility healthFacility = healthFacilitiesPerDistrict.get(position);
+    public void onSelectHealthFacility(int position) {
 
+        if (!facilitySelected) {
+            return;
+        }
+
+        healthFacility = healthFacilitiesPerDistrict.get(position);
         eventBus.post(new HealthFacilityEvent(healthFacility));
+    }
+
+    @OnTouch(R.id.fragment_health_facility)
+    public boolean onTouch(View view) {
+        facilitySelected = true;
+        return false;
     }
 
     private List<String> getProvinces(List<District> districts) {
@@ -184,11 +178,19 @@ public class HealthFacilityFragment extends BaseFragment implements DatePickerDi
     @Override
     public void validate(ViewPager viewPager, int position) {
 
-        if (!performedDate.getText().toString().isEmpty()) {
+        if (performedDate == null) {
             return;
         }
 
-        viewPager.setCurrentItem(position);
-        Snackbar.make(getView(), getString(R.string.performed_date_must_be_selected), Snackbar.LENGTH_SHORT).show();
+        if (performedDate.getText().toString().isEmpty()) {
+            Snackbar.make(getView(), getString(R.string.performed_date_must_be_selected), Snackbar.LENGTH_SHORT).show();
+            viewPager.setCurrentItem(position);
+            return;
+        }
+
+        if (healthFacility == null) {
+            Snackbar.make(getView(), getString(R.string.health_facility_must_be_selected), Snackbar.LENGTH_SHORT).show();
+            viewPager.setCurrentItem(position);
+        }
     }
 }

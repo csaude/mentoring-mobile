@@ -5,9 +5,9 @@ package mz.org.fgh.mentoring.util;
  */
 public enum ServerConfig {
 
-    ACCOUNT_MANAGER("192.168.56.1:8081", "/account-manager-web/services/"),
+    ACCOUNT_MANAGER("10.10.2.142:8081", "/account-manager-web/services/"),
 
-    MENTORING("192.168.56.1:8080", "/mentoring-integ/services/");
+    MENTORING("10.10.2.142:8080", "/mentoring-integ/services/");
 
     private String address;
     private String service;

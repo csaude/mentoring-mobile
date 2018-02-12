@@ -56,5 +56,13 @@
     <string name="yes">Sim</string>
     <string name="no">Não</string>
     <string name="referred_month">Mês de referência:</string>
+    <string name="terminate">Terminar</string>
+    <string name="go_ahead">Continuar</string>
+
+    <string name="reason_must_be_informed"> O motivo deve ser informado</string>
+    <string name="session_termination_reason">Motivo para o término da sessão</string>
+    <string name="iterations">Iterações</string>
+    <string name="complete">Completa</string>
+    <string name="incomplete">Incompleta</string>
 
 </resources>

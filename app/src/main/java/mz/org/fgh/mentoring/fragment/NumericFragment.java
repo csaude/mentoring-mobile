@@ -23,6 +23,7 @@ import mz.org.fgh.mentoring.component.MentoringComponent;
 import mz.org.fgh.mentoring.config.model.Answer;
 import mz.org.fgh.mentoring.config.model.Question;
 import mz.org.fgh.mentoring.event.AnswerEvent;
+import mz.org.fgh.mentoring.event.EventType;
 import mz.org.fgh.mentoring.event.MessageEvent;
 import mz.org.fgh.mentoring.event.ProcessEvent;
 import mz.org.fgh.mentoring.validator.FragmentValidator;
@@ -68,6 +69,10 @@ public class NumericFragment extends BaseFragment implements FragmentValidator {
     @Override
     public void validate(ViewPager viewPager, int position) {
 
+        if (numberValue == null) {
+            return;
+        }
+
         if (!isEmpty()) {
 
             getAnswer(numberValue.getText().toString());
@@ -100,6 +105,6 @@ public class NumericFragment extends BaseFragment implements FragmentValidator {
         }
 
         getAnswer(numberValue.getText().toString());
-        eventBus.post(new ProcessEvent());
+        eventBus.post(new ProcessEvent(EventType.SUBMIT));
     }
 }

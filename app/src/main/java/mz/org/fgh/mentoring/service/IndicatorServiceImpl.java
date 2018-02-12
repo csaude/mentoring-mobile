@@ -16,8 +16,9 @@ import javax.inject.Named;
 
 import mz.org.fgh.mentoring.config.dao.AnswerDAO;
 import mz.org.fgh.mentoring.config.model.Answer;
+import mz.org.fgh.mentoring.event.EventType;
 import mz.org.fgh.mentoring.event.ProcessEvent;
-import mz.org.fgh.mentoring.helpers.IndicatorHelper;
+import mz.org.fgh.mentoring.dto.IndicatorHelper;
 import mz.org.fgh.mentoring.infra.UserContext;
 import mz.org.fgh.mentoring.process.dao.IndicatorDAO;
 import mz.org.fgh.mentoring.process.model.Indicator;
@@ -101,7 +102,7 @@ public class IndicatorServiceImpl implements IndicatorService {
                                      .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
                                          public void onClick(DialogInterface dialog, int which) {
-                                             eventBus.post(new ProcessEvent());
+                                             eventBus.post(new ProcessEvent(EventType.SUBMIT));
                                          }
                                      })
                                      .setIcon(android.R.drawable.ic_dialog_info)

@@ -72,6 +72,7 @@ public class TutoredDAOImpl extends GenericDAOImpl<Tutored> implements TutoredDA
             tutoreds.add(tutored);
         }
 
+        database.close();
         cursor.close();
         return tutoreds;
     }

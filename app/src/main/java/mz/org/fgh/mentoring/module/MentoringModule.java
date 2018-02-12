@@ -32,6 +32,8 @@ import mz.org.fgh.mentoring.process.dao.IndicatorDAO;
 import mz.org.fgh.mentoring.process.dao.IndictorDAOImpl;
 import mz.org.fgh.mentoring.process.dao.MentorshipDAO;
 import mz.org.fgh.mentoring.process.dao.MentorshipDAOImpl;
+import mz.org.fgh.mentoring.process.dao.SessionDAO;
+import mz.org.fgh.mentoring.process.dao.SessionDAOImpl;
 import mz.org.fgh.mentoring.service.CareerSyncService;
 import mz.org.fgh.mentoring.service.CareerSyncServiceImpl;
 import mz.org.fgh.mentoring.service.FormQuestionSyncService;
@@ -42,6 +44,12 @@ import mz.org.fgh.mentoring.service.IndicatorService;
 import mz.org.fgh.mentoring.service.IndicatorServiceImpl;
 import mz.org.fgh.mentoring.service.LoadMetadataService;
 import mz.org.fgh.mentoring.service.LoadMetadataServiceImpl;
+import mz.org.fgh.mentoring.service.MentorshipService;
+import mz.org.fgh.mentoring.service.MentorshipServiceImpl;
+import mz.org.fgh.mentoring.service.MentorshipSyncServiceImpl;
+import mz.org.fgh.mentoring.service.SessionService;
+import mz.org.fgh.mentoring.service.SessionServiceImpl;
+import mz.org.fgh.mentoring.service.SyncService;
 import mz.org.fgh.mentoring.service.TutoredService;
 import mz.org.fgh.mentoring.service.TutoredServiceImpl;
 import mz.org.fgh.mentoring.service.UserService;
@@ -148,6 +156,11 @@ public class MentoringModule {
     }
 
     @Provides
+    public SessionDAO provideSessionDAO() {
+        return new SessionDAOImpl(context);
+    }
+
+    @Provides
     public HealthFacilitySyncService provideHealthFacilitySyncService(HealthFacilitySyncServiceImpl healthFacilitySyncService) {
         return healthFacilitySyncService;
     }
@@ -175,6 +188,22 @@ public class MentoringModule {
     @Provides
     public IndicatorService provideIndicatorService(IndicatorServiceImpl indicatorServiceImpl) {
         return indicatorServiceImpl;
+    }
+
+    @Provides
+    public SessionService provideSessionService(SessionServiceImpl sessionService) {
+        return sessionService;
+    }
+
+    @Provides
+    public MentorshipService provideMentorshipService(MentorshipServiceImpl mentorshipService) {
+        return mentorshipService;
+    }
+
+    @Provides
+    @Named("sessions")
+    public SyncService provideSyncService(MentorshipSyncServiceImpl syncService) {
+        return syncService;
     }
 
     @Provides

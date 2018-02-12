@@ -5,20 +5,23 @@ import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
+import javax.inject.Named;
 
 import mz.org.fgh.mentoring.activities.BaseActivity;
 import mz.org.fgh.mentoring.activities.ListMentorshipActivity;
 import mz.org.fgh.mentoring.config.dao.AnswerDAO;
 import mz.org.fgh.mentoring.config.model.Answer;
-import mz.org.fgh.mentoring.helpers.MentorshipHelper;
+import mz.org.fgh.mentoring.config.model.Tutor;
+import mz.org.fgh.mentoring.dto.MentorshipHelper;
+import mz.org.fgh.mentoring.dto.SessionDTO;
 import mz.org.fgh.mentoring.infra.MentoringApplication;
 import mz.org.fgh.mentoring.infra.UserContext;
-import mz.org.fgh.mentoring.process.dao.MentorshipDAO;
 import mz.org.fgh.mentoring.process.model.Mentorship;
 import mz.org.fgh.mentoring.process.model.MentorshipBeanResource;
-import mz.org.fgh.mentoring.util.DateUtil;
+import mz.org.fgh.mentoring.process.model.Session;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -29,49 +32,36 @@ import retrofit2.Retrofit;
  */
 public class MentorshipSyncServiceImpl implements SyncService {
 
-    private BaseActivity activity;
-    private MentorshipDAO mentorshipDAO;
-    private AnswerDAO answerDAO;
+    @Inject
+    SessionService sessionService;
 
-    public MentorshipSyncServiceImpl(final MentorshipDAO mentorshipDAO, final AnswerDAO answerDAO) {
-        this.mentorshipDAO = mentorshipDAO;
-        this.answerDAO = answerDAO;
+    @Inject
+    MentorshipService mentorshipService;
+
+    @Inject
+    AnswerDAO answerDAO;
+
+    @Inject
+    @Named("mentoring")
+    Retrofit retrofit;
+
+    private BaseActivity activity;
+
+    @Inject
+    public MentorshipSyncServiceImpl() {
     }
 
     @Override
     public void execute() {
+        List<Session> sessions = sessionService.findAllSessions();
 
-        MentoringApplication application = (MentoringApplication) activity.getApplication();
-        Retrofit retrofit = application.getRetrofit();
-        SyncDataService syncDataService = retrofit.create(SyncDataService.class);
-
-        List<Mentorship> mentorships = mentorshipDAO.findAll();
-
-        if (mentorships.isEmpty()) {
+        if (sessions.isEmpty()) {
             Toast.makeText(activity, "Nenhum dado disponivel para sincronizar!", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        List<MentorshipHelper> mentorshipHelpers = new ArrayList<>();
-
-        UserContext user = ((MentoringApplication) activity.getApplication()).getAuth().getUser();
-
-        for (Mentorship mentorship : mentorships) {
-            mentorship.setTutor(user.getTutor());
-            List<Answer> answers = answerDAO.findByMentorshipUuid(mentorship.getUuid());
-            MentorshipHelper mentorshipHelper = new MentorshipHelper();
-            mentorshipHelper.setMentorship(mentorship);
-            mentorshipHelper.setStartDate(DateUtil.format(mentorship.getStartDate()));
-            mentorshipHelper.setEndDate(DateUtil.format(mentorship.getEndDate()));
-            mentorshipHelper.setPerformedDate(DateUtil.format(mentorship.getPerformedDate(), DateUtil.NORMAL_PATTERN));
-            mentorshipHelper.prepareAnswerHelper(answers);
-            mentorshipHelpers.add(mentorshipHelper);
-        }
-
-        MentorshipBeanResource mentorshipBeanResource = new MentorshipBeanResource();
-
-        mentorshipBeanResource.setUserContext(user);
-        mentorshipBeanResource.setMentorships(mentorshipHelpers);
+        MentorshipBeanResource mentorshipBeanResource = prepareSyncData(sessions);
+        SyncDataService syncDataService = retrofit.create(SyncDataService.class);
 
         Call<MentorshipBeanResource> call = syncDataService.syncMentorships(mentorshipBeanResource);
         final ProgressDialog dialog = new ProgressDialog(activity);
@@ -84,16 +74,14 @@ public class MentorshipSyncServiceImpl implements SyncService {
                          @Override
                          public void onResponse(Call<MentorshipBeanResource> request, Response<MentorshipBeanResource> response) {
                              MentorshipBeanResource resource = response.body();
-                             List<String> mentorships = resource.getMentorshipUuids();
-
-                             answerDAO.deleteByMentorshipUuids(mentorships);
-                             mentorshipDAO.deleteByUuids(mentorships);
+                             List<String> sessionUuids = resource.getSessionUuids();
+                             sessionService.deleteSessionsByUuids(sessionUuids);
 
                              dialog.dismiss();
 
                              new AlertDialog.Builder(activity)
-                                     .setTitle("Processos Enviados")
-                                     .setMessage(mentorships.size() + " Processo(s) de Mentoria fora(m) sincronizado(s) com sucesso!")
+                                     .setTitle("Tutorias enviadas")
+                                     .setMessage(sessionUuids.size() + " Processo(s) de Tutoria fora(m) sincronizado(s) com sucesso!")
                                      .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                          public void onClick(DialogInterface dialog, int which) {
                                              ((ListMentorshipActivity) activity).setMentorships();
@@ -108,7 +96,7 @@ public class MentorshipSyncServiceImpl implements SyncService {
                          public void onFailure(Call<MentorshipBeanResource> call, Throwable t) {
                              dialog.dismiss();
                              new AlertDialog.Builder(activity)
-                                     .setTitle("Processos Enviados")
+                                     .setTitle("Tutorias não enviadas")
                                      .setMessage("Errors ao sincronizar por favor tente novamente")
                                      .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                          public void onClick(DialogInterface dialog, int which) {
@@ -122,6 +110,36 @@ public class MentorshipSyncServiceImpl implements SyncService {
                      }
         );
 
+    }
+
+    private MentorshipBeanResource prepareSyncData(List<Session> sessions) {
+        UserContext user = ((MentoringApplication) activity.getApplication()).getAuth().getUser();
+
+        MentorshipBeanResource mentorshipBeanResource = new MentorshipBeanResource();
+        mentorshipBeanResource.setUserContext(user);
+        Tutor tutor = new Tutor();
+        tutor.setUuid(user.getUuid());
+
+        for (Session session : sessions) {
+            SessionDTO sessionDTO = new SessionDTO();
+            sessionDTO.setSession(session);
+
+            List<Mentorship> mentorships = mentorshipService.findMentorshipsBySession(session);
+
+            for (Mentorship mentorship : mentorships) {
+                MentorshipHelper mentorshipHelper = new MentorshipHelper();
+                mentorship.setTutor(tutor);
+                mentorshipHelper.setMentorship(mentorship);
+
+                List<Answer> answers = answerDAO.findByMentorshipUuid(mentorship.getUuid());
+                mentorshipHelper.prepareAnswerHelper(answers);
+                sessionDTO.addMentoshipHelper(mentorshipHelper);
+            }
+
+            mentorshipBeanResource.addSessions(sessionDTO);
+        }
+
+        return mentorshipBeanResource;
     }
 
     @Override

@@ -2,43 +2,50 @@ package mz.org.fgh.mentoring.fragment;
 
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import mz.org.fgh.mentoring.R;
-import mz.org.fgh.mentoring.activities.AnswerActivity;
-import mz.org.fgh.mentoring.activities.MentoringActivity;
+import mz.org.fgh.mentoring.provider.AnswerProvider;
 import mz.org.fgh.mentoring.adapter.SwipeAdapter;
 import mz.org.fgh.mentoring.component.MentoringComponent;
 import mz.org.fgh.mentoring.config.model.Answer;
 import mz.org.fgh.mentoring.config.model.Question;
 import mz.org.fgh.mentoring.event.AnswerEvent;
-import mz.org.fgh.mentoring.event.MessageEvent;
+import mz.org.fgh.mentoring.event.EventType;
 import mz.org.fgh.mentoring.event.ProcessEvent;
 import mz.org.fgh.mentoring.model.QuestionAnswer;
+import mz.org.fgh.mentoring.provider.SessionProvider;
 import mz.org.fgh.mentoring.util.AnswerUtil;
 import mz.org.fgh.mentoring.validator.FragmentValidator;
+import mz.org.fgh.mentoring.validator.IterationFragment;
 
-public class PageFragment extends BaseFragment implements FragmentValidator {
+public class PageFragment extends BaseFragment implements FragmentValidator, IterationFragment {
 
     @BindView(R.id.text_view)
     TextView textView;
 
     @BindView(R.id.save_btn)
     Button saveBtn;
+
+    @BindView(R.id.terminate_btn)
+    Button terminateBtn;
+
+    @BindView(R.id.continue_btn)
+    Button continueBtn;
 
     @BindView(R.id.fragment_page_competent)
     RadioButton competentRd;
@@ -49,18 +56,31 @@ public class PageFragment extends BaseFragment implements FragmentValidator {
     @BindView(R.id.fragment_page_non_applicable)
     RadioButton nonApplicabletRd;
 
+    @BindView(R.id.reason)
+    EditText reason;
+
+    @BindView(R.id.iterations)
+    TextView iteractions;
+
+    @BindView(R.id.terminate_reason)
+    TextView terminateReason;
+
+    @BindView(R.id.radio_group)
+    RadioGroup radioGroup;
+
     @Inject
     EventBus eventBus;
 
     private Question question;
 
-    private Answer answer;
+    private AnswerProvider activity;
 
-    private AnswerActivity activity;
+    private Bundle bundle;
+
+    private SessionProvider sessionProvider;
 
     public PageFragment() {
     }
-
 
     @Override
     public void onCreateView() {
@@ -68,17 +88,29 @@ public class PageFragment extends BaseFragment implements FragmentValidator {
         MentoringComponent component = application.getMentoringComponent();
         component.inject(this);
 
-        final Bundle bundle = getArguments();
+        bundle = getArguments();
         question = (Question) bundle.get(SwipeAdapter.QUESTION);
 
         boolean isLastPage = bundle.getBoolean(SwipeAdapter.LAST_PAGE);
         textView.setText(question.getQuestion());
 
-        activity = (AnswerActivity) getActivity();
+        activity = (AnswerProvider) getActivity();
 
-        if (!isLastPage) {
-            saveBtn.setVisibility(View.GONE);
+        if (getActivity() instanceof SessionProvider) {
+            sessionProvider = (SessionProvider) getActivity();
         }
+
+        updateIterations();
+        updateButtons();
+    }
+
+    @Override
+    public void updateIterations() {
+        if (activity == null || iteractions == null) {
+            return;
+        }
+
+        iteractions.setText(getString(R.string.iterations) + ":" + (sessionProvider.getSession().getMentorships().size() + 1) + "/" + sessionProvider.getSession().getForm().getTarget());
     }
 
     @Override
@@ -89,12 +121,31 @@ public class PageFragment extends BaseFragment implements FragmentValidator {
     @OnClick(R.id.save_btn)
     public void onClickSaveBtn() {
 
-        if (!AnswerUtil.wasQuestionAnswered(activity.getAnswers(), question)) {
+        if (!wasQuestionAnswered()) {
             Snackbar.make(getView(), getString(R.string.none_answer_was_seleted), Snackbar.LENGTH_SHORT).show();
             return;
         }
 
-        eventBus.post(new ProcessEvent());
+        if (reason.getVisibility() == View.VISIBLE && reason.getText().toString().trim().isEmpty()) {
+            Snackbar.make(getView(), getString(R.string.reason_must_be_informed), Snackbar.LENGTH_SHORT).show();
+            return;
+        }
+
+        ProcessEvent processEvent = new ProcessEvent(EventType.SUBMIT);
+        processEvent.setReason(reason.getText().toString().isEmpty() ? null : reason.getText().toString());
+
+        eventBus.post(processEvent);
+    }
+
+    @OnClick(R.id.continue_btn)
+    public void onClickContinueBtn() {
+
+        if (!wasQuestionAnswered()) {
+            Snackbar.make(getView(), getString(R.string.none_answer_was_seleted), Snackbar.LENGTH_SHORT).show();
+            return;
+        }
+
+        eventBus.post(new ProcessEvent(EventType.CONTINUE));
     }
 
     @OnClick(R.id.fragment_page_competent)
@@ -122,21 +173,72 @@ public class PageFragment extends BaseFragment implements FragmentValidator {
     }
 
     private void getAnswer(String value) {
-        answer = question.getQuestionType().getAnswer();
+        Answer answer = question.getQuestionType().getAnswer();
         answer.setQuestion(question);
         answer.setValue(value);
 
-        eventBus.post(new AnswerEvent(this.answer));
+        eventBus.post(new AnswerEvent(answer));
     }
 
     @Override
     public void validate(ViewPager viewPager, int position) {
 
-        if (question == null || AnswerUtil.wasQuestionAnswered(activity.getAnswers(), question)) {
+        if (competentRd == null || unsatisfactoryRd == null || nonApplicabletRd == null) {
+            return;
+        }
+
+        if (wasQuestionAnswered()) {
             return;
         }
 
         viewPager.setCurrentItem(position);
         Snackbar.make(getView(), getString(R.string.none_answer_was_seleted), Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void updateButtons() {
+
+        if (bundle == null) {
+            return;
+        }
+
+        boolean isLastPage = bundle.getBoolean(SwipeAdapter.LAST_PAGE);
+
+        saveBtn.setVisibility(View.INVISIBLE);
+        terminateBtn.setVisibility(View.INVISIBLE);
+        continueBtn.setVisibility(View.INVISIBLE);
+        terminateReason.setVisibility(View.INVISIBLE);
+        reason.setVisibility(View.INVISIBLE);
+
+        if (isLastPage) {
+            terminateBtn.setVisibility(View.VISIBLE);
+            continueBtn.setVisibility(View.VISIBLE);
+        }
+
+        if (isLastPage && (this.sessionProvider.getSession().getForm().getTarget() == (this.sessionProvider.getSession().getMentorships().size() + 1))) {
+            saveBtn.setVisibility(View.VISIBLE);
+            terminateBtn.setVisibility(View.INVISIBLE);
+            continueBtn.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    @Override
+    public void clearSelection() {
+        radioGroup.clearCheck();
+        reason.setText("");
+    }
+
+    @OnClick(R.id.terminate_btn)
+    public void onClickTerminate() {
+        saveBtn.setVisibility(View.VISIBLE);
+        terminateReason.setVisibility(View.VISIBLE);
+        reason.setVisibility(View.VISIBLE);
+
+        terminateBtn.setVisibility(View.INVISIBLE);
+        continueBtn.setVisibility(View.INVISIBLE);
+    }
+
+    private boolean wasQuestionAnswered() {
+        return competentRd.isChecked() || unsatisfactoryRd.isChecked() || nonApplicabletRd.isChecked();
     }
 }

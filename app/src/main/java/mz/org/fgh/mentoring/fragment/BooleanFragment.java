@@ -2,7 +2,6 @@ package mz.org.fgh.mentoring.fragment;
 
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.Button;
@@ -11,21 +10,18 @@ import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import mz.org.fgh.mentoring.R;
-import mz.org.fgh.mentoring.activities.AnswerActivity;
-import mz.org.fgh.mentoring.activities.MentoringActivity;
+import mz.org.fgh.mentoring.provider.AnswerProvider;
 import mz.org.fgh.mentoring.adapter.SwipeAdapter;
 import mz.org.fgh.mentoring.component.MentoringComponent;
 import mz.org.fgh.mentoring.config.model.Answer;
 import mz.org.fgh.mentoring.config.model.Question;
 import mz.org.fgh.mentoring.event.AnswerEvent;
-import mz.org.fgh.mentoring.event.MessageEvent;
+import mz.org.fgh.mentoring.event.EventType;
 import mz.org.fgh.mentoring.event.ProcessEvent;
 import mz.org.fgh.mentoring.util.AnswerUtil;
 import mz.org.fgh.mentoring.validator.FragmentValidator;
@@ -51,7 +47,7 @@ public class BooleanFragment extends BaseFragment implements FragmentValidator {
 
     private Answer answer;
 
-    private AnswerActivity activity;
+    private AnswerProvider activity;
 
     public BooleanFragment() {
     }
@@ -62,7 +58,7 @@ public class BooleanFragment extends BaseFragment implements FragmentValidator {
         MentoringComponent component = application.getMentoringComponent();
         component.inject(this);
 
-        activity = (AnswerActivity) getActivity();
+        activity = (AnswerProvider) getActivity();
 
         final Bundle bundle = getArguments();
         question = (Question) bundle.get(SwipeAdapter.QUESTION);
@@ -88,7 +84,7 @@ public class BooleanFragment extends BaseFragment implements FragmentValidator {
             return;
         }
 
-        eventBus.post(new ProcessEvent());
+        eventBus.post(new ProcessEvent(EventType.SUBMIT));
     }
 
     @OnClick(R.id.fragment_boolean_yes)

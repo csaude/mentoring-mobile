@@ -18,6 +18,8 @@ public class Form extends GenericEntity {
 
     private FormType formType;
 
+    private Integer target;
+
     public Form(String uuid, String name, ProgrammaticArea programmaticArea, String version, FormType formType) {
         this.setUuid(uuid);
         this.name = name;
@@ -47,6 +49,14 @@ public class Form extends GenericEntity {
 
     public FormType getFormType() {
         return formType;
+    }
+
+    public Integer getTarget() {
+        return target;
+    }
+
+    public void setTarget(Integer target) {
+        this.target = target;
     }
 
     @Override

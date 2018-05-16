@@ -84,6 +84,11 @@ public class NumericFragment extends BaseFragment implements FragmentValidator {
         Snackbar.make(textView, getString(R.string.the_value_is_empty), Snackbar.LENGTH_SHORT).show();
     }
 
+    @Override
+    public boolean isValid() {
+        return !isEmpty();
+    }
+
     private void getAnswer(String value) {
         Answer answer = question.getQuestionType().getAnswer();
         answer.setValue(value);

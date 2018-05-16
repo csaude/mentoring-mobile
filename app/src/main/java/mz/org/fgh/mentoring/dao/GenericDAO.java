@@ -21,11 +21,11 @@ public interface GenericDAO<T extends GenericEntity> {
 
     String TUTORED_TABLE = "CREATE TABLE tutoreds(id INTEGER PRIMARY KEY, name TEXT, surname TEXT, phone_number TEXT, career_uuid TEXT, uuid TEXT UNIQUE, created_at TEXT, FOREIGN KEY(career_uuid) REFERENCES careers(uuid));";
 
-    String FORM_TABLE = "CREATE TABLE forms(id INTEGER PRIMARY KEY, name TEXT, description TEXT, programmatic_area_uuid TEXT, version INTEGER, uuid TEXT UNIQUE, target INTEGER, created_at TEXT);";
+    String FORM_TABLE = "CREATE TABLE forms(id INTEGER PRIMARY KEY, name TEXT, description TEXT, programmatic_area_uuid TEXT, version INTEGER, uuid TEXT UNIQUE, target INTEGER, created_at TEXT, updated_at TEXT);";
 
     String QUESTION_TABLE = "CREATE TABLE questions(id INTEGER PRIMARY KEY, question TEXT, question_type TEXT, question_category TEXT, uuid TEXT UNIQUE, created_at TEXT);";
 
-    String FORM_QUESTION_TABLE = "CREATE TABLE form_questions(id INTEGER PRIMARY KEY, form_uuid TEXT, question_uuid TEXT, uuid TEXT UNIQUE, created_at TEXT, FOREIGN KEY(form_uuid) REFERENCES forms(uuid), FOREIGN KEY(question_uuid) REFERENCES questions(uuid));";
+    String FORM_QUESTION_TABLE = "CREATE TABLE form_questions(id INTEGER PRIMARY KEY, form_uuid TEXT, question_uuid TEXT, uuid TEXT UNIQUE, sequence INTEGER, created_at TEXT, updated_at TEXT, FOREIGN KEY(form_uuid) REFERENCES forms(uuid), FOREIGN KEY(question_uuid) REFERENCES questions(uuid));";
 
     String MENTORSHIP_TABLE = "CREATE TABLE mentorships(id INTEGER PRIMARY KEY, form_uuid TEXT, tutored_uuid TEXT, health_facility_uuid TEXT, uuid TEXT UNIQUE, start_date TEXT, end_date TEXT, performed_date TEXT, created_at TEXT, FOREIGN KEY(form_uuid) REFERENCES forms(uuid), FOREIGN KEY(tutored_uuid) REFERENCES tutoreds(uuid), FOREIGN KEY(health_facility_uuid) REFERENCES health_facilities(uuid));";
 
@@ -40,6 +40,10 @@ public interface GenericDAO<T extends GenericEntity> {
     String SESSION_TABLE = "CREATE TABLE sessions(id INTEGER PRIMARY KEY, form_uuid TEXT, health_facility_uuid TEXT, uuid TEXT UNIQUE, start_date TEXT, end_date TEXT, performed_date TEXT, status TEXT, reason TEXT, created_at TEXT, FOREIGN KEY(form_uuid) REFERENCES forms(uuid), FOREIGN KEY(health_facility_uuid) REFERENCES health_facilities(uuid));";
 
     String ALTER_MENTORSHIP_TABLE_ADD_SESSION = "ALTER TABLE mentorships ADD COLUMN session_uuid TEXT";
+
+    String CABINET_TABLE = "CREATE TABLE cabinets(id INTEGER PRIMARY KEY, uuid TEXT UNIQUE, name TEXT, created_at TEXT, updated_at TEXT);";
+
+    String ALTER_MENTORSHIP_TABLE_ADD_CABINET = "ALTER TABLE mentorships ADD COLUMN cabinet_uuid TEXT";
 
     String getTableName();
 

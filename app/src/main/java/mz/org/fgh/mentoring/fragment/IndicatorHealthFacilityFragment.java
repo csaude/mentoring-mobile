@@ -172,4 +172,9 @@ public class IndicatorHealthFacilityFragment extends BaseFragment implements Dat
         viewPager.setCurrentItem(position);
         Snackbar.make(getView(), getString(R.string.referred_month_must_be_selected), Snackbar.LENGTH_SHORT).show();
     }
+
+    @Override
+    public boolean isValid() {
+        return !referredMonthDate.getText().toString().isEmpty();
+    }
 }

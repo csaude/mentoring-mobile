@@ -1,8 +1,15 @@
 package mz.org.fgh.mentoring.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -16,16 +23,22 @@ import butterknife.BindView;
 import mz.org.fgh.mentoring.R;
 import mz.org.fgh.mentoring.adapter.SwipeAdapter;
 import mz.org.fgh.mentoring.component.MentoringComponent;
+import mz.org.fgh.mentoring.config.dao.FormQuestionDAO;
 import mz.org.fgh.mentoring.config.dao.QuestionDAO;
 import mz.org.fgh.mentoring.config.model.Answer;
+import mz.org.fgh.mentoring.config.model.Form;
+import mz.org.fgh.mentoring.config.model.FormQuestion;
 import mz.org.fgh.mentoring.config.model.HealthFacility;
 import mz.org.fgh.mentoring.config.model.Question;
 import mz.org.fgh.mentoring.event.AnswerEvent;
+import mz.org.fgh.mentoring.event.CabinetEvent;
 import mz.org.fgh.mentoring.event.FormEvent;
 import mz.org.fgh.mentoring.event.HealthFacilityEvent;
 import mz.org.fgh.mentoring.event.MessageEvent;
 import mz.org.fgh.mentoring.event.ProcessEvent;
 import mz.org.fgh.mentoring.event.TutoredEvent;
+import mz.org.fgh.mentoring.fragment.ConfirmationFragment;
+import mz.org.fgh.mentoring.fragment.SaveFragment;
 import mz.org.fgh.mentoring.model.Tutored;
 import mz.org.fgh.mentoring.process.model.Mentorship;
 import mz.org.fgh.mentoring.process.model.Session;
@@ -36,7 +49,7 @@ import mz.org.fgh.mentoring.util.DateUtil;
 import mz.org.fgh.mentoring.validator.FragmentValidator;
 import mz.org.fgh.mentoring.validator.IterationFragment;
 
-public class MentoringActivity extends BaseAuthenticateActivity implements ViewPager.OnPageChangeListener, AnswerProvider, SessionProvider {
+public class MentoringActivity extends BaseAuthenticateActivity implements ViewPager.OnPageChangeListener, AnswerProvider, SessionProvider, View.OnClickListener {
 
     @BindView(R.id.view_pager)
     ViewPager viewPager;
@@ -45,7 +58,7 @@ public class MentoringActivity extends BaseAuthenticateActivity implements ViewP
     EventBus eventBus;
 
     @Inject
-    QuestionDAO questionDAO;
+    FormQuestionDAO formQuestionDAO;
 
     @Inject
     SessionService sessionService;
@@ -60,19 +73,23 @@ public class MentoringActivity extends BaseAuthenticateActivity implements ViewP
 
     private Session session;
 
-    private List<Question> questions;
-
     private Tutored tutored;
 
+    private Form form;
+
+    @SuppressLint("ResourceType")
     @Override
     protected void onMentoringCreate(Bundle bundle) {
         setContentView(R.layout.activity_mentoring);
+
+        toolbar.setNavigationIcon(R.mipmap.ic_back);
+        toolbar.setNavigationOnClickListener(this);
 
         MentoringComponent component = application.getMentoringComponent();
         component.inject(this);
         eventBus.register(this);
 
-        adapter = new SwipeAdapter(getSupportFragmentManager());
+        adapter = new SwipeAdapter(getSupportFragmentManager(), this);
 
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(this);
@@ -100,6 +117,7 @@ public class MentoringActivity extends BaseAuthenticateActivity implements ViewP
         this.mentorship.setHealthFacility(session.getHealthFacility());
         this.mentorship.setPerformedDate(DateUtil.parse(session.getPerformedDate(), DateUtil.NORMAL_PATTERN));
         this.mentorship.setForm(session.getForm());
+        this.mentorship.setCabinet(session.getCabinet());
     }
 
     @Override
@@ -108,39 +126,31 @@ public class MentoringActivity extends BaseAuthenticateActivity implements ViewP
 
     @Override
     public void onPageSelected(int position) {
-        setCurrentPosition(position);
 
-        Object itemInstance = adapter.instantiateItem(viewPager, position);
-
-        if (itemInstance instanceof IterationFragment) {
-            IterationFragment iterationFragment = (IterationFragment) itemInstance;
-            iterationFragment.updateButtons();
-            iterationFragment.updateIterations();
+        if (currentPosition > position) {
+            currentPosition = position;
+            return;
         }
 
-        Object item = adapter.instantiateItem(viewPager, getValidatorPosition());
+        if (currentPosition < position) {
+            Fragment item = (Fragment) adapter.instantiateItem(viewPager, this.currentPosition);
 
-        if (item instanceof FragmentValidator) {
-            FragmentValidator fragment = (FragmentValidator) item;
-            fragment.validate(viewPager, getValidatorPosition());
+            if (item instanceof FragmentValidator) {
+                FragmentValidator fragment = (FragmentValidator) item;
+
+                if (item.isAdded()) {
+                    fragment.validate(viewPager, this.currentPosition);
+
+                    if (fragment.isValid()) {
+                        this.currentPosition = position;
+                    }
+                }
+            }
         }
     }
 
     @Override
     public void onPageScrollStateChanged(int state) {
-    }
-
-    public void setCurrentPosition(int position) {
-
-        if (position <= currentPosition) {
-            return;
-        }
-
-        currentPosition = position;
-    }
-
-    public int getValidatorPosition() {
-        return currentPosition - DECREMENTER;
     }
 
     @Subscribe
@@ -150,9 +160,21 @@ public class MentoringActivity extends BaseAuthenticateActivity implements ViewP
 
     @Subscribe
     public void onFormSelected(FormEvent formEvent) {
-        session.setForm(formEvent.getForm());
-        questions = questionDAO.findQuestionByForm(session.getForm().getUuid());
-        adapter.setQuestions(questions);
+
+        if (this.form != null && this.form.getUuid().equals(formEvent.getForm().getUuid())) {
+            return;
+        }
+
+        this.form = formEvent.getForm();
+        session.setForm(this.form);
+
+        List<FormQuestion> formQuestions = formQuestionDAO.findByFormUuid(this.form.getUuid());
+
+        for (FormQuestion formQuestion : formQuestions) {
+            this.form.addFormQuestion(formQuestion);
+        }
+
+        adapter.setForm(this.form);
     }
 
     @Subscribe
@@ -171,6 +193,15 @@ public class MentoringActivity extends BaseAuthenticateActivity implements ViewP
     public void onAnswerSelected(AnswerEvent answerEvent) {
         Answer answer = answerEvent.getAnswer();
         this.mentorship.addAnswer(answer);
+
+        if (isLastQuestion()) {
+            adapter.addFragment(viewPager.getCurrentItem(), new ConfirmationFragment());
+        }
+    }
+
+    @Subscribe
+    public void onCabinetSelected(CabinetEvent cabinetEvent) {
+        this.session.setCabinet(cabinetEvent.getCabinet());
     }
 
     @Subscribe
@@ -179,7 +210,6 @@ public class MentoringActivity extends BaseAuthenticateActivity implements ViewP
         switch (processEvent.getEventType()) {
 
             case SUBMIT:
-                this.session.setReason(processEvent.getReason());
                 submitProcess();
                 break;
 
@@ -189,12 +219,21 @@ public class MentoringActivity extends BaseAuthenticateActivity implements ViewP
                 this.session.addMentorship(mentorship);
                 this.mentorship = new Mentorship();
 
-                adapter = new SwipeAdapter(getSupportFragmentManager());
-                adapter.setQuestions(this.questions);
+                adapter = new SwipeAdapter(getSupportFragmentManager(), this);
+                this.form.clearAnswers();
+                adapter.setForm(this.form);
+                adapter.setSession(session);
                 viewPager.setAdapter(adapter);
 
                 currentPosition = 3; //go to the first question...
                 viewPager.setCurrentItem(currentPosition, true);
+                break;
+
+            case TERMINATE:
+                this.session.setReason(processEvent.getReason());
+                adapter.setSession(session);
+                adapter.addFragment(viewPager.getCurrentItem(), new SaveFragment());
+                viewPager.setCurrentItem(viewPager.getCurrentItem() + DECREMENTER, true);
                 break;
         }
     }
@@ -213,5 +252,15 @@ public class MentoringActivity extends BaseAuthenticateActivity implements ViewP
     @Override
     public Session getSession() {
         return this.session;
+    }
+
+    private boolean isLastQuestion() {
+        return adapter.getQuestionsSize() == viewPager.getCurrentItem() + DECREMENTER;
+    }
+
+    @Override
+    public void onClick(View view) {
+        startActivity(new Intent(this, ListMentorshipActivity.class));
+        finish();
     }
 }

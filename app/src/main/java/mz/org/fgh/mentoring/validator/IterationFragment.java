@@ -5,10 +5,5 @@ package mz.org.fgh.mentoring.validator;
  */
 
 public interface IterationFragment {
-
     void updateIterations();
-
-    void updateButtons();
-
-    void clearSelection();
 }

@@ -37,6 +37,9 @@ public class LoadMetadataServiceImpl implements LoadMetadataService {
     TutoredService tutoredService;
 
     @Inject
+    CabinetService cabinetService;
+
+    @Inject
     public LoadMetadataServiceImpl() {
     }
 
@@ -62,6 +65,7 @@ public class LoadMetadataServiceImpl implements LoadMetadataService {
                 careerSyncService.processCarres(data.getCareers());
                 formQuestionSyncService.processFormQuestions(data.getFormQuestions());
                 tutoredService.processFoundTutoredByUser(data.getTutoreds());
+                cabinetService.precessCabinets(data.getCabinets());
 
                 progressDialog.cancel();
             }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import mz.org.fgh.mentoring.config.model.Cabinet;
 import mz.org.fgh.mentoring.config.model.Form;
 import mz.org.fgh.mentoring.config.model.HealthFacility;
 import mz.org.fgh.mentoring.model.GenericEntity;
@@ -14,6 +15,8 @@ import mz.org.fgh.mentoring.util.DateUtil;
  */
 
 public class Session extends GenericEntity {
+
+    public static final int FIRST_ITERACTION = 1;
 
     private Date startDate;
 
@@ -30,6 +33,8 @@ public class Session extends GenericEntity {
     private HealthFacility healthFacility;
 
     private List<Mentorship> mentorships;
+
+    private Cabinet cabinet;
 
     public Session() {
         this.mentorships = new ArrayList<>();
@@ -108,5 +113,22 @@ public class Session extends GenericEntity {
 
     public void addMentorship(Mentorship mentorship) {
         mentorships.add(mentorship);
+    }
+
+    public boolean isComplete() {
+
+        if (form == null) {
+            return false;
+        }
+
+        return mentorships.size() + FIRST_ITERACTION == form.getTarget();
+    }
+
+    public void setCabinet(Cabinet cabinet) {
+        this.cabinet = cabinet;
+    }
+
+    public Cabinet getCabinet() {
+        return this.cabinet;
     }
 }

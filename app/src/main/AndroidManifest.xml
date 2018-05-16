@@ -20,14 +20,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".activities.LoginActivity" />
-
         <activity
             android:name=".activities.ListTutoredActivity"
             android:label="Tutorados" />
         <activity android:name=".activities.TutoredActivity" />
-
         <activity
             android:name=".activities.ConfigurationActivity"
             android:icon="@mipmap/ic_settings"
@@ -35,32 +32,27 @@
         <activity
             android:name=".activities.MentoringActivity"
             android:label="@string/title_activity_list_mentorship" />
-
         <activity
             android:name=".activities.ListMentorshipActivity"
             android:label="@string/title_activity_list_mentorship"
-            android:theme="@style/AppTheme"></activity>
-
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".activities.TutorUpdateActivity"
             android:label="@string/title_activity_tutor_update"
-            android:theme="@style/AppTheme"></activity>
-
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".activities.ChangePasswordActivity"
             android:label="@string/title_activity_change_password"
-            android:theme="@style/AppTheme"></activity>
-
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".activities.IndicatorActivity"
             android:label="@string/title_activity_indicator_collection"
-            android:theme="@style/AppTheme"></activity>
-
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".activities.ListIndicatorsActivity"
             android:label="@string/title_activity_indicator_collection"
-            android:theme="@style/AppTheme"></activity>
-
+            android:theme="@style/AppTheme" />
+        <activity android:name=".activities.ResetPasswordActivity"></activity>
     </application>
 
 </manifest>

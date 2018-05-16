@@ -4,20 +4,36 @@
     android:layout_height="wrap_content"
     android:background="@drawable/item_selected"
     android:orientation="horizontal"
-    android:padding="8dp">
+    android:padding="4dp">
 
-    <TextView
-        android:id="@+id/tutored_icon"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:layout_marginRight="10dp"
-        android:background="@drawable/back_ground"
-        android:padding="12dp"
-        android:text="S"
-        android:textAlignment="center"
-        android:textColor="#fff"
-        android:textSize="7pt"
-        android:textStyle="bold|italic" />
+    <FrameLayout
+        android:layout_width="50dp"
+        android:layout_height="50dp">
+
+        <TextView
+            android:id="@+id/tutored_icon"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/back_ground"
+            android:padding="12dp"
+            android:text="S"
+            android:textAlignment="center"
+            android:textColor="#fff"
+            android:textSize="7pt"
+            android:textStyle="bold|italic" />
+
+        <ImageView
+            android:id="@+id/selected_row"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="bottom|end"
+            android:background="@drawable/selected_row_icon"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/ic_check"
+            android:visibility="gone" />
+
+    </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -37,7 +53,7 @@
                 android:layout_weight="1"
                 android:text="Nome"
                 android:textColor="#00695C"
-                android:textSize="7pt"
+                android:textSize="6pt"
                 android:textStyle="bold|italic" />
 
             <TextView

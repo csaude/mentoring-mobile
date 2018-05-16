@@ -15,6 +15,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import mz.org.fgh.mentoring.R;
 import mz.org.fgh.mentoring.adapter.MentorshipAdapter;
 import mz.org.fgh.mentoring.component.MentoringComponent;
@@ -28,9 +29,6 @@ import mz.org.fgh.mentoring.service.SyncService;
 import mz.org.fgh.mentoring.util.DateUtil;
 
 public class ListMentorshipActivity extends BaseAuthenticateActivity implements View.OnClickListener {
-
-    @BindView(R.id.new_mentorship)
-    Button newMentorshipBtn;
 
     @BindView(R.id.mentorship_list)
     ListView mentorshipListView;
@@ -46,11 +44,13 @@ public class ListMentorshipActivity extends BaseAuthenticateActivity implements 
     protected void onMentoringCreate(Bundle bundle) {
         setContentView(R.layout.activity_list_mentorship);
 
+        toolbar.setNavigationIcon(R.mipmap.ic_back);
+        toolbar.setNavigationOnClickListener(this);
+
         MentoringComponent component = application.getMentoringComponent();
         component.inject(this);
 
         setMentorships();
-        newMentorshipBtn.setOnClickListener(this);
     }
 
     public void setMentorships() {
@@ -59,10 +59,11 @@ public class ListMentorshipActivity extends BaseAuthenticateActivity implements 
         mentorshipListView.setAdapter(adapter);
     }
 
-    @Override
-    public void onClick(View view) {
+    @OnClick(R.id.new_mentorship)
+    public void onClickNewMentorship() {
         startActivity(new Intent(this, MentoringActivity.class));
         finish();
+
     }
 
     @Override
@@ -82,5 +83,10 @@ public class ListMentorshipActivity extends BaseAuthenticateActivity implements 
         }
 
         return true;
+    }
+
+    @Override
+    public void onClick(View view) {
+        finish();
     }
 }

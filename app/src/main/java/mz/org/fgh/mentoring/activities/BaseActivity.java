@@ -15,7 +15,7 @@ import mz.org.fgh.mentoring.infra.MentoringApplication;
 public abstract class BaseActivity extends AppCompatActivity {
 
     protected MentoringApplication application;
-    private Toolbar toolbar;
+    protected Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

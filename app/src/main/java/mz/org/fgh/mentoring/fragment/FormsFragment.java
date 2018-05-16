@@ -1,6 +1,5 @@
 package mz.org.fgh.mentoring.fragment;
 
-import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
@@ -22,13 +21,9 @@ import mz.org.fgh.mentoring.activities.MentoringActivity;
 import mz.org.fgh.mentoring.adapter.FormAdapter;
 import mz.org.fgh.mentoring.component.MentoringComponent;
 import mz.org.fgh.mentoring.config.dao.FormDAO;
-import mz.org.fgh.mentoring.config.dao.FormDAOImpl;
-import mz.org.fgh.mentoring.config.dao.QuestionDAOImpl;
-import mz.org.fgh.mentoring.config.model.Answer;
 import mz.org.fgh.mentoring.config.model.Form;
 import mz.org.fgh.mentoring.config.model.FormType;
 import mz.org.fgh.mentoring.event.FormEvent;
-import mz.org.fgh.mentoring.event.MessageEvent;
 import mz.org.fgh.mentoring.validator.FragmentValidator;
 
 public class FormsFragment extends BaseFragment implements AdapterView.OnItemClickListener, FragmentValidator {
@@ -43,6 +38,8 @@ public class FormsFragment extends BaseFragment implements AdapterView.OnItemCli
     EventBus eventBus;
 
     private Form form;
+
+    private View oldView;
 
     @Override
     public void onCreateView() {
@@ -74,7 +71,10 @@ public class FormsFragment extends BaseFragment implements AdapterView.OnItemCli
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         form = (Form) parent.getItemAtPosition(position);
-        view.setSelected(true);
+
+        this.toggleSelection(view);
+
+        this.oldView = view;
 
         eventBus.post(new FormEvent(form));
     }
@@ -88,5 +88,22 @@ public class FormsFragment extends BaseFragment implements AdapterView.OnItemCli
 
         viewPager.setCurrentItem(position);
         Snackbar.make(getView(), getString(R.string.form_must_be_selected), Snackbar.LENGTH_SHORT).show();
+    }
+
+
+    public void toggleSelection(View view) {
+
+        if (oldView != null) {
+            oldView.findViewById(R.id.selected_row).setVisibility(View.GONE);
+        }
+
+        View selectedRow = view.findViewById(R.id.selected_row);
+        selectedRow.setVisibility(View.VISIBLE);
+        view.setSelected(true);
+    }
+
+    @Override
+    public boolean isValid() {
+        return form != null;
     }
 }

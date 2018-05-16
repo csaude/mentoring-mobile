@@ -137,7 +137,10 @@ public class AnswerDAOImpl extends GenericDAOImpl<Answer> implements AnswerDAO {
 
         SQLiteDatabase database = getWritableDatabase();
 
-        database.rawQuery(QUERY.deleteBySessionUuids, sessionUuids.toArray(new String[sessionUuids.size()]));
+        for (String uuid : sessionUuids) {
+            database.rawQuery(QUERY.deleteBySessionUuids, new String[]{uuid});
+        }
+
         database.close();
     }
 

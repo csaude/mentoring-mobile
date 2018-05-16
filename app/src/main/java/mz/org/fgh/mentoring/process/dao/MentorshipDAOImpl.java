@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
+import mz.org.fgh.mentoring.config.model.Cabinet;
 import mz.org.fgh.mentoring.config.model.Career;
 import mz.org.fgh.mentoring.config.model.Form;
 import mz.org.fgh.mentoring.config.model.HealthFacility;
@@ -47,6 +48,7 @@ public class MentorshipDAOImpl extends GenericDAOImpl<Mentorship> implements Men
         values.put("end_date", mentorship.getEndDate());
         values.put("performed_date", mentorship.getPerformedDate());
         values.put("session_uuid", mentorship.getSession().getUuid());
+        values.put("cabinet_uuid", mentorship.getCabinet().getUuid());
 
         return values;
     }
@@ -60,6 +62,7 @@ public class MentorshipDAOImpl extends GenericDAOImpl<Mentorship> implements Men
         Form form = new Form();
         form.setUuid(cursor.getString((cursor.getColumnIndex("form_uuid"))));
         form.setName(cursor.getString((cursor.getColumnIndex("form_name"))));
+        form.setTarget(cursor.getInt(cursor.getColumnIndex("target")));
         mentorship.setForm(form);
 
         Tutored tutored = new Tutored();
@@ -68,20 +71,25 @@ public class MentorshipDAOImpl extends GenericDAOImpl<Mentorship> implements Men
         tutored.setSurname(cursor.getString(cursor.getColumnIndex("tutored_surname")));
         tutored.setPhoneNumber(cursor.getString(cursor.getColumnIndex("tutored_phone_number")));
 
-        Career carrer = new Career();
-        carrer.setUuid(cursor.getString((cursor.getColumnIndex("tutored_career_uuid"))));
-        tutored.setCareer(carrer);
+        Career career = new Career();
+        career.setUuid(cursor.getString((cursor.getColumnIndex("tutored_career_uuid"))));
+        tutored.setCareer(career);
 
         mentorship.setTutored(tutored);
 
         HealthFacility healthFacility = new HealthFacility();
         healthFacility.setUuid(cursor.getString(cursor.getColumnIndex("health_facility_uuid")));
         healthFacility.setHealthFacility(cursor.getString(cursor.getColumnIndex("health_facility")));
+
+        Cabinet cabinet = new Cabinet();
+        cabinet.setUuid(cursor.getString(cursor.getColumnIndex("cabinet_uuid")));
+
         mentorship.setHealthFacility(healthFacility);
         mentorship.setStartDate(DateUtil.parse(cursor.getString(cursor.getColumnIndex("start_date"))));
         mentorship.setEndDate(DateUtil.parse(cursor.getString(cursor.getColumnIndex("end_date"))));
         mentorship.setCreatedAt(DateUtil.parse(cursor.getString(cursor.getColumnIndex("created_at"))));
         mentorship.setPerformedDate(DateUtil.parse(cursor.getString(cursor.getColumnIndex("performed_date")), DateUtil.NORMAL_PATTERN));
+        mentorship.setCabinet(cabinet);
 
         return mentorship;
     }

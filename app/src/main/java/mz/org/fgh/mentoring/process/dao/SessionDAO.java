@@ -17,7 +17,7 @@ public interface SessionDAO extends GenericDAO<Session> {
     class QUERY {
 
         public static final String findAll = "SELECT s.id, s.uuid, s.form_uuid, s.health_facility_uuid, f.name as form_name, " +
-                "hf.health_facility as health_facility, s.start_date, s.end_date, s.performed_date, s.status, s.reason, s.created_at " +
+                "hf.health_facility as health_facility, s.start_date, s.end_date, s.performed_date, s.status, s.reason, s.created_at, f.target " +
                 "FROM " + TABLE_NAME + " s " +
                 "INNER JOIN forms f ON s.form_uuid = f.uuid " +
                 "INNER JOIN health_facilities hf ON s.health_facility_uuid = hf.uuid";

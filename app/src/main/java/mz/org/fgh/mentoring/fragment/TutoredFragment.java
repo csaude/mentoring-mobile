@@ -40,6 +40,8 @@ public class TutoredFragment extends BaseFragment implements AdapterView.OnItemC
 
     private Tutored tutored;
 
+    private View oldView;
+
     @Override
     public void onCreateView() {
 
@@ -63,8 +65,10 @@ public class TutoredFragment extends BaseFragment implements AdapterView.OnItemC
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        view.setSelected(true);
         tutored = (Tutored) parent.getItemAtPosition(position);
+        this.toggleSelection(view);
+
+        this.oldView = view;
 
         eventBus.post(new TutoredEvent(tutored));
     }
@@ -78,5 +82,21 @@ public class TutoredFragment extends BaseFragment implements AdapterView.OnItemC
 
         viewPager.setCurrentItem(position);
         Snackbar.make(getView(), getString(R.string.tutored_must_be_selected), Snackbar.LENGTH_SHORT).show();
+    }
+
+    public void toggleSelection(View view) {
+
+        if (oldView != null) {
+            oldView.findViewById(R.id.selected_row).setVisibility(View.GONE);
+        }
+
+        View selectedRow = view.findViewById(R.id.selected_row);
+        selectedRow.setVisibility(View.VISIBLE);
+        view.setSelected(true);
+    }
+
+    @Override
+    public boolean isValid() {
+        return tutored != null;
     }
 }

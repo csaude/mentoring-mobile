@@ -33,6 +33,10 @@ public class District extends GenericEntity {
         return district;
     }
 
+    public void setDistrict(String district) {
+        this.district = district;
+    }
+
     @Override
     public String toString() {
         return this.district;

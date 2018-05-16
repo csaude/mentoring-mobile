@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 import mz.org.fgh.mentoring.config.model.Answer;
+import mz.org.fgh.mentoring.config.model.Cabinet;
 import mz.org.fgh.mentoring.config.model.Form;
 import mz.org.fgh.mentoring.config.model.HealthFacility;
 import mz.org.fgh.mentoring.config.model.Tutor;
@@ -37,6 +38,8 @@ public class Mentorship extends GenericEntity {
     private Tutor tutor;
 
     private Session session;
+
+    private Cabinet cabinet;
 
     private List<Answer> answers;
 
@@ -123,5 +126,13 @@ public class Mentorship extends GenericEntity {
         }
 
         this.answers.add(answer);
+    }
+
+    public Cabinet getCabinet() {
+        return cabinet;
+    }
+
+    public void setCabinet(Cabinet cabinet) {
+        this.cabinet = cabinet;
     }
 }

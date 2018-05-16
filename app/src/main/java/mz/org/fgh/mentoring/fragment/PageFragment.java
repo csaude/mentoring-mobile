@@ -101,7 +101,6 @@ public class PageFragment extends BaseFragment implements FragmentValidator, Ite
         }
 
         updateIterations();
-        updateButtons();
     }
 
     @Override
@@ -196,36 +195,8 @@ public class PageFragment extends BaseFragment implements FragmentValidator, Ite
     }
 
     @Override
-    public void updateButtons() {
-
-        if (bundle == null) {
-            return;
-        }
-
-        boolean isLastPage = bundle.getBoolean(SwipeAdapter.LAST_PAGE);
-
-        saveBtn.setVisibility(View.INVISIBLE);
-        terminateBtn.setVisibility(View.INVISIBLE);
-        continueBtn.setVisibility(View.INVISIBLE);
-        terminateReason.setVisibility(View.INVISIBLE);
-        reason.setVisibility(View.INVISIBLE);
-
-        if (isLastPage) {
-            terminateBtn.setVisibility(View.VISIBLE);
-            continueBtn.setVisibility(View.VISIBLE);
-        }
-
-        if (isLastPage && (this.sessionProvider.getSession().getForm().getTarget() == (this.sessionProvider.getSession().getMentorships().size() + 1))) {
-            saveBtn.setVisibility(View.VISIBLE);
-            terminateBtn.setVisibility(View.INVISIBLE);
-            continueBtn.setVisibility(View.INVISIBLE);
-        }
-    }
-
-    @Override
-    public void clearSelection() {
-        radioGroup.clearCheck();
-        reason.setText("");
+    public boolean isValid() {
+        return wasQuestionAnswered();
     }
 
     @OnClick(R.id.terminate_btn)

@@ -40,6 +40,8 @@ public class BooleanFragment extends BaseFragment implements FragmentValidator {
     @BindView(R.id.fragment_boolean_no)
     RadioButton noRd;
 
+    private boolean valid = false;
+
     @Inject
     EventBus eventBus;
 
@@ -115,10 +117,16 @@ public class BooleanFragment extends BaseFragment implements FragmentValidator {
     public void validate(ViewPager viewPager, int position) {
 
         if (question == null || AnswerUtil.wasQuestionAnswered(activity.getAnswers(), question)) {
+            valid = true;
             return;
         }
 
         viewPager.setCurrentItem(position);
         Snackbar.make(getView(), getString(R.string.none_answer_was_seleted), Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public boolean isValid() {
+        return this.valid;
     }
 }

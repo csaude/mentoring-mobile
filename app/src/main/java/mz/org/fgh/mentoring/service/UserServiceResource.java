@@ -1,5 +1,6 @@
 package mz.org.fgh.mentoring.service;
 
+import mz.org.fgh.mentoring.config.model.Tutor;
 import mz.org.fgh.mentoring.infra.UserContext;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -16,4 +17,7 @@ public interface UserServiceResource {
 
     @PUT("users/update")
     Call<UserContext> changePassword(@Body final UserContext userContext);
+
+    @PUT("tutors/reset-password")
+    Call<Tutor> resetPassword(@Body final UserContext userContext);
 }

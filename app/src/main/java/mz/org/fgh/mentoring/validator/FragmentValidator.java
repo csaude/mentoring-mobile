@@ -12,4 +12,6 @@ import mz.org.fgh.mentoring.config.model.Answer;
 public interface FragmentValidator {
 
     void validate(ViewPager viewPager, int position);
+
+    boolean isValid();
 }

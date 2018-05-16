@@ -10,14 +10,18 @@ import mz.org.fgh.mentoring.activities.ListMentorshipActivity;
 import mz.org.fgh.mentoring.activities.LoginActivity;
 import mz.org.fgh.mentoring.activities.MainActivity;
 import mz.org.fgh.mentoring.activities.MentoringActivity;
+import mz.org.fgh.mentoring.activities.ResetPasswordActivity;
 import mz.org.fgh.mentoring.activities.TutoredActivity;
+import mz.org.fgh.mentoring.adapter.QuestionAdapter;
 import mz.org.fgh.mentoring.fragment.BaseFragment;
 import mz.org.fgh.mentoring.fragment.BooleanFragment;
+import mz.org.fgh.mentoring.fragment.ConfirmationFragment;
 import mz.org.fgh.mentoring.fragment.FormsFragment;
 import mz.org.fgh.mentoring.fragment.HealthFacilityFragment;
 import mz.org.fgh.mentoring.fragment.IndicatorHealthFacilityFragment;
 import mz.org.fgh.mentoring.fragment.NumericFragment;
 import mz.org.fgh.mentoring.fragment.PageFragment;
+import mz.org.fgh.mentoring.fragment.SaveFragment;
 import mz.org.fgh.mentoring.fragment.TutoredFragment;
 import mz.org.fgh.mentoring.module.MentoringModule;
 
@@ -57,4 +61,12 @@ public interface MentoringComponent {
     void inject(IndicatorHealthFacilityFragment fragment);
 
     void inject(ListMentorshipActivity activity);
+
+    void inject(QuestionAdapter adapter);
+
+    void inject(ConfirmationFragment fragment);
+
+    void inject(SaveFragment fragment);
+
+    void inject(ResetPasswordActivity activity);
 }

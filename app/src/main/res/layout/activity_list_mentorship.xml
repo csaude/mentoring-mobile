@@ -15,7 +15,8 @@
         <ListView
             android:id="@+id/mentorship_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp" />
 
         <Button
             android:id="@+id/new_mentorship"
@@ -26,11 +27,11 @@
             android:layout_marginBottom="16dp"
             android:layout_marginRight="16dp"
             android:background="@drawable/back_ground"
+            android:drawableLeft="@mipmap/ic_add"
+            android:drawableStart="@mipmap/ic_add"
             android:elevation="8dp"
-            android:text="+"
-            android:textColor="#ffffff"
-            android:textSize="24dp"
-            android:visibility="visible" />
+            android:paddingLeft="4dp" />
+
     </RelativeLayout>
 
 </LinearLayout>

@@ -30,7 +30,7 @@
 
     <string name="tutored_must_be_selected">O tutorando deve ser seleccionado!</string>
     <string name="form_must_be_selected">O formulário deve ser seleccionado!</string>
-    <string name="submit">Submeter</string>
+    <string name="submit">Salvar</string>
     <string name="password">Senha</string>
     <string name="enter">Entrar</string>
     <string name="health_facility_must_be_selected">A unidade sanitária de deve ser seleccionada!</string>
@@ -60,9 +60,32 @@
     <string name="go_ahead">Continuar</string>
 
     <string name="reason_must_be_informed"> O motivo deve ser informado</string>
-    <string name="session_termination_reason">Motivo para o término da sessão</string>
+    <string name="session_termination_reason">Motivo para o término da sessão (O utilizador não preencheu o número mínimo de vezes solicitado no formulário)</string>
     <string name="iterations">Iterações</string>
     <string name="complete">Completa</string>
     <string name="incomplete">Incompleta</string>
+    <string name="cabinet_must_be_selected">O gainete deve ser seleccionado</string>
+    <string name="all_questions_must_be_answered">Todas as questões devem ser respondidas</string>
+    <string name="select">Seleccione...</string>
+
+    <string name="health_facility">Unidade Sanitária</string>
+    <string name="tutored">Tutorado</string>
+    <string name="form">Formulário</string>
+    <string name="confirmation">Confirmação</string>
+    <string name="submission">Submissão</string>
+    <string name="reset_password">Inicializar a Senha</string>
+    <string name="forget_password">Esqueceu a Senha?</string>
+    <string name="send">Enviar</string>
+    <string name="reset_password_text">Por favor informe o seu e-mail para que a sua senha seja devidamente actualizada</string>
+    <string name="iteration_times">vezes foi (ram) preenchida (as). O utilizador deseja continuar?</string>
+    <string name="of">das</string>
+    <string name="wait">Aguarde</string>
+    <string name="processing">A processar o pedido....</string>
+    <string name="reset_password_success">A Senha foi inicializada com sucesso. Consulte o seu email</string>
+    <string name="reset_password_error">Não foi possivel inicializar a senha. Por favor tente novamente</string>
+    <string name="province_must_be_selected">A provincia deve ser seleccionada</string>
+    <string name="district_must_be_selected">O distrito deve ser seleccionado</string>
+
+    <string name="version">© 2018 © v1.7.6</string>
 
 </resources>

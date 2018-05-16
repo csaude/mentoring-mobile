@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteQueryBuilder;
 
 import java.util.Date;
 import java.util.List;
@@ -41,6 +42,8 @@ public abstract class GenericDAOImpl<T extends GenericEntity> extends SQLiteOpen
         db.execSQL(ALTER_ANSWER_TABLE);
         db.execSQL(SESSION_TABLE);
         db.execSQL(ALTER_MENTORSHIP_TABLE_ADD_SESSION);
+        db.execSQL(CABINET_TABLE);
+        db.execSQL(ALTER_MENTORSHIP_TABLE_ADD_CABINET);
     }
 
     @Override
@@ -110,6 +113,11 @@ public abstract class GenericDAOImpl<T extends GenericEntity> extends SQLiteOpen
     @Override
     public void delete(final String whereClause, final List<String> params) {
         SQLiteDatabase database = getWritableDatabase();
-        database.delete(getTableName(), whereClause, params.toArray(new String[params.size()]));
+
+        for (String param : params) {
+            database.delete(getTableName(), whereClause, new String[]{param});
+        }
+
+        database.close();
     }
 }

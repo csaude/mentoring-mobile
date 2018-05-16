@@ -19,7 +19,7 @@ public interface AnswerDAO extends GenericDAO<Answer> {
                 "WHERE a.mentorship_uuid = ?;";
 
         public static final String deleteBySessionUuids = "DELETE FROM " + TABLE_NAME + " " +
-                "WHERE mentorship_uuid IN ( SELECT m.uuid FROM mentorships m WHERE m.session_uuid IN (?));";
+                "WHERE mentorship_uuid IN ( SELECT m.uuid FROM mentorships m WHERE m.session_uuid = ?);";
 
         public static final String findByIndicatorUuid = "SELECT a.form_uuid, a.mentorship_uuid, a.indicator_uuid, a.question_uuid, a.uuid, a.text_value, a.boolean_value, a.numeric_value, q.question_type FROM " + TABLE_NAME + " a " +
                 "INNER JOIN questions q ON a.question_uuid = q.uuid " +

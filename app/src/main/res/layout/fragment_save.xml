@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.SaveFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:gravity="end"
+            android:text="Pontos abordados na Sessão:"
+            android:textColor="#000"
+            android:textSize="7pt"
+            android:textStyle="bold|italic" />
+
+        <ListView
+            android:id="@+id/feedback_questions"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/save_btn"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_gravity="bottom|right"
+        android:layout_margin="18dp"
+        android:background="@drawable/back_ground"
+        android:drawableLeft="@mipmap/ic_save"
+        android:drawableStart="@mipmap/ic_save"
+        android:elevation="8dp"
+        android:gravity="center"
+        android:paddingLeft="4dp" />
+
+</FrameLayout>

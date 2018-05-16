@@ -1,11 +1,15 @@
 package mz.org.fgh.mentoring.module;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.greenrobot.eventbus.EventBus;
+
+import java.util.List;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -14,6 +18,8 @@ import dagger.Module;
 import dagger.Provides;
 import mz.org.fgh.mentoring.config.dao.AnswerDAO;
 import mz.org.fgh.mentoring.config.dao.AnswerDAOImpl;
+import mz.org.fgh.mentoring.config.dao.CabinetDAO;
+import mz.org.fgh.mentoring.config.dao.CabinetDAOImpl;
 import mz.org.fgh.mentoring.config.dao.CareerDAO;
 import mz.org.fgh.mentoring.config.dao.CareerDAOImpl;
 import mz.org.fgh.mentoring.config.dao.DistrictDAO;
@@ -28,12 +34,15 @@ import mz.org.fgh.mentoring.config.dao.QuestionDAO;
 import mz.org.fgh.mentoring.config.dao.QuestionDAOImpl;
 import mz.org.fgh.mentoring.config.dao.TutoredDAO;
 import mz.org.fgh.mentoring.config.dao.TutoredDAOImpl;
+import mz.org.fgh.mentoring.config.model.Cabinet;
 import mz.org.fgh.mentoring.process.dao.IndicatorDAO;
 import mz.org.fgh.mentoring.process.dao.IndictorDAOImpl;
 import mz.org.fgh.mentoring.process.dao.MentorshipDAO;
 import mz.org.fgh.mentoring.process.dao.MentorshipDAOImpl;
 import mz.org.fgh.mentoring.process.dao.SessionDAO;
 import mz.org.fgh.mentoring.process.dao.SessionDAOImpl;
+import mz.org.fgh.mentoring.service.CabinetService;
+import mz.org.fgh.mentoring.service.CabinetServiceImpl;
 import mz.org.fgh.mentoring.service.CareerSyncService;
 import mz.org.fgh.mentoring.service.CareerSyncServiceImpl;
 import mz.org.fgh.mentoring.service.FormQuestionSyncService;
@@ -87,7 +96,7 @@ public class MentoringModule {
     @Named("mentoring")
     public Retrofit provideMentoringRetrofit() {
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://" + ServerConfig.MENTORING.getAddress() +
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://" + ServerConfig.MENTORING.getAddress() +
                 ServerConfig.MENTORING.getService()).addConverterFactory(JacksonConverterFactory.create(mapper))
                 .build();
 
@@ -98,7 +107,7 @@ public class MentoringModule {
     @Named("account")
     public Retrofit provideAccontRetrofit() {
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://" + ServerConfig.ACCOUNT_MANAGER.getAddress() +
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://" + ServerConfig.ACCOUNT_MANAGER.getAddress() +
                 ServerConfig.ACCOUNT_MANAGER.getService()).addConverterFactory(JacksonConverterFactory.create(mapper))
                 .build();
 
@@ -215,5 +224,15 @@ public class MentoringModule {
     @Provides
     public TextViewValidator provideTextViewValidator() {
         return new TextViewValidator(context);
+    }
+
+    @Provides
+    public CabinetDAO proviceCabinetDAO() {
+        return new CabinetDAOImpl(context);
+    }
+
+    @Provides
+    public CabinetService provideCabinetService(CabinetServiceImpl cabinetService) {
+        return cabinetService;
     }
 }

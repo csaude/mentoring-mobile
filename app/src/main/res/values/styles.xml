@@ -25,4 +25,9 @@
         <item name="android:background">@drawable/selectors_background</item>
     </style>
 
+    <style name="viewPagerTabStrip">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">8pt</item>
+    </style>
+
 </resources>

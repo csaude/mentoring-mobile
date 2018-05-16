@@ -4,7 +4,8 @@
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#00695C"
+    android:background="#128174"
+    app:navigationIcon="@mipmap/ic_menu"
     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
     app:theme="@style/Base.ThemeOverlay.AppCompat.Dark" />
 

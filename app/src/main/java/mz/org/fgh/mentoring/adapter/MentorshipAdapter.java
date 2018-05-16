@@ -46,7 +46,7 @@ public class MentorshipAdapter extends BaseAbstractAdapter {
     }
 
     @Override
-    public int getResourceId() {
+    public int getResourceId(int position) {
         return R.layout.list_mentorship;
     }
 

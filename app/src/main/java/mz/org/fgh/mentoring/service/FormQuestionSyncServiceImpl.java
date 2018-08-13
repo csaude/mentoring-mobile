@@ -96,14 +96,20 @@ public class FormQuestionSyncServiceImpl implements SyncService, FormQuestionSyn
 
             if (!formDAO.exist(form.getUuid())) {
                 formDAO.create(form);
+            } else {
+                formDAO.update(form);
             }
 
             if (!questionDAO.exist(question.getUuid())) {
                 questionDAO.create(question);
+            } else {
+                questionDAO.update(question);
             }
 
             if (!formQuestionDAO.exist(formQuestion.getUuid())) {
                 formQuestionDAO.create(formQuestion);
+            } else {
+                formQuestionDAO.update(formQuestion);
             }
         }
 

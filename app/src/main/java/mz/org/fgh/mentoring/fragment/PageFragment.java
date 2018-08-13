@@ -109,7 +109,11 @@ public class PageFragment extends BaseFragment implements FragmentValidator, Ite
             return;
         }
 
-        iteractions.setText(getString(R.string.iterations) + ":" + (sessionProvider.getSession().getMentorships().size() + 1) + "/" + sessionProvider.getSession().getForm().getTarget());
+        if (sessionProvider == null) {
+            return;
+        }
+
+        iteractions.setText(getString(R.string.iterations) + ":" + (sessionProvider.getSession().getMentorships().size() + 1) + "/" + sessionProvider.getSession().getForm().getTargetPatient());
     }
 
     @Override

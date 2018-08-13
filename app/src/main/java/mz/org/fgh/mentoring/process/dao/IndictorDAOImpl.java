@@ -49,6 +49,8 @@ public class IndictorDAOImpl extends GenericDAOImpl<Indicator> implements Indica
         Form form = new Form();
         form.setUuid(cursor.getString((cursor.getColumnIndex("form_uuid"))));
         form.setName(cursor.getString((cursor.getColumnIndex("form_name"))));
+        form.setTargetPatient(cursor.getInt(cursor.getColumnIndex("target_patient")));
+        form.setTargetFile(cursor.getInt(cursor.getColumnIndex("target_file")));
         indicator.setForm(form);
 
         HealthFacility healthFacility = new HealthFacility();

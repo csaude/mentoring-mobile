@@ -1,45 +1,52 @@
 package mz.org.fgh.mentoring.activities;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import mz.org.fgh.mentoring.AlertListner;
 import mz.org.fgh.mentoring.R;
 import mz.org.fgh.mentoring.adapter.SwipeAdapter;
 import mz.org.fgh.mentoring.component.MentoringComponent;
+import mz.org.fgh.mentoring.config.dao.FormDAO;
 import mz.org.fgh.mentoring.config.dao.FormQuestionDAO;
-import mz.org.fgh.mentoring.config.dao.QuestionDAO;
 import mz.org.fgh.mentoring.config.model.Answer;
+import mz.org.fgh.mentoring.config.model.Cabinet;
 import mz.org.fgh.mentoring.config.model.Form;
 import mz.org.fgh.mentoring.config.model.FormQuestion;
+import mz.org.fgh.mentoring.config.model.FormType;
 import mz.org.fgh.mentoring.config.model.HealthFacility;
-import mz.org.fgh.mentoring.config.model.Question;
+import mz.org.fgh.mentoring.delegate.FormDelegate;
+import mz.org.fgh.mentoring.dialog.AlertDialogManager;
+import mz.org.fgh.mentoring.dialog.ProgressDialogManager;
 import mz.org.fgh.mentoring.event.AnswerEvent;
 import mz.org.fgh.mentoring.event.CabinetEvent;
+import mz.org.fgh.mentoring.event.ErrorEvent;
 import mz.org.fgh.mentoring.event.FormEvent;
 import mz.org.fgh.mentoring.event.HealthFacilityEvent;
 import mz.org.fgh.mentoring.event.MessageEvent;
 import mz.org.fgh.mentoring.event.ProcessEvent;
+import mz.org.fgh.mentoring.event.TimeEvent;
 import mz.org.fgh.mentoring.event.TutoredEvent;
 import mz.org.fgh.mentoring.fragment.ConfirmationFragment;
 import mz.org.fgh.mentoring.fragment.SaveFragment;
 import mz.org.fgh.mentoring.model.Tutored;
+import mz.org.fgh.mentoring.process.model.IterationType;
 import mz.org.fgh.mentoring.process.model.Mentorship;
 import mz.org.fgh.mentoring.process.model.Session;
 import mz.org.fgh.mentoring.provider.AnswerProvider;
@@ -47,9 +54,10 @@ import mz.org.fgh.mentoring.provider.SessionProvider;
 import mz.org.fgh.mentoring.service.SessionService;
 import mz.org.fgh.mentoring.util.DateUtil;
 import mz.org.fgh.mentoring.validator.FragmentValidator;
-import mz.org.fgh.mentoring.validator.IterationFragment;
 
-public class MentoringActivity extends BaseAuthenticateActivity implements ViewPager.OnPageChangeListener, AnswerProvider, SessionProvider, View.OnClickListener {
+public class MentoringActivity extends BaseAuthenticateActivity implements ViewPager.OnPageChangeListener, AnswerProvider, SessionProvider, View.OnClickListener, FormDelegate {
+
+    public static final int DEFAULT_ITERATION_POSITION = 3;
 
     @BindView(R.id.view_pager)
     ViewPager viewPager;
@@ -62,6 +70,9 @@ public class MentoringActivity extends BaseAuthenticateActivity implements ViewP
 
     @Inject
     SessionService sessionService;
+
+    @Inject
+    FormDAO formDAO;
 
     private SwipeAdapter adapter;
 
@@ -77,6 +88,8 @@ public class MentoringActivity extends BaseAuthenticateActivity implements ViewP
 
     private Form form;
 
+    private AlertDialogManager dialogManager;
+
     @SuppressLint("ResourceType")
     @Override
     protected void onMentoringCreate(Bundle bundle) {
@@ -88,6 +101,7 @@ public class MentoringActivity extends BaseAuthenticateActivity implements ViewP
         MentoringComponent component = application.getMentoringComponent();
         component.inject(this);
         eventBus.register(this);
+        dialogManager = new AlertDialogManager(this);
 
         adapter = new SwipeAdapter(getSupportFragmentManager(), this);
 
@@ -96,9 +110,15 @@ public class MentoringActivity extends BaseAuthenticateActivity implements ViewP
 
         session = new Session();
         mentorship = new Mentorship();
+
     }
 
     private void submitProcess() {
+
+        ProgressDialogManager progressDialogManager = new ProgressDialogManager(this);
+        ProgressDialog progressBar = progressDialogManager.getProgressBar(getString(R.string.wait), getString(R.string.processing));
+        progressBar.show();
+
         populateMentorship();
 
         this.session.setEndDate(new Date());
@@ -106,6 +126,8 @@ public class MentoringActivity extends BaseAuthenticateActivity implements ViewP
         this.session.setStatus();
 
         sessionService.createSession(session);
+
+        progressBar.dismiss();
 
         startActivity(new Intent(this, ListMentorshipActivity.class));
         finish();
@@ -118,6 +140,7 @@ public class MentoringActivity extends BaseAuthenticateActivity implements ViewP
         this.mentorship.setPerformedDate(DateUtil.parse(session.getPerformedDate(), DateUtil.NORMAL_PATTERN));
         this.mentorship.setForm(session.getForm());
         this.mentorship.setCabinet(session.getCabinet());
+        this.mentorship.setIterationNumber(session.getMentorships().size() + DECREMENTER);
     }
 
     @Override
@@ -126,6 +149,12 @@ public class MentoringActivity extends BaseAuthenticateActivity implements ViewP
 
     @Override
     public void onPageSelected(int position) {
+
+        if (position < DEFAULT_ITERATION_POSITION && session.getMentorships().size() > 0) {
+            dialogManager.showAlert(getString(R.string.metadata_cannot_be_changed));
+            viewPager.setCurrentItem(currentPosition, true);
+            return;
+        }
 
         if (currentPosition > position) {
             currentPosition = position;
@@ -166,6 +195,10 @@ public class MentoringActivity extends BaseAuthenticateActivity implements ViewP
         }
 
         this.form = formEvent.getForm();
+        this.form.clearQuestions();
+
+        mentorship.setForm(form);
+        mentorship.setDefaultIterationType();
         session.setForm(this.form);
 
         List<FormQuestion> formQuestions = formQuestionDAO.findByFormUuid(this.form.getUuid());
@@ -174,17 +207,29 @@ public class MentoringActivity extends BaseAuthenticateActivity implements ViewP
             this.form.addFormQuestion(formQuestion);
         }
 
+        adapter.setSession(session);
         adapter.setForm(this.form);
+        adapter.setMentorship(this.mentorship);
     }
 
     @Subscribe
     public void onHealthFacilitySelected(HealthFacilityEvent healthFacilityEvent) {
         HealthFacility healthFacility = healthFacilityEvent.getHealthFacility();
+
+        if (healthFacility.getUuid() == null) {
+            return;
+        }
+
         session.setHealthFacility(healthFacility);
     }
 
     @Subscribe
     public void onDatePerformedSelected(MessageEvent<String> datePerformedEvent) {
+
+        if (!(datePerformedEvent.getMessage() instanceof String)) {
+            return;
+        }
+
         String date = datePerformedEvent.getMessage();
         this.session.setPerformedDate(DateUtil.parse(date, DateUtil.NORMAL_PATTERN));
     }
@@ -201,7 +246,14 @@ public class MentoringActivity extends BaseAuthenticateActivity implements ViewP
 
     @Subscribe
     public void onCabinetSelected(CabinetEvent cabinetEvent) {
-        this.session.setCabinet(cabinetEvent.getCabinet());
+
+        Cabinet cabinet = cabinetEvent.getCabinet();
+
+        if (cabinet.getUuid() == null) {
+            return;
+        }
+
+        this.session.setCabinet(cabinet);
     }
 
     @Subscribe
@@ -218,14 +270,17 @@ public class MentoringActivity extends BaseAuthenticateActivity implements ViewP
 
                 this.session.addMentorship(mentorship);
                 this.mentorship = new Mentorship();
+                this.mentorship.setForm(form);
+                this.mentorship.setDefaultIterationType();
 
                 adapter = new SwipeAdapter(getSupportFragmentManager(), this);
                 this.form.clearAnswers();
                 adapter.setForm(this.form);
+                adapter.setMentorship(mentorship);
                 adapter.setSession(session);
                 viewPager.setAdapter(adapter);
 
-                currentPosition = 3; //go to the first question...
+                currentPosition = DEFAULT_ITERATION_POSITION; //go to the first question...
                 viewPager.setCurrentItem(currentPosition, true);
                 break;
 
@@ -238,10 +293,34 @@ public class MentoringActivity extends BaseAuthenticateActivity implements ViewP
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        eventBus.unregister(this);
+    @Subscribe
+    public void onTimePicker(TimeEvent timeEvent) {
+
+        if (session.getPerformedDate() == null) {
+            return;
+        }
+
+        Date performedDate = DateUtil.parse(session.getPerformedDate(), DateUtil.NORMAL_PATTERN);
+        Calendar instance = Calendar.getInstance();
+        instance.setTime(performedDate);
+
+        if (timeEvent.getStartHour() != 0) {
+            instance.set(Calendar.HOUR_OF_DAY, timeEvent.getStartHour());
+            instance.set(Calendar.MINUTE, timeEvent.getStartMinute());
+            instance.set(Calendar.SECOND, 0);
+
+            session.setStartDate(instance.getTime());
+            return;
+        }
+
+        if (timeEvent.getEndHour() != 0) {
+            instance.set(Calendar.HOUR_OF_DAY, timeEvent.getEndHour());
+            instance.set(Calendar.MINUTE, timeEvent.getEndMinute());
+            instance.set(Calendar.SECOND, 0);
+
+            session.setEndDate(instance.getTime());
+            return;
+        }
     }
 
     @Override
@@ -260,7 +339,51 @@ public class MentoringActivity extends BaseAuthenticateActivity implements ViewP
 
     @Override
     public void onClick(View view) {
-        startActivity(new Intent(this, ListMentorshipActivity.class));
-        finish();
+        onbackPressed();
+    }
+
+    private void onbackPressed() {
+        dialogManager.showAlert(getString(R.string.close_confirmation), new AlertListner() {
+            @Override
+            public void perform() {
+                startActivity(new Intent(MentoringActivity.this, ListMentorshipActivity.class));
+                finish();
+            }
+        });
+    }
+
+    @Override
+    public List<Form> getForms() {
+        return formDAO.findByFormType(FormType.MENTORING.name(), FormType.MENTORING_CUSTOM.name());
+    }
+
+    @Subscribe
+    public void onIterationTypeSelected(MessageEvent<IterationType> messageEvent) {
+
+        if (!(messageEvent.getMessage() instanceof IterationType)) {
+            return;
+        }
+
+        mentorship.setIterationType(messageEvent.getMessage());
+        adapter.setMentorship(this.mentorship);
+
+        viewPager.setAdapter(adapter);
+        viewPager.setCurrentItem(currentPosition, true);
+    }
+
+    @Subscribe
+    public void onErrorRaised(ErrorEvent errorEvent) {
+        dialogManager.showAlert(errorEvent.getMessage());
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        eventBus.unregister(this);
+    }
+
+    @Override
+    public void onBackPressed() {
+        onbackPressed();
     }
 }

@@ -1,0 +1,51 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <TextView
+            android:id="@+id/text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_margin="16dp"
+            android:text="THE PAGE"
+            android:textColor="#000"
+            android:textSize="7pt"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/text_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/fields_background"
+            android:lines="3"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:textSize="6pt" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/save_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="16dp"
+        android:background="#00695C"
+        android:text="@string/submit"
+        android:textAllCaps="false"
+        android:textColor="#fff"
+        android:textStyle="bold" />
+
+</RelativeLayout>

@@ -43,7 +43,8 @@ public class FormDAOImpl extends GenericDAOImpl<Form> implements FormDAO {
         values.put("programmatic_area_uuid", entity.getProgrammaticArea().getUuid());
         values.put("version", entity.getVersion());
         values.put("form_type", entity.getFormType() == null ? FormType.MENTORING.name() : entity.getFormType().name());
-        values.put("target", entity.getTarget());
+        values.put("target_patient", entity.getTargetPatient());
+        values.put("target_file", entity.getTargetFile());
 
         return values;
     }
@@ -60,7 +61,8 @@ public class FormDAOImpl extends GenericDAOImpl<Form> implements FormDAO {
 
         form.setId(cursor.getLong(cursor.getColumnIndex("id")));
         form.setCreatedAt(DateUtil.parse(cursor.getString(cursor.getColumnIndex("created_at"))));
-        form.setTarget(cursor.getInt(cursor.getColumnIndex("target")));
+        form.setTargetPatient(cursor.getInt(cursor.getColumnIndex("target_patient")));
+        form.setTargetFile(cursor.getInt(cursor.getColumnIndex("target_file")));
 
         return form;
     }
@@ -84,12 +86,12 @@ public class FormDAOImpl extends GenericDAOImpl<Form> implements FormDAO {
     }
 
     @Override
-    public List<Form> findByFormType(FormType formType) {
+    public List<Form> findByFormType(String... formTypes) {
 
         SQLiteDatabase database = getReadableDatabase();
         List<Form> forms = new ArrayList<>();
 
-        Cursor cursor = database.rawQuery(QUERY.findByFormType, new String[]{formType.name()});
+        Cursor cursor = database.rawQuery(QUERY.findByFormType, formTypes);
         while (cursor.moveToNext()) {
             forms.add(getPopulatedEntity(cursor));
         }

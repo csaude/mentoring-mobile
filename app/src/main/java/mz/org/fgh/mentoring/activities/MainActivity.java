@@ -107,6 +107,7 @@ public class MainActivity extends BaseAuthenticateActivity implements AdapterVie
                 break;
 
             case REPORTS:
+                startActivity(new Intent(this, ReportActivity.class));
                 break;
         }
     }

@@ -1,12 +1,17 @@
 package mz.org.fgh.mentoring.fragment;
 
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import mz.org.fgh.mentoring.R;
@@ -15,9 +20,8 @@ import mz.org.fgh.mentoring.component.MentoringComponent;
 import mz.org.fgh.mentoring.config.model.Form;
 import mz.org.fgh.mentoring.config.model.FormQuestion;
 import mz.org.fgh.mentoring.config.model.QuestionCategory;
-import mz.org.fgh.mentoring.infra.MentoringApplication;
+import mz.org.fgh.mentoring.event.ErrorEvent;
 import mz.org.fgh.mentoring.validator.FragmentValidator;
-import mz.org.fgh.mentoring.validator.IterationFragment;
 
 public class QuestionFragment extends BaseFragment implements FragmentValidator {
 
@@ -26,6 +30,12 @@ public class QuestionFragment extends BaseFragment implements FragmentValidator 
 
     @BindView(R.id.iterations)
     TextView iterations;
+
+    @BindView(R.id.fragment_questions_iteration_type)
+    ImageView iterationType;
+
+    @Inject
+    EventBus eventBus;
 
     private List<FormQuestion> formQuestions;
 
@@ -39,12 +49,12 @@ public class QuestionFragment extends BaseFragment implements FragmentValidator 
     @Override
     public void onCreateView() {
 
+        MentoringComponent component = application.getMentoringComponent();
+        component.inject(this);
+
         Bundle bundle = getArguments();
         Form form = (Form) bundle.get("form");
         QuestionCategory questionCategory = (QuestionCategory) bundle.get("category");
-
-
-        MentoringComponent component = ((MentoringApplication) getActivity().getApplication()).getMentoringComponent();
 
         formQuestions = form.getFormQuestionsByCategory(questionCategory);
 
@@ -53,6 +63,7 @@ public class QuestionFragment extends BaseFragment implements FragmentValidator 
         questionsList.setAdapter(adapter);
 
         iterations.setText(bundle.getString("target"));
+        iterationType.setImageDrawable(ContextCompat.getDrawable(getActivity(), bundle.getInt("iterationTypeImg")));
     }
 
     @Override
@@ -61,8 +72,8 @@ public class QuestionFragment extends BaseFragment implements FragmentValidator 
         for (FormQuestion formQuestion : formQuestions) {
 
             if (formQuestion.getAnswer() == null) {
-                Snackbar.make(getView(), getString(R.string.all_questions_must_be_answered), Snackbar.LENGTH_SHORT).show();
                 viewPager.setCurrentItem(position);
+                eventBus.post(new ErrorEvent(getString(R.string.all_questions_must_be_answered)));
                 return;
             }
         }

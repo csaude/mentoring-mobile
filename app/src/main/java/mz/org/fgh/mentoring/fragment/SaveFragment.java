@@ -24,6 +24,7 @@ import mz.org.fgh.mentoring.component.MentoringComponent;
 import mz.org.fgh.mentoring.config.model.Form;
 import mz.org.fgh.mentoring.config.model.FormQuestion;
 import mz.org.fgh.mentoring.config.model.QuestionCategory;
+import mz.org.fgh.mentoring.event.ErrorEvent;
 import mz.org.fgh.mentoring.event.EventType;
 import mz.org.fgh.mentoring.event.ProcessEvent;
 import mz.org.fgh.mentoring.infra.MentoringApplication;
@@ -63,7 +64,7 @@ public class SaveFragment extends BaseFragment {
     public void onClickSave() {
 
         if (!isValid()) {
-            Snackbar.make(getView(), getString(R.string.all_questions_must_be_answered), Snackbar.LENGTH_SHORT).show();
+            eventBus.post(new ErrorEvent(getString(R.string.all_questions_must_be_answered)));
             return;
         }
 

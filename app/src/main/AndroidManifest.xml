@@ -52,7 +52,11 @@
             android:name=".activities.ListIndicatorsActivity"
             android:label="@string/title_activity_indicator_collection"
             android:theme="@style/AppTheme" />
-        <activity android:name=".activities.ResetPasswordActivity"></activity>
+        <activity android:name=".activities.ResetPasswordActivity" />
+        <activity
+            android:name=".activities.ReportActivity"
+            android:label="@string/reports"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

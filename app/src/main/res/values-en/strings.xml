@@ -54,5 +54,8 @@
     <string name="reset_password_success">A Senha foi inicializada com sucesso. Consulte o seu email</string>
     <string name="reset_password_error">Não foi possivel inicializar a senha. Por favor tente novamente</string>
     <string name="version">© 2018 © v1.7.5</string>
+    <string name="no_result">Sem Resultado</string>
+    <string name="no_result_found">Nenhum resultado foi encontrado</string>
+    <string name="server_error_comunication">Erro de comunicação com o servidor! Tente novamente.</string>
 
 </resources>

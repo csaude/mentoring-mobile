@@ -32,6 +32,7 @@ public class ListTutoredActivity extends BaseAuthenticateActivity implements Vie
     @Override
     protected void onMentoringCreate(Bundle bundle) {
         setContentView(R.layout.list_tutoreds);
+        toolbar.setNavigationIcon(R.mipmap.ic_back);
 
         tutoredList = (ListView) findViewById(R.id.tutored_list);
         newTutoredBtn = (Button) findViewById(R.id.new_tutored);

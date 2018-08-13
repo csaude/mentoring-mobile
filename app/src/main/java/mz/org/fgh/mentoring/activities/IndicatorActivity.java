@@ -18,11 +18,14 @@ import mz.org.fgh.mentoring.R;
 import mz.org.fgh.mentoring.adapter.IndicatorSwipeAdapter;
 import mz.org.fgh.mentoring.component.MentoringComponent;
 import mz.org.fgh.mentoring.config.dao.AnswerDAO;
+import mz.org.fgh.mentoring.config.dao.FormDAO;
 import mz.org.fgh.mentoring.config.dao.QuestionDAO;
 import mz.org.fgh.mentoring.config.model.Answer;
 import mz.org.fgh.mentoring.config.model.Form;
+import mz.org.fgh.mentoring.config.model.FormType;
 import mz.org.fgh.mentoring.config.model.HealthFacility;
 import mz.org.fgh.mentoring.config.model.Tutor;
+import mz.org.fgh.mentoring.delegate.FormDelegate;
 import mz.org.fgh.mentoring.event.AnswerEvent;
 import mz.org.fgh.mentoring.event.FormEvent;
 import mz.org.fgh.mentoring.event.HealthFacilityEvent;
@@ -35,7 +38,7 @@ import mz.org.fgh.mentoring.util.AnswerUtil;
 import mz.org.fgh.mentoring.util.DateUtil;
 import mz.org.fgh.mentoring.validator.FragmentValidator;
 
-public class IndicatorActivity extends BaseAuthenticateActivity implements ViewPager.OnPageChangeListener, AnswerProvider {
+public class IndicatorActivity extends BaseAuthenticateActivity implements ViewPager.OnPageChangeListener, AnswerProvider, FormDelegate {
 
     @BindView(R.id.view_pager)
     ViewPager viewPager;
@@ -51,6 +54,9 @@ public class IndicatorActivity extends BaseAuthenticateActivity implements ViewP
 
     @Inject
     AnswerDAO answerDAO;
+
+    @Inject
+    FormDAO formDAO;
 
     private IndicatorSwipeAdapter adapter;
 
@@ -177,5 +183,10 @@ public class IndicatorActivity extends BaseAuthenticateActivity implements ViewP
     @Override
     public List<Answer> getAnswers() {
         return answers;
+    }
+
+    @Override
+    public List<Form> getForms() {
+        return formDAO.findByFormType(FormType.INDICATORS);
     }
 }

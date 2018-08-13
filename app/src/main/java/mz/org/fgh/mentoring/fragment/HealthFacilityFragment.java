@@ -2,20 +2,21 @@ package mz.org.fgh.mentoring.fragment;
 
 
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
-import android.view.View;
+import android.text.format.DateFormat;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.TimePicker;
 
 import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -25,7 +26,6 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnItemSelected;
-import butterknife.OnTouch;
 import mz.org.fgh.mentoring.R;
 import mz.org.fgh.mentoring.component.MentoringComponent;
 import mz.org.fgh.mentoring.config.dao.DistrictDAO;
@@ -36,6 +36,7 @@ import mz.org.fgh.mentoring.config.model.HealthFacility;
 import mz.org.fgh.mentoring.event.CabinetEvent;
 import mz.org.fgh.mentoring.event.HealthFacilityEvent;
 import mz.org.fgh.mentoring.event.MessageEvent;
+import mz.org.fgh.mentoring.event.TimeEvent;
 import mz.org.fgh.mentoring.service.CabinetService;
 import mz.org.fgh.mentoring.util.DateUtil;
 import mz.org.fgh.mentoring.validator.FragmentValidator;
@@ -47,6 +48,12 @@ public class HealthFacilityFragment extends BaseFragment implements DatePickerDi
 
     @BindView(R.id.fragment_performed_date)
     EditText performedDate;
+
+    @BindView(R.id.fragment_performed_start_time)
+    EditText startTime;
+
+    @BindView(R.id.fragment_performed_end_time)
+    EditText endTime;
 
     @BindView(R.id.fragment_province)
     Spinner provinceSpinner;
@@ -88,6 +95,9 @@ public class HealthFacilityFragment extends BaseFragment implements DatePickerDi
     private Cabinet cabinet;
 
     private boolean valid;
+
+    private TimeEvent startTimeEvent;
+    private TimeEvent endTimeEvent;
 
     @Override
     public int getResourceId() {
@@ -246,8 +256,29 @@ public class HealthFacilityFragment extends BaseFragment implements DatePickerDi
             return;
         }
 
-        if (isEmptyDate()) {
+        if (isEmptyPerformedDate()) {
             Snackbar.make(getView(), getString(R.string.performed_date_must_be_selected), Snackbar.LENGTH_SHORT).show();
+            viewPager.setCurrentItem(position);
+            valid = false;
+            return;
+        }
+
+        if (isEmptyStartTime()) {
+            Snackbar.make(getView(), getString(R.string.start_time_must_be_selected), Snackbar.LENGTH_SHORT).show();
+            viewPager.setCurrentItem(position);
+            valid = false;
+            return;
+        }
+
+        if (isEmptyEndTime()) {
+            Snackbar.make(getView(), getString(R.string.end_time_must_be_selected), Snackbar.LENGTH_SHORT).show();
+            viewPager.setCurrentItem(position);
+            valid = false;
+            return;
+        }
+
+        if (IsStartTimeLowerThanEndTime()) {
+            Snackbar.make(getView(), getString(R.string.start_time_must_not_be_lower_than_end_time), Snackbar.LENGTH_SHORT).show();
             viewPager.setCurrentItem(position);
             valid = false;
             return;
@@ -284,12 +315,87 @@ public class HealthFacilityFragment extends BaseFragment implements DatePickerDi
         valid = true;
     }
 
-    private boolean isEmptyDate() {
+    private boolean isEmptyPerformedDate() {
         return performedDate.getText().toString().isEmpty();
+    }
+
+    private boolean isEmptyStartTime() {
+        return startTime.getText().toString().isEmpty();
+    }
+
+    private boolean isEmptyEndTime() {
+        return endTime.getText().toString().isEmpty();
     }
 
     @Override
     public boolean isValid() {
         return valid;
+    }
+
+    @OnClick({R.id.fragment_performed_start_time, R.id.fragment_start_time_picker})
+    public void onClickStartTime() {
+
+        Calendar instance = Calendar.getInstance();
+
+        TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), onSetStartTimeListner(),
+                instance.get(Calendar.HOUR_OF_DAY),
+                instance.get(Calendar.MINUTE),
+                DateFormat.is24HourFormat(getActivity()));
+
+        timePickerDialog.show();
+    }
+
+    @OnClick({R.id.fragment_performed_end_time, R.id.fragment_end_time_picker})
+    public void onClickEndTime() {
+
+        Calendar instance = Calendar.getInstance();
+
+        TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), onSetEndTimeListner(),
+                instance.get(Calendar.HOUR_OF_DAY),
+                instance.get(Calendar.MINUTE),
+                DateFormat.is24HourFormat(getActivity()));
+
+        timePickerDialog.show();
+    }
+
+    @NonNull
+    private TimePickerDialog.OnTimeSetListener onSetStartTimeListner() {
+        return new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                startTime.setText(StringUtils.leftPad((hourOfDay) + "", 2, "0") + " : " + StringUtils.leftPad((minute) + "", 2, "0"));
+                startTimeEvent = new TimeEvent(hourOfDay, minute, 0, 0);
+                eventBus.post(startTimeEvent);
+            }
+        };
+    }
+
+    @NonNull
+    private TimePickerDialog.OnTimeSetListener onSetEndTimeListner() {
+        return new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                endTime.setText(StringUtils.leftPad((hourOfDay) + "", 2, "0") + " : " + StringUtils.leftPad((minute) + "", 2, "0"));
+                endTimeEvent = new TimeEvent( 0, 0, hourOfDay, minute);
+                eventBus.post(endTimeEvent);
+            }
+        };
+    }
+
+    private boolean IsStartTimeLowerThanEndTime() {
+
+        Calendar startInstance = Calendar.getInstance();
+        startInstance.setTime(DateUtil.parse(performedDate.getText().toString(), DateUtil.NORMAL_PATTERN));
+        startInstance.set(Calendar.HOUR_OF_DAY, startTimeEvent.getStartHour());
+        startInstance.set(Calendar.MINUTE, startTimeEvent.getStartMinute());
+        startInstance.set(Calendar.SECOND, 0);
+
+        Calendar endInstance = Calendar.getInstance();
+        endInstance.setTime(DateUtil.parse(performedDate.getText().toString(), DateUtil.NORMAL_PATTERN));
+        endInstance.set(Calendar.HOUR_OF_DAY, endTimeEvent.getEndHour());
+        endInstance.set(Calendar.MINUTE, endTimeEvent.getEndMinute());
+        endInstance.set(Calendar.SECOND, 0);
+
+        return !endInstance.after(startInstance);
     }
 }

@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Named;
@@ -28,6 +29,8 @@ import mz.org.fgh.mentoring.config.dao.FormDAO;
 import mz.org.fgh.mentoring.config.dao.FormDAOImpl;
 import mz.org.fgh.mentoring.config.dao.FormQuestionDAO;
 import mz.org.fgh.mentoring.config.dao.FormQuestionDAOImpl;
+import mz.org.fgh.mentoring.config.dao.FormTargetDAO;
+import mz.org.fgh.mentoring.config.dao.FormTargetDAOImpl;
 import mz.org.fgh.mentoring.config.dao.HealthFacilityDAO;
 import mz.org.fgh.mentoring.config.dao.HealthFacilityDAOImpl;
 import mz.org.fgh.mentoring.config.dao.QuestionDAO;
@@ -35,6 +38,7 @@ import mz.org.fgh.mentoring.config.dao.QuestionDAOImpl;
 import mz.org.fgh.mentoring.config.dao.TutoredDAO;
 import mz.org.fgh.mentoring.config.dao.TutoredDAOImpl;
 import mz.org.fgh.mentoring.config.model.Cabinet;
+import mz.org.fgh.mentoring.config.model.PerformedSession;
 import mz.org.fgh.mentoring.process.dao.IndicatorDAO;
 import mz.org.fgh.mentoring.process.dao.IndictorDAOImpl;
 import mz.org.fgh.mentoring.process.dao.MentorshipDAO;
@@ -47,6 +51,8 @@ import mz.org.fgh.mentoring.service.CareerSyncService;
 import mz.org.fgh.mentoring.service.CareerSyncServiceImpl;
 import mz.org.fgh.mentoring.service.FormQuestionSyncService;
 import mz.org.fgh.mentoring.service.FormQuestionSyncServiceImpl;
+import mz.org.fgh.mentoring.service.FormTargetService;
+import mz.org.fgh.mentoring.service.FormTargetServiceImpl;
 import mz.org.fgh.mentoring.service.HealthFacilitySyncService;
 import mz.org.fgh.mentoring.service.HealthFacilitySyncServiceImpl;
 import mz.org.fgh.mentoring.service.IndicatorService;
@@ -234,5 +240,15 @@ public class MentoringModule {
     @Provides
     public CabinetService provideCabinetService(CabinetServiceImpl cabinetService) {
         return cabinetService;
+    }
+
+    @Provides
+    public FormTargetDAO provideFormTargetDAO() {
+        return new FormTargetDAOImpl(context);
+    }
+
+    @Provides
+    public FormTargetService proviceFormTargetService(FormTargetServiceImpl formTargetService) {
+        return formTargetService;
     }
 }

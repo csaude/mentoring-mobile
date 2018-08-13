@@ -2,18 +2,15 @@ package mz.org.fgh.mentoring.activities;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -23,19 +20,21 @@ import butterknife.BindView;
 import mz.org.fgh.mentoring.R;
 import mz.org.fgh.mentoring.adapter.SwipeAdapter;
 import mz.org.fgh.mentoring.component.MentoringComponent;
+import mz.org.fgh.mentoring.config.dao.FormDAO;
 import mz.org.fgh.mentoring.config.dao.FormQuestionDAO;
-import mz.org.fgh.mentoring.config.dao.QuestionDAO;
 import mz.org.fgh.mentoring.config.model.Answer;
 import mz.org.fgh.mentoring.config.model.Form;
 import mz.org.fgh.mentoring.config.model.FormQuestion;
+import mz.org.fgh.mentoring.config.model.FormType;
 import mz.org.fgh.mentoring.config.model.HealthFacility;
-import mz.org.fgh.mentoring.config.model.Question;
+import mz.org.fgh.mentoring.delegate.FormDelegate;
 import mz.org.fgh.mentoring.event.AnswerEvent;
 import mz.org.fgh.mentoring.event.CabinetEvent;
 import mz.org.fgh.mentoring.event.FormEvent;
 import mz.org.fgh.mentoring.event.HealthFacilityEvent;
 import mz.org.fgh.mentoring.event.MessageEvent;
 import mz.org.fgh.mentoring.event.ProcessEvent;
+import mz.org.fgh.mentoring.event.TimeEvent;
 import mz.org.fgh.mentoring.event.TutoredEvent;
 import mz.org.fgh.mentoring.fragment.ConfirmationFragment;
 import mz.org.fgh.mentoring.fragment.SaveFragment;
@@ -47,9 +46,8 @@ import mz.org.fgh.mentoring.provider.SessionProvider;
 import mz.org.fgh.mentoring.service.SessionService;
 import mz.org.fgh.mentoring.util.DateUtil;
 import mz.org.fgh.mentoring.validator.FragmentValidator;
-import mz.org.fgh.mentoring.validator.IterationFragment;
 
-public class MentoringActivity extends BaseAuthenticateActivity implements ViewPager.OnPageChangeListener, AnswerProvider, SessionProvider, View.OnClickListener {
+public class MentoringActivity extends BaseAuthenticateActivity implements ViewPager.OnPageChangeListener, AnswerProvider, SessionProvider, View.OnClickListener, FormDelegate {
 
     @BindView(R.id.view_pager)
     ViewPager viewPager;
@@ -62,6 +60,9 @@ public class MentoringActivity extends BaseAuthenticateActivity implements ViewP
 
     @Inject
     SessionService sessionService;
+
+    @Inject
+    FormDAO formDAO;
 
     private SwipeAdapter adapter;
 
@@ -238,10 +239,39 @@ public class MentoringActivity extends BaseAuthenticateActivity implements ViewP
         }
     }
 
+    @Subscribe
+    public void onTimePicker(TimeEvent timeEvent) {
+
+        if (session.getPerformedDate() == null) {
+            return;
+        }
+
+        Date performedDate = DateUtil.parse(session.getPerformedDate(), DateUtil.NORMAL_PATTERN);
+        Calendar instance = Calendar.getInstance();
+        instance.setTime(performedDate);
+
+        if (timeEvent.getStartHour() != 0) {
+            instance.set(Calendar.HOUR_OF_DAY, timeEvent.getStartHour());
+            instance.set(Calendar.MINUTE, timeEvent.getStartMinute());
+            instance.set(Calendar.SECOND, 0);
+
+            session.setStartDate(instance.getTime());
+            return;
+        }
+
+        if (timeEvent.getEndHour() != 0) {
+            instance.set(Calendar.HOUR_OF_DAY, timeEvent.getEndHour());
+            instance.set(Calendar.MINUTE, timeEvent.getEndMinute());
+            instance.set(Calendar.SECOND, 0);
+
+            session.setEndDate(instance.getTime());
+            return;
+        }
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        eventBus.unregister(this);
     }
 
     @Override
@@ -262,5 +292,10 @@ public class MentoringActivity extends BaseAuthenticateActivity implements ViewP
     public void onClick(View view) {
         startActivity(new Intent(this, ListMentorshipActivity.class));
         finish();
+    }
+
+    @Override
+    public List<Form> getForms() {
+        return formDAO.findByFormType(FormType.MENTORING);
     }
 }

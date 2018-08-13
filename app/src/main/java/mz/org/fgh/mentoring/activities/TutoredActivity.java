@@ -61,6 +61,7 @@ public class TutoredActivity extends BaseAuthenticateActivity implements FieldsV
     @Override
     protected void onMentoringCreate(Bundle bundle) {
         setContentView(R.layout.tutored_activity);
+        toolbar.setNavigationIcon(R.mipmap.ic_back);
 
         MentoringComponent component = application.getMentoringComponent();
         component.inject(this);

@@ -23,6 +23,7 @@ import mz.org.fgh.mentoring.component.MentoringComponent;
 import mz.org.fgh.mentoring.config.dao.FormDAO;
 import mz.org.fgh.mentoring.config.model.Form;
 import mz.org.fgh.mentoring.config.model.FormType;
+import mz.org.fgh.mentoring.delegate.FormDelegate;
 import mz.org.fgh.mentoring.event.FormEvent;
 import mz.org.fgh.mentoring.validator.FragmentValidator;
 
@@ -47,17 +48,9 @@ public class FormsFragment extends BaseFragment implements AdapterView.OnItemCli
         MentoringComponent component = application.getMentoringComponent();
         component.inject(this);
 
-        FragmentActivity activity = getActivity();
+        FormDelegate activity = (FormDelegate) getActivity();
 
-        List<Form> forms = new ArrayList<>();
-
-        if (activity instanceof IndicatorActivity) {
-            forms = formDAO.findByFormType(FormType.INDICATORS);
-        } else if (activity instanceof MentoringActivity) {
-            forms = formDAO.findByFormType(FormType.MENTORING);
-        }
-
-        FormAdapter adapter = new FormAdapter(activity, forms);
+        FormAdapter adapter = new FormAdapter(getActivity(), activity.getForms());
         formsListView.setAdapter(adapter);
 
         formsListView.setOnItemClickListener(this);

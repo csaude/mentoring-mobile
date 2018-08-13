@@ -3,7 +3,7 @@ package mz.org.fgh.mentoring.config.model;
 /**
  * Created by Stélio Moiane on 11/16/16.
  */
-public enum CareerType{
+public enum CareerType {
 
     HEALTH_TECHNICAL_ASSISTANT("Assistente Técnico de Saúde"),
 
@@ -27,14 +27,17 @@ public enum CareerType{
 
     HEALTH_ASSOCIATE_DEGREE_N2("Técnico Superior de Saúde N2"),
 
-    SERVICE_AGENT("Agente de Serviço");
+    SERVICE_AGENT("Agente de Serviço"),
+
+    CLINICAL_AREA("Área Clínica"),
+
+    MONITORING_AND_EVALUATION("Monitoria e Avaliação");
 
     private String description;
 
     CareerType(final String description) {
         this.description = description;
     }
-
 
 
     @Override

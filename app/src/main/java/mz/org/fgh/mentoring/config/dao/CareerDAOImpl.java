@@ -65,8 +65,8 @@ public class CareerDAOImpl extends GenericDAOImpl<Career> implements CareerDAO {
             careers.add(career);
         }
 
+        database.close();
         cursor.close();
-
         return careers;
     }
 
@@ -79,6 +79,8 @@ public class CareerDAOImpl extends GenericDAOImpl<Career> implements CareerDAO {
         Cursor cursor = database.rawQuery(QUERY.exist, params);
         int result = cursor.getCount();
 
+        database.close();
+        cursor.close();
         return result > 0;
     }
 
@@ -96,6 +98,7 @@ public class CareerDAOImpl extends GenericDAOImpl<Career> implements CareerDAO {
             careers.add(career);
         }
 
+        database.close();
         cursor.close();
 
         return careers;

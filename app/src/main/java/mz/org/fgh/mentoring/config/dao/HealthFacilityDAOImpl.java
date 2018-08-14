@@ -70,6 +70,7 @@ public class HealthFacilityDAOImpl extends GenericDAOImpl<HealthFacility> implem
         }
 
         cursor.close();
+        database.close();
         return healthFacilities;
     }
 }

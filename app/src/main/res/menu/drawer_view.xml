@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:id="@+id/items_header">
+
+        <item
+            android:id="@+id/main_menu_settings"
+            android:icon="@mipmap/ic_settings"
+            android:title="@string/config" />
+        <item
+            android:id="@+id/main_menu_tutor_details"
+            android:icon="@mipmap/ic_user"
+            android:title="@string/user_details" />
+        <item
+            android:id="@+id/main_menu_change_password"
+            android:icon="@mipmap/ic_key"
+            android:title="@string/change_password" />
+    </group>
+
+    <group android:id="@+id/items_footer">
+        <item
+            android:id="@+id/main_menu_logout"
+            android:icon="@mipmap/ic_power"
+            android:title="@string/logout" />
+    </group>
+
+</menu>

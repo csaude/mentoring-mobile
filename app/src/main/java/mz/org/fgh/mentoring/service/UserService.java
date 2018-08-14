@@ -8,4 +8,6 @@ import mz.org.fgh.mentoring.infra.UserContext;
 public interface UserService {
 
     void changeUserPassword(UserContext context);
+
+    void resetPassword(UserContext context);
 }

@@ -9,5 +9,7 @@ public enum ItemType {
 
     TUDOREDS,
 
-    REPORTS;
+    REPORTS,
+
+    INDICATORS;
 }

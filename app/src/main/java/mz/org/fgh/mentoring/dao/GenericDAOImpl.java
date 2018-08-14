@@ -5,8 +5,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteQueryBuilder;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import mz.org.fgh.mentoring.model.GenericEntity;
@@ -18,7 +20,7 @@ import mz.org.fgh.mentoring.util.DateUtil;
 public abstract class GenericDAOImpl<T extends GenericEntity> extends SQLiteOpenHelper implements GenericDAO<T> {
 
     private static final String name = "mentoringdb";
-    private static final int version = 1;
+    private static final int version = 2;
 
     public GenericDAOImpl(Context context) {
         super(context, name, null, version);
@@ -35,11 +37,19 @@ public abstract class GenericDAOImpl<T extends GenericEntity> extends SQLiteOpen
         db.execSQL(FORM_QUESTION_TABLE);
         db.execSQL(MENTORSHIP_TABLE);
         db.execSQL(ANSWER_TABLE);
+        db.execSQL(INDICATOR_TABLE);
+        db.execSQL(ALTER_FORM_TABLE);
+        db.execSQL(ALTER_ANSWER_TABLE);
+        db.execSQL(SESSION_TABLE);
+        db.execSQL(ALTER_MENTORSHIP_TABLE_ADD_SESSION);
+        db.execSQL(CABINET_TABLE);
+        db.execSQL(ALTER_MENTORSHIP_TABLE_ADD_CABINET);
+        db.execSQL(FORM_TARGETS_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        db.execSQL(FORM_TARGETS_TABLE);
     }
 
     @Override
@@ -63,13 +73,13 @@ public abstract class GenericDAOImpl<T extends GenericEntity> extends SQLiteOpen
 
     @Override
     public void update(T entity) {
+        SQLiteDatabase database = getWritableDatabase();
 
-        SQLiteDatabase database = getReadableDatabase();
-
-        String[] params = new String[]{String.valueOf(entity.getId())};
+        String[] params = new String[]{String.valueOf(entity.getUuid())};
         ContentValues values = getContentValues(entity);
 
-        database.update(getTableName(), values, "id = ?", params);
+        database.update(getTableName(), values, "uuid = ?", params);
+        database.close();
     }
 
     @Override
@@ -103,8 +113,13 @@ public abstract class GenericDAOImpl<T extends GenericEntity> extends SQLiteOpen
 
 
     @Override
-    public void delete(final String whereClause, final String param) {
+    public void delete(final String whereClause, final List<String> params) {
         SQLiteDatabase database = getWritableDatabase();
-        database.delete(getTableName(), whereClause, new String[]{param});
+
+        for (String param : params) {
+            database.delete(getTableName(), whereClause, new String[]{param});
+        }
+
+        database.close();
     }
 }

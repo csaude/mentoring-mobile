@@ -9,11 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mz.org.fgh.mentoring.config.model.Answer;
-import mz.org.fgh.mentoring.config.model.BooleanAnswer;
 import mz.org.fgh.mentoring.config.model.Form;
 import mz.org.fgh.mentoring.config.model.Question;
 import mz.org.fgh.mentoring.config.model.QuestionType;
-import mz.org.fgh.mentoring.config.model.TextAnswer;
 import mz.org.fgh.mentoring.dao.GenericDAOImpl;
 import mz.org.fgh.mentoring.process.model.Mentorship;
 
@@ -43,9 +41,10 @@ public class AnswerDAOImpl extends GenericDAOImpl<Answer> implements AnswerDAO {
     public ContentValues getContentValues(Answer answer) {
         ContentValues values = new ContentValues();
 
-        values.put("mentorship_uuid", answer.getMentorship().getUuid());
+        values.put("mentorship_uuid", answer.getMentorship() != null ? answer.getMentorship().getUuid() : null);
         values.put("form_uuid", answer.getForm().getUuid());
         values.put("question_uuid", answer.getQuestion().getUuid());
+        values.put("indicator_uuid", answer.getIndicator() != null ? answer.getIndicator().getUuid() : null);
 
         this.setAnswerContentValue(answer, values);
 
@@ -55,10 +54,18 @@ public class AnswerDAOImpl extends GenericDAOImpl<Answer> implements AnswerDAO {
     private void setAnswerContentValue(Answer answer, ContentValues values) {
         switch (answer.getQuestion().getQuestionType()) {
             case TEXT:
-                values.put("text_value", ((TextAnswer) answer).getTextValue());
+                values.put("text_value", answer.getValue());
                 break;
+
             case BOOLEAN:
-                values.put("boolean_value", ((BooleanAnswer) answer).getBooleanValue());
+
+                Boolean booleanValue = Boolean.valueOf(answer.getValue());
+                Integer value = booleanValue ? 1 : 0;
+                values.put("boolean_value", value);
+                break;
+
+            case NUMERIC:
+                values.put("numeric_value", answer.getValue());
                 break;
         }
     }
@@ -91,11 +98,20 @@ public class AnswerDAOImpl extends GenericDAOImpl<Answer> implements AnswerDAO {
 
     private void setAnswerValue(Answer answer, Cursor cursor) {
         switch (answer.getQuestion().getQuestionType()) {
+
             case TEXT:
                 answer.setValue(cursor.getString(cursor.getColumnIndex("text_value")));
                 break;
+
             case BOOLEAN:
-                answer.setValue(String.valueOf(cursor.getInt(cursor.getColumnIndex("boolean_value"))));
+
+                int value = cursor.getInt(cursor.getColumnIndex("boolean_value"));
+                Boolean booleanValue = value == 1 ? Boolean.TRUE : Boolean.FALSE;
+                answer.setValue(String.valueOf(booleanValue));
+                break;
+
+            case NUMERIC:
+                answer.setValue(String.valueOf(cursor.getInt(cursor.getColumnIndex("numeric_value"))));
                 break;
         }
     }
@@ -111,14 +127,40 @@ public class AnswerDAOImpl extends GenericDAOImpl<Answer> implements AnswerDAO {
             answers.add(getPopulatedEntity(cursor));
         }
 
+        database.close();
         cursor.close();
         return answers;
     }
 
     @Override
-    public void deleteByMentorshipUuids(List<String> mentorshipsUuids) {
-        for (String mentorshipUuid : mentorshipsUuids) {
-            delete("mentorship_uuid = ?", mentorshipUuid);
+    public void deleteBySessionUuids(List<String> sessionUuids) {
+
+        SQLiteDatabase database = getWritableDatabase();
+
+        for (String uuid : sessionUuids) {
+            database.rawQuery(QUERY.deleteBySessionUuids, new String[]{uuid});
         }
+
+        database.close();
+    }
+
+    @Override
+    public List<Answer> findByIndicatorUuid(String indicatorUuid) {
+        SQLiteDatabase database = getReadableDatabase();
+        List<Answer> answers = new ArrayList<>();
+
+        Cursor cursor = database.rawQuery(QUERY.findByIndicatorUuid, new String[]{indicatorUuid});
+        while (cursor.moveToNext()) {
+            answers.add(getPopulatedEntity(cursor));
+        }
+
+        database.close();
+        cursor.close();
+        return answers;
+    }
+
+    @Override
+    public void deleteByIndicatorUuids(List<String> indicatorsUuids) {
+        delete("indicator_uuid IN (?)", indicatorsUuids);
     }
 }

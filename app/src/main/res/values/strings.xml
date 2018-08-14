@@ -1,13 +1,14 @@
 <resources>
-    <string name="app_name">Mentoria</string>
+    <string name="app_name">Tutoria</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_login">LoginActivity</string>
-    <string name="title">Aplicativo de Mentoria</string>
+    <string name="title">Aplicativo de Tutoria</string>
 
 
-    <string name="mentoring_process">Processo de Mentoria</string>
-    <string name="tudoreds">Tutorandos</string>
+    <string name="mentoring_process">Processo de Tutoria</string>
+    <string name="tudoreds">Tutorados</string>
     <string name="reports">Relatórios</string>
+    <string name="indicators">Indicadores</string>
     <string name="config">Configurações</string>
     <string name="logout">Sair</string>
     <string name="title_activity_configuration">ConfigurationActivity</string>
@@ -23,17 +24,18 @@
     </array>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="title_activity_list_mentorship">Processos de Mentoria</string>
+    <string name="title_activity_list_mentorship">Processos de Tutoria</string>
     <string name="title_activity_tutor_update">Detalhes do Utilizador</string>
+    <string name="title_activity_indicator_collection">Recolha de Indicadores</string>
 
     <string name="tutored_must_be_selected">O tutorando deve ser seleccionado!</string>
     <string name="form_must_be_selected">O formulário deve ser seleccionado!</string>
-    <string name="submit">Submeter</string>
+    <string name="submit">Salvar</string>
     <string name="password">Senha</string>
     <string name="enter">Entrar</string>
     <string name="health_facility_must_be_selected">A unidade sanitária de deve ser seleccionada!</string>
     <string name="referred_month_must_be_selected">O mês de referência deve ser seleccionado!</string>
-    <string name="performed_date_must_be_selected">A data da Mentoria deve ser seleccionada!</string>
+    <string name="performed_date_must_be_selected">A data da Tutoria deve ser seleccionada!</string>
     <string name="user_details">Detalhes de Utilizador</string>
     <string name="change_password">Alterar a Senha</string>
     <string name="title_activity_change_password">Alteração de Senha</string>
@@ -47,5 +49,52 @@
     <string name="required_field">Campo Obrigatório</string>
     <string name="phone_number_invalid">Número de telefone Inválido! ex:+258820000000</string>
     <string name="none_answer_was_seleted">Nenhuma resposta foi seleccionada</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="the_value_is_empty">Campo obrigatório</string>
+    <string name="yes">Sim</string>
+    <string name="no">Não</string>
+    <string name="referred_month">Mês de referência:</string>
+    <string name="terminate">Terminar</string>
+    <string name="go_ahead">Continuar</string>
+
+    <string name="reason_must_be_informed"> O motivo deve ser informado</string>
+    <string name="session_termination_reason">Motivo para o término da sessão (O utilizador não preencheu o número mínimo de vezes solicitado no formulário)</string>
+    <string name="iterations">Iterações</string>
+    <string name="complete">Completa</string>
+    <string name="incomplete">Incompleta</string>
+    <string name="cabinet_must_be_selected">O gainete deve ser seleccionado</string>
+    <string name="all_questions_must_be_answered">Todas as questões devem ser respondidas</string>
+    <string name="select">Seleccione...</string>
+
+    <string name="health_facility">Unidade Sanitária</string>
+    <string name="tutored">Tutorado</string>
+    <string name="form">Formulário</string>
+    <string name="confirmation">Confirmação</string>
+    <string name="submission">Submissão</string>
+    <string name="reset_password">Inicializar a Senha</string>
+    <string name="forget_password">Esqueceu a Senha?</string>
+    <string name="send">Enviar</string>
+    <string name="reset_password_text">Por favor informe o seu e-mail para que a sua senha seja devidamente actualizada</string>
+    <string name="iteration_times">vezes foi (ram) preenchida (as). O utilizador deseja continuar?</string>
+    <string name="of">das</string>
+    <string name="wait">Aguarde</string>
+    <string name="processing">A processar o pedido....</string>
+    <string name="reset_password_success">A Senha foi inicializada com sucesso. Consulte o seu email</string>
+    <string name="reset_password_error">Não foi possivel inicializar a senha. Por favor tente novamente</string>
+    <string name="province_must_be_selected">A provincia deve ser seleccionada</string>
+    <string name="district_must_be_selected">O distrito deve ser seleccionado</string>
+    <string name="district">Distrito</string>
+    <string name="total">Total</string>
+
+    <string name="version">© 2018 © v1.7.6</string>
+    <string name="no_result">Sem Resultado</string>
+    <string name="no_result_found">Nenhum resultado foi encontrado</string>
+    <string name="server_error">Erro de comunicação</string>
+    <string name="server_error_comunication">Erro de comunicação com o servidor! Tente novamente.</string>
+    <string name="start_time_must_be_selected">A hora de Início deve ser indicada</string>
+    <string name="end_time_must_be_selected">A hora de término deve ser indicada</string>
+    <string name="start_time_must_not_be_lower_than_end_time">A hora de início não deve ser superior nem igual da data de término</string>
 
 </resources>

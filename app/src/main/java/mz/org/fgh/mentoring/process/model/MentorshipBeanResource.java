@@ -1,9 +1,10 @@
 package mz.org.fgh.mentoring.process.model;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import mz.org.fgh.mentoring.helpers.MentorshipHelper;
+import mz.org.fgh.mentoring.dto.SessionDTO;
 import mz.org.fgh.mentoring.model.BeanResource;
 
 /**
@@ -11,22 +12,23 @@ import mz.org.fgh.mentoring.model.BeanResource;
  */
 public class MentorshipBeanResource extends BeanResource {
 
-    private List<MentorshipHelper> mentorships;
+    private List<SessionDTO> sessions;
 
-    private List<String> mentorshipUuids;
+    private List<String> sessionUuids;
 
     public MentorshipBeanResource() {
+        this.sessions = new ArrayList<>();
     }
 
-    public void setMentorships(List<MentorshipHelper> mentorships) {
-        this.mentorships = mentorships;
+    public void addSessions(SessionDTO sessionDTO) {
+        this.sessions.add(sessionDTO);
     }
 
-    public List<MentorshipHelper> getMentorships() {
-        return Collections.unmodifiableList(mentorships);
+    public List<SessionDTO> getSessions() {
+        return this.sessions;
     }
 
-    public List<String> getMentorshipUuids() {
-        return mentorshipUuids;
+    public List<String> getSessionUuids() {
+        return sessionUuids;
     }
 }

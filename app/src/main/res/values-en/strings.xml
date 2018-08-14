@@ -8,6 +8,7 @@
     <string name="mentoring_process">Mentoring Process</string>
     <string name="tudoreds">Tutoreds</string>
     <string name="reports">Reports</string>
+    <string name="indicators">Indicators</string>
     <string name="config">configurations</string>
     <string name="logout">Logout</string>
     <string name="title_activity_configuration">ConfigurationActivity</string>
@@ -39,5 +40,22 @@
     <string name="required_field">Field required</string>
     <string name="phone_number_invalid">Phone Number invalid! eg:+258820000000</string>
     <string name="none_answer_was_seleted">None Answer was selected</string>
+    <string name="the_value_is_empty">The value is required</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="referred_month">Referred Month</string>
+    <string name="select">Select...</string>
+    <string name="reset_password">Inicializar a Senha</string>
+    <string name="forget_password">Esqueceu a Senha?</string>
+    <string name="reset_password_text">Por fovor informe o seu email para que a sua senha seja devidamente actualizada</string>
+    <string name="iteration_times">vez (es) foi (ram) preenchida (as). O utilizador deseja continuar?</string>
+    <string name="wait">Aguarde</string>
+    <string name="processing">A processar o pedido....</string>
+    <string name="reset_password_success">A Senha foi inicializada com sucesso. Consulte o seu email</string>
+    <string name="reset_password_error">Não foi possivel inicializar a senha. Por favor tente novamente</string>
+    <string name="version">© 2018 © v1.7.5</string>
+    <string name="no_result">Sem Resultado</string>
+    <string name="no_result_found">Nenhum resultado foi encontrado</string>
+    <string name="server_error_comunication">Erro de comunicação com o servidor! Tente novamente.</string>
 
 </resources>

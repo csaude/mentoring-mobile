@@ -37,6 +37,12 @@ public class LoadMetadataServiceImpl implements LoadMetadataService {
     TutoredService tutoredService;
 
     @Inject
+    CabinetService cabinetService;
+
+    @Inject
+    FormTargetService formTargetService;
+
+    @Inject
     public LoadMetadataServiceImpl() {
     }
 
@@ -58,10 +64,16 @@ public class LoadMetadataServiceImpl implements LoadMetadataService {
             public void onResponse(Call<GenericWrapper> call, Response<GenericWrapper> response) {
                 GenericWrapper data = response.body();
 
+                if (data == null) {
+                    return;
+                }
+
                 healthFacilitySyncService.processHealthFacilities(data.getHealthFacilities());
                 careerSyncService.processCarres(data.getCareers());
                 formQuestionSyncService.processFormQuestions(data.getFormQuestions());
                 tutoredService.processFoundTutoredByUser(data.getTutoreds());
+                cabinetService.precessCabinets(data.getCabinets());
+                formTargetService.processFormTarget(data.getFormTargets());
 
                 progressDialog.cancel();
             }

@@ -11,6 +11,13 @@ public class HealthFacility extends GenericEntity {
 
     private String healthFacility;
 
+    public HealthFacility(String healthFacility) {
+        this.healthFacility = healthFacility;
+    }
+
+    public HealthFacility() {
+    }
+
     public void setDistrict(District district) {
         this.district = district;
     }

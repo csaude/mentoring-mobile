@@ -4,26 +4,32 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
+import mz.org.fgh.mentoring.config.model.Cabinet;
 import mz.org.fgh.mentoring.config.model.Career;
 import mz.org.fgh.mentoring.config.model.FormQuestion;
+import mz.org.fgh.mentoring.config.model.FormTarget;
 import mz.org.fgh.mentoring.config.model.HealthFacility;
+import mz.org.fgh.mentoring.config.model.PerformedSession;
 
 /**
  * Created by Stélio Moiane on 10/25/16.
  */
 public class GenericWrapper {
 
-    @JsonProperty("healthFacility")
     private List<HealthFacility> healthFacilities;
 
-    @JsonProperty("career")
     private List<Career> careers;
 
-    @JsonProperty("formQuestion")
     private List<FormQuestion> formQuestions;
 
-    @JsonProperty("tutored")
     private List<Tutored> tutoreds;
+
+    private List<Cabinet> cabinets;
+
+    private List<FormTarget> formTargets;
+
+    @JsonProperty("performedSession")
+    private List<PerformedSession> performedSessions;
 
     public List<HealthFacility> getHealthFacilities() {
         return this.healthFacilities;
@@ -39,5 +45,17 @@ public class GenericWrapper {
 
     public List<Tutored> getTutoreds() {
         return tutoreds;
+    }
+
+    public List<Cabinet> getCabinets() {
+        return cabinets;
+    }
+
+    public List<PerformedSession> getPerformedSessions() {
+        return performedSessions;
+    }
+
+    public List<FormTarget> getFormTargets() {
+        return formTargets;
     }
 }

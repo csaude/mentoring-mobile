@@ -2,6 +2,7 @@ package mz.org.fgh.mentoring.activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
@@ -32,6 +33,9 @@ public class LoginActivity extends BaseActivity {
     @BindView(R.id.login_password)
     TextView password;
 
+    @BindView(R.id.reset_password)
+    TextView resetPassword;
+
     @Inject
     @Named("account")
     Retrofit retrofit;
@@ -43,6 +47,8 @@ public class LoginActivity extends BaseActivity {
 
         MentoringComponent component = application.getMentoringComponent();
         component.inject(this);
+
+        resetPassword.setPaintFlags(resetPassword.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
     }
 
     @OnClick(R.id.login_loginButton)
@@ -114,9 +120,14 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onFailure(Call<UserContext> call, Throwable t) {
                 progressDialog.cancel();
-                Log.i("Error connection... ", t.getMessage());
+                Log.i("Error connection... ", "");
                 Toast.makeText(LoginActivity.this, "Problemas de conexão com o servidor! Por favor Contacte o Administrador", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @OnClick({R.id.reset_password_btn, R.id.reset_password})
+    public void resetPassword() {
+        startActivity(new Intent(this, ResetPasswordActivity.class));
     }
 }

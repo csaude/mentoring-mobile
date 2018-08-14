@@ -4,6 +4,7 @@
 package mz.org.fgh.mentoring.config.model;
 
 import mz.org.fgh.mentoring.model.GenericEntity;
+import mz.org.fgh.mentoring.process.model.Indicator;
 import mz.org.fgh.mentoring.process.model.Mentorship;
 
 /**
@@ -16,6 +17,8 @@ public abstract class Answer extends GenericEntity {
     private Mentorship mentorship;
 
     private Question question;
+
+    private Indicator indicator;
 
     public abstract void setValue(String value);
 
@@ -43,5 +46,13 @@ public abstract class Answer extends GenericEntity {
 
     public void setQuestion(final Question question) {
         this.question = question;
+    }
+
+    public Indicator getIndicator() {
+        return indicator;
+    }
+
+    public void setIndicator(Indicator indicator) {
+        this.indicator = indicator;
     }
 }

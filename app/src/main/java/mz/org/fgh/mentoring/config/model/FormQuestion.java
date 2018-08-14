@@ -4,6 +4,8 @@
 
 package mz.org.fgh.mentoring.config.model;
 
+import javax.inject.Inject;
+
 import mz.org.fgh.mentoring.model.GenericEntity;
 
 /**
@@ -15,11 +17,39 @@ public class FormQuestion extends GenericEntity {
 
     private Question question;
 
+    private Integer sequence;
+
+    private Answer answer;
+
     public Form getForm() {
         return form;
     }
 
+    public void setForm(Form form) {
+        this.form = form;
+    }
+
     public Question getQuestion() {
         return question;
+    }
+
+    public void setQuestion(Question question) {
+        this.question = question;
+    }
+
+    public Integer getSequence() {
+        return sequence;
+    }
+
+    public void setSequence(Integer sequence) {
+        this.sequence = sequence;
+    }
+
+    public void setAnswer(Answer answer) {
+        this.answer = answer;
+    }
+
+    public Answer getAnswer() {
+        return answer;
     }
 }

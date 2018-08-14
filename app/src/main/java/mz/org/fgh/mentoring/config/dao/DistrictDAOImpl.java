@@ -68,6 +68,7 @@ public class DistrictDAOImpl extends GenericDAOImpl<District> implements Distric
         }
 
         cursor.close();
+        database.close();
         return districts;
     }
 }

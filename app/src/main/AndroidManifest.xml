@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="mz.org.fgh.mentoring" >
+    package="mz.org.fgh.mentoring">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -10,10 +10,10 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
             android:name=".activities.MainActivity"
-            android:launchMode="singleTask" >
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,7 +23,7 @@
         <activity android:name=".activities.LoginActivity" />
         <activity
             android:name=".activities.ListTutoredActivity"
-            android:label="Tutorandos" />
+            android:label="Tutorados" />
         <activity android:name=".activities.TutoredActivity" />
         <activity
             android:name=".activities.ConfigurationActivity"
@@ -31,22 +31,32 @@
             android:label="@string/config" />
         <activity
             android:name=".activities.MentoringActivity"
-            android:label="Processo de Mentoria" />
+            android:label="@string/title_activity_list_mentorship" />
         <activity
             android:name=".activities.ListMentorshipActivity"
             android:label="@string/title_activity_list_mentorship"
-            android:theme="@style/AppTheme" >
-        </activity>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".activities.TutorUpdateActivity"
             android:label="@string/title_activity_tutor_update"
-            android:theme="@style/AppTheme" >
-        </activity>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".activities.ChangePasswordActivity"
             android:label="@string/title_activity_change_password"
-            android:theme="@style/AppTheme" >
-        </activity>
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".activities.IndicatorActivity"
+            android:label="@string/title_activity_indicator_collection"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".activities.ListIndicatorsActivity"
+            android:label="@string/title_activity_indicator_collection"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".activities.ResetPasswordActivity" />
+        <activity
+            android:name=".activities.ReportActivity"
+            android:label="@string/reports"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

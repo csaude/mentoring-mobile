@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#B2DFDB</color>
-    <color name="colorPrimaryDark">#00695C</color>
+    <color name="colorPrimaryDark">#005147</color>
     <color name="colorAccent">#FF4081</color>
 
-    <drawable name="light_green">#05ffe0</drawable>
+    <color name="row_activated">#c6c4c4</color>
 </resources>

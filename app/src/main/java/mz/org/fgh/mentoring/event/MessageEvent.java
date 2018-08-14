@@ -27,4 +27,8 @@ public class MessageEvent<T extends Object> {
     public String getError() {
         return error;
     }
+
+    public void setMessage(T t) {
+        this.t = t;
+    }
 }

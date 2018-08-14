@@ -16,6 +16,8 @@ public abstract class GenericEntity implements Serializable {
 
     private Date createdAt;
 
+    private Date updatedAt;
+
     public Long getId() {
         return id;
     }
@@ -39,4 +41,13 @@ public abstract class GenericEntity implements Serializable {
     public Date getCreatedAt() {
         return createdAt;
     }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
 }
+

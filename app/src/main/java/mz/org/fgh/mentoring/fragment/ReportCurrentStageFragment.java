@@ -1,24 +1,14 @@
 package mz.org.fgh.mentoring.fragment;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.widget.TextView;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
-import java.util.Calendar;
-
-import javax.inject.Inject;
-import javax.inject.Named;
 
 import butterknife.BindView;
 import mz.org.fgh.mentoring.R;
 import mz.org.fgh.mentoring.adapter.ReportAdapter;
-import mz.org.fgh.mentoring.component.MentoringComponent;
 import mz.org.fgh.mentoring.delegate.ReportDelegate;
-import mz.org.fgh.mentoring.util.DateUtil;
-import retrofit2.Retrofit;
 
 public class ReportCurrentStageFragment extends BaseFragment {
 
@@ -55,17 +45,17 @@ public class ReportCurrentStageFragment extends BaseFragment {
 
         target.setText(delegate.getTarget() + "");
 
-        totalPerformed.setText(delegate.getPerformedSessions().size() + "");
+        totalPerformed.setText(delegate.getTotalPerformed() + "");
 
-        achievement.setText(getAchiement(delegate) + "%");
+        achievement.setText(getAchievement(delegate) + "%");
 
         ReportAdapter adapter = new ReportAdapter(getActivity(), delegate.getPerformedSessions());
         resultList.setAdapter(adapter);
     }
 
-    private String getAchiement(ReportDelegate delegate) {
+    private String getAchievement(ReportDelegate delegate) {
 
-        BigDecimal value = new BigDecimal(delegate.getPerformedSessions().size()).multiply(new BigDecimal(100));
+        BigDecimal value = new BigDecimal(delegate.getTotalPerformed()).multiply(new BigDecimal(100));
         value = value.divide(new BigDecimal(delegate.getTarget()), 2, BigDecimal.ROUND_CEILING);
 
         return (value.toString());

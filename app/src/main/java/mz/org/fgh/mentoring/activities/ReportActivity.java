@@ -145,6 +145,18 @@ public class ReportActivity extends BaseAuthenticateActivity implements FormDele
     }
 
     @Override
+    public int getTotalPerformed() {
+
+        int totalPerformed = 0;
+
+        for (PerformedSession performedSession : performedSessions) {
+            totalPerformed = totalPerformed + performedSession.getTotalPerformed();
+        }
+
+        return totalPerformed;
+    }
+
+    @Override
     public void showResultFragment(List<PerformedSession> performedSessions) {
         this.performedSessions = performedSessions;
         showFragment(new ReportResultFragment(), Boolean.TRUE);

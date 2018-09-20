@@ -20,9 +20,11 @@ import mz.org.fgh.mentoring.fragment.ConfirmationFragment;
 import mz.org.fgh.mentoring.fragment.FormsFragment;
 import mz.org.fgh.mentoring.fragment.HealthFacilityFragment;
 import mz.org.fgh.mentoring.fragment.IndicatorHealthFacilityFragment;
+import mz.org.fgh.mentoring.fragment.IterationTypeFragment;
 import mz.org.fgh.mentoring.fragment.NumericFragment;
 import mz.org.fgh.mentoring.fragment.PageFragment;
 import mz.org.fgh.mentoring.fragment.PeriodFragment;
+import mz.org.fgh.mentoring.fragment.QuestionFragment;
 import mz.org.fgh.mentoring.fragment.ReportCurrentStageFragment;
 import mz.org.fgh.mentoring.fragment.ReportTypeFragment;
 import mz.org.fgh.mentoring.fragment.SaveFragment;
@@ -79,4 +81,8 @@ public interface MentoringComponent {
     void inject(PeriodFragment fragment);
 
     void inject(ReportTypeFragment fragment);
+
+    void inject(IterationTypeFragment fragment);
+
+    void inject(QuestionFragment fragment);
 }

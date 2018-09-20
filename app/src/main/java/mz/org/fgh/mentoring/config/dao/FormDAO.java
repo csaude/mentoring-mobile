@@ -16,10 +16,10 @@ public interface FormDAO extends GenericDAO<Form> {
 
     class QUERY {
         public static final String findAll = "SELECT * FROM " + TABLE_NAME;
-        public static final String findByFormType = "SELECT * FROM " + TABLE_NAME + " f WHERE f.form_type = ?";
+        public static final String findByFormType = "SELECT * FROM " + TABLE_NAME + " f WHERE f.form_type IN (?,?)";
     }
 
     List<Form> findAll();
 
-    List<Form> findByFormType(FormType formType);
+    List<Form> findByFormType(String... formTypes);
 }

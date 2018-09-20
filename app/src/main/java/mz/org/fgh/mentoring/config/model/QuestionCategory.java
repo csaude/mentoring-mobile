@@ -2,29 +2,29 @@ package mz.org.fgh.mentoring.config.model;
 
 public enum QuestionCategory {
 
-    ACCURACY(""),
+    ACCURACY("Exatidão"),
 
-    PUNCTUALITY(""),
+    PUNCTUALITY("Pontualidade"),
 
-    TOTALITY(""),
+    TOTALITY("Totalidade"),
 
-    PRECISION(""),
+    PRECISION("Precisão"),
 
-    RELIABILITY(""),
+    RELIABILITY("Confiabilidade"),
 
-    INTEGRITY(""),
+    INTEGRITY("Integridade"),
 
-    CONFIDENTIALITY(""),
+    CONFIDENTIALITY("Confidencialidade"),
 
-    PREPARATION(""),
+    PREPARATION("Preparação"),
 
-    PROCEDURE(""),
+    PROCEDURE("Procedimentos"),
 
-    REGISTRATION_AND_MANAGEMENT(""),
+    REGISTRATION_AND_MANAGEMENT("Registo de informação"),
 
-    IMPREGNATION(""),
+    IMPREGNATION("Impregnação"),
 
-    PACKING(""),
+    PACKING("Empacotamento"),
 
     PATIENT_REFERENCE_FOR_TESTING("Referência de Pacientes para Testagem"),
 
@@ -41,6 +41,38 @@ public enum QuestionCategory {
     COMUNICATION("Comunicação"),
 
     FEEDBACK_QUESTIONS(""),
+
+    AMANMESE_AND_FISICAL_EXERCISE("Anamnese e ex.físico"),
+
+    NUTRITION("Nutrição"),
+
+    TB_HIV("TB/HIV"),
+
+    ITS_TRACKING("Rastreio de ITS"),
+
+    WHO_STAGE("Estadio OMS"),
+
+    LAB("Laboratório"),
+
+    DIAGNOSTIC_HYPOTHESES_AND_CONDUCT("Hipóteses diagnósticas e conduta"),
+
+    CLINICAL_FAILURE("Falência Terapêutica"),
+
+    CTZ_INH("CTZ/INH"),
+
+    TARV("TARV"),
+
+    ADHERENCE_COUNSELING("Aconselhamento e Adesão"),
+
+    DIFERENTIATED_CARE_MODELS("Modelos Diferenciados de Cuidados"),
+
+    ADVERSE_REACTIONS("Reações Adversas"),
+
+    POSITIVE_PREVENTION("Prevenção Positiva"),
+
+    GENDER_BASED_VIOLENCE("Violência Baseada no Género"),
+
+    FOLLOW_UP_PLAN("Plano de Seguimento"),
 
     NA("");
 

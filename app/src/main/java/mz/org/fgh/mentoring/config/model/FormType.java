@@ -8,5 +8,7 @@ public enum FormType {
 
     MENTORING,
 
+    MENTORING_CUSTOM,
+
     INDICATORS
 }

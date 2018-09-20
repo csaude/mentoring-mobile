@@ -131,4 +131,18 @@ public class Session extends GenericEntity {
     public Cabinet getCabinet() {
         return this.cabinet;
     }
+
+
+    public int performedByIterationType(IterationType iterationType) {
+
+        int performed = 0;
+
+        for (Mentorship mentorship : this.getMentorships()) {
+            if (iterationType.equals(mentorship.getIterationType())) {
+                performed++;
+            }
+        }
+
+        return performed;
+    }
 }

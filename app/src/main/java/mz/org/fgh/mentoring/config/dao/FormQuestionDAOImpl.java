@@ -81,8 +81,8 @@ public class FormQuestionDAOImpl extends GenericDAOImpl<FormQuestion> implements
             formQuestions.add(getPopulatedEntity(cursor));
         }
 
-        database.close();
         cursor.close();
+        database.close();
 
         return formQuestions;
     }

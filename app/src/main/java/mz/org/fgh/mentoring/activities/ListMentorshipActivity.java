@@ -63,7 +63,6 @@ public class ListMentorshipActivity extends BaseAuthenticateActivity implements 
     public void onClickNewMentorship() {
         startActivity(new Intent(this, MentoringActivity.class));
         finish();
-
     }
 
     @Override

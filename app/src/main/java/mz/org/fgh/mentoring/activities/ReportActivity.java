@@ -79,7 +79,7 @@ public class ReportActivity extends BaseAuthenticateActivity implements FormDele
 
     @Override
     public List<Form> getForms() {
-        return formDAO.findByFormType(FormType.MENTORING);
+        return formDAO.findByFormType(FormType.MENTORING.name(), FormType.MENTORING_CUSTOM.name());
     }
 
 

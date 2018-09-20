@@ -3,15 +3,19 @@ package mz.org.fgh.mentoring.fragment;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.graphics.Color;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.text.format.DateFormat;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import org.apache.commons.lang3.StringUtils;
@@ -32,8 +36,11 @@ import mz.org.fgh.mentoring.config.dao.DistrictDAO;
 import mz.org.fgh.mentoring.config.dao.HealthFacilityDAO;
 import mz.org.fgh.mentoring.config.model.Cabinet;
 import mz.org.fgh.mentoring.config.model.District;
+import mz.org.fgh.mentoring.config.model.Form;
+import mz.org.fgh.mentoring.config.model.FormType;
 import mz.org.fgh.mentoring.config.model.HealthFacility;
 import mz.org.fgh.mentoring.event.CabinetEvent;
+import mz.org.fgh.mentoring.event.ErrorEvent;
 import mz.org.fgh.mentoring.event.HealthFacilityEvent;
 import mz.org.fgh.mentoring.event.MessageEvent;
 import mz.org.fgh.mentoring.event.TimeEvent;
@@ -67,6 +74,9 @@ public class HealthFacilityFragment extends BaseFragment implements DatePickerDi
     @BindView(R.id.fragment_cabinet)
     Spinner cabinetSpinner;
 
+    @BindView(R.id.fragment_cabinet_text)
+    TextView cabinetTxt;
+
     @Inject
     DistrictDAO districtDAO;
 
@@ -97,7 +107,10 @@ public class HealthFacilityFragment extends BaseFragment implements DatePickerDi
     private boolean valid;
 
     private TimeEvent startTimeEvent;
+
     private TimeEvent endTimeEvent;
+
+    private Form form;
 
     @Override
     public int getResourceId() {
@@ -128,6 +141,23 @@ public class HealthFacilityFragment extends BaseFragment implements DatePickerDi
         provinceSpinner.setAdapter(provinceAdapter);
 
         this.valid = false;
+
+        configureCabinetSpinner();
+    }
+
+    private void configureCabinetSpinner() {
+
+        Bundle arguments = getArguments();
+        form = (Form) arguments.get("form");
+
+
+        cabinetSpinner.setVisibility(View.VISIBLE);
+        cabinetTxt.setVisibility(View.VISIBLE);
+
+        if (form != null && FormType.MENTORING_CUSTOM.equals(form.getFormType())) {
+            cabinetSpinner.setVisibility(View.INVISIBLE);
+            cabinetTxt.setVisibility(View.INVISIBLE);
+        }
     }
 
     @OnClick({R.id.fragment_date_picker, R.id.fragment_performed_date})
@@ -256,57 +286,89 @@ public class HealthFacilityFragment extends BaseFragment implements DatePickerDi
             return;
         }
 
+        performedDate.setError(null);
+
         if (isEmptyPerformedDate()) {
-            Snackbar.make(getView(), getString(R.string.performed_date_must_be_selected), Snackbar.LENGTH_SHORT).show();
+            performedDate.setError(getString(R.string.performed_date_must_be_selected));
             viewPager.setCurrentItem(position);
             valid = false;
             return;
         }
+
+        startTime.setError(null);
 
         if (isEmptyStartTime()) {
-            Snackbar.make(getView(), getString(R.string.start_time_must_be_selected), Snackbar.LENGTH_SHORT).show();
+            startTime.setError(getString(R.string.start_time_must_be_selected));
             viewPager.setCurrentItem(position);
             valid = false;
             return;
         }
 
+        endTime.setError(null);
+
         if (isEmptyEndTime()) {
-            Snackbar.make(getView(), getString(R.string.end_time_must_be_selected), Snackbar.LENGTH_SHORT).show();
+            endTime.setError(getString(R.string.end_time_must_be_selected));
             viewPager.setCurrentItem(position);
             valid = false;
             return;
         }
 
         if (IsStartTimeLowerThanEndTime()) {
-            Snackbar.make(getView(), getString(R.string.start_time_must_not_be_lower_than_end_time), Snackbar.LENGTH_SHORT).show();
             viewPager.setCurrentItem(position);
+            eventBus.post(new ErrorEvent(getString(R.string.start_time_must_not_be_lower_than_end_time)));
             valid = false;
             return;
         }
+
+        TextView provinceView = (TextView) provinceSpinner.getSelectedView();
+        provinceView.setError(null);
 
         if (getString(R.string.select).equals(province)) {
-            Snackbar.make(getView(), getString(R.string.province_must_be_selected), Snackbar.LENGTH_SHORT).show();
+            provinceView.setTextColor(Color.RED);
+            provinceView.setError(getString(R.string.province_must_be_selected));
+
             viewPager.setCurrentItem(position);
             valid = false;
             return;
         }
+
+        TextView districtView = (TextView) districtSpinner.getSelectedView();
+        districtView.setError(null);
 
         if (district == null || getString(R.string.select).equals(district.getDistrict())) {
-            Snackbar.make(getView(), getString(R.string.district_must_be_selected), Snackbar.LENGTH_SHORT).show();
+            districtView.setTextColor(Color.RED);
+            districtView.setError(getString(R.string.district_must_be_selected));
+
             viewPager.setCurrentItem(position);
             valid = false;
             return;
         }
+
+        TextView healthFacilityView = (TextView) healthFacilitySpinner.getSelectedView();
+        healthFacilityView.setError(null);
 
         if (healthFacility == null || getString(R.string.select).equals(healthFacility.getHealthFacility())) {
-            Snackbar.make(getView(), getString(R.string.health_facility_must_be_selected), Snackbar.LENGTH_SHORT).show();
+
+            healthFacilityView.setTextColor(Color.RED);
+            healthFacilityView.setError(getString(R.string.health_facility_must_be_selected));
+
             viewPager.setCurrentItem(position);
             valid = false;
             return;
         }
 
+        if (FormType.MENTORING_CUSTOM.equals(form.getFormType())) {
+            valid = true;
+            return;
+        }
+
+        TextView cabinetView = (TextView) cabinetSpinner.getSelectedView();
+        cabinetView.setError(null);
+
         if (cabinet == null || getString(R.string.select).equals(cabinet.getName())) {
-            Snackbar.make(getView(), getString(R.string.cabinet_must_be_selected), Snackbar.LENGTH_SHORT).show();
+            cabinetView.setTextColor(Color.RED);
+            cabinetView.setError(getString(R.string.cabinet_must_be_selected));
+
             viewPager.setCurrentItem(position);
             valid = false;
             return;
@@ -376,13 +438,17 @@ public class HealthFacilityFragment extends BaseFragment implements DatePickerDi
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 endTime.setText(StringUtils.leftPad((hourOfDay) + "", 2, "0") + " : " + StringUtils.leftPad((minute) + "", 2, "0"));
-                endTimeEvent = new TimeEvent( 0, 0, hourOfDay, minute);
+                endTimeEvent = new TimeEvent(0, 0, hourOfDay, minute);
                 eventBus.post(endTimeEvent);
             }
         };
     }
 
     private boolean IsStartTimeLowerThanEndTime() {
+
+        if (startTimeEvent == null || endTimeEvent == null) {
+            return false;
+        }
 
         Calendar startInstance = Calendar.getInstance();
         startInstance.setTime(DateUtil.parse(performedDate.getText().toString(), DateUtil.NORMAL_PATTERN));

@@ -5,22 +5,23 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.util.Log;
-import android.widget.FrameLayout;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import mz.org.fgh.mentoring.R;
 import mz.org.fgh.mentoring.config.model.Form;
+import mz.org.fgh.mentoring.config.model.FormType;
 import mz.org.fgh.mentoring.config.model.QuestionCategory;
-import mz.org.fgh.mentoring.config.model.QuestionType;
 import mz.org.fgh.mentoring.fragment.ConfirmationFragment;
 import mz.org.fgh.mentoring.fragment.FormsFragment;
 import mz.org.fgh.mentoring.fragment.HealthFacilityFragment;
+import mz.org.fgh.mentoring.fragment.IterationTypeFragment;
 import mz.org.fgh.mentoring.fragment.QuestionFragment;
 import mz.org.fgh.mentoring.fragment.SaveFragment;
 import mz.org.fgh.mentoring.fragment.TutoredFragment;
+import mz.org.fgh.mentoring.process.model.IterationType;
+import mz.org.fgh.mentoring.process.model.Mentorship;
 import mz.org.fgh.mentoring.process.model.Session;
 
 /**
@@ -46,32 +47,49 @@ public class SwipeAdapter extends FragmentStatePagerAdapter {
 
     private Map<Integer, Fragment> mappedFragments;
 
+    private Mentorship mentorship;
+
     public SwipeAdapter(FragmentManager fragmentManager, Context context) {
         super(fragmentManager);
         this.context = context;
         this.form = new Form();
         this.mappedFragments = new HashMap<>();
-        this.session = new Session();
     }
 
     @Override
     public Fragment getItem(int position) {
 
+        Bundle bundle = new Bundle();
+
+        bundle.putSerializable("session", session);
+        bundle.putSerializable("form", form);
+
         switch (position) {
             case 0:
-                return new HealthFacilityFragment();
+                return new FormsFragment();
             case 1:
                 return new TutoredFragment();
             case 2:
-                return new FormsFragment();
+                HealthFacilityFragment fragment = new HealthFacilityFragment();
+                fragment.setArguments(bundle);
+                return fragment;
+        }
+
+
+        if (position == 3 && FormType.MENTORING_CUSTOM.equals(form.getFormType())) {
+            bundle.putSerializable("iterationType", mentorship.getIterationType());
+
+            IterationTypeFragment iterationTypeFragment = new IterationTypeFragment();
+            iterationTypeFragment.setArguments(bundle);
+
+            return iterationTypeFragment;
         }
 
         Fragment mappedFragment = this.getFragment(position - DECREMENTER);
 
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("form", form);
         bundle.putString("target", getTarget());
         bundle.putSerializable("session", session);
+        bundle.putInt("iterationTypeImg", getIterationType());
 
         if (mappedFragment != null) {
 
@@ -105,13 +123,15 @@ public class SwipeAdapter extends FragmentStatePagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position) {
             case 0:
-                return this.context.getResources().getString(R.string.health_facility);
-
+                return context.getResources().getString(R.string.form);
             case 1:
                 return context.getResources().getString(R.string.tutored);
-
             case 2:
-                return context.getResources().getString(R.string.form);
+                return this.context.getResources().getString(R.string.health_facility);
+        }
+
+        if (position == 3 && FormType.MENTORING_CUSTOM.equals(form.getFormType())) {
+            return context.getResources().getString(R.string.iteration_type);
         }
 
         Fragment mappedFragment = this.getFragment(position - DECREMENTER);
@@ -155,6 +175,25 @@ public class SwipeAdapter extends FragmentStatePagerAdapter {
     }
 
     private String getTarget() {
-        return (session.getMentorships().size() + DECREMENTER) + "/" + form.getTarget();
+
+        if (IterationType.FILE.equals(mentorship.getIterationType())) {
+            return (session.performedByIterationType(IterationType.FILE) + DECREMENTER) + "/" + form.getTargetFile();
+        }
+
+        return (session.performedByIterationType(IterationType.PATIENT) + DECREMENTER) + "/" + form.getTargetPatient();
+    }
+
+    public int getIterationType() {
+
+        if (IterationType.PATIENT.equals(mentorship.getIterationType())) {
+            return R.mipmap.ic_patient;
+        }
+
+        return R.mipmap.ic_file;
+    }
+
+    public void setMentorship(Mentorship mentorship) {
+        this.mentorship = mentorship;
     }
 }
+

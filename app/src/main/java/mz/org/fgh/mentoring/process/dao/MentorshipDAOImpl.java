@@ -14,6 +14,7 @@ import mz.org.fgh.mentoring.config.model.Form;
 import mz.org.fgh.mentoring.config.model.HealthFacility;
 import mz.org.fgh.mentoring.dao.GenericDAOImpl;
 import mz.org.fgh.mentoring.model.Tutored;
+import mz.org.fgh.mentoring.process.model.IterationType;
 import mz.org.fgh.mentoring.process.model.Mentorship;
 import mz.org.fgh.mentoring.process.model.Session;
 import mz.org.fgh.mentoring.util.DateUtil;
@@ -48,7 +49,9 @@ public class MentorshipDAOImpl extends GenericDAOImpl<Mentorship> implements Men
         values.put("end_date", mentorship.getEndDate());
         values.put("performed_date", mentorship.getPerformedDate());
         values.put("session_uuid", mentorship.getSession().getUuid());
-        values.put("cabinet_uuid", mentorship.getCabinet().getUuid());
+        values.put("cabinet_uuid", mentorship.getCabinet() != null ? mentorship.getCabinet().getUuid() : null);
+        values.put("iteration_type", mentorship.getIterationType().name());
+        values.put("iteration_number", mentorship.getIterationNumber());
 
         return values;
     }
@@ -62,7 +65,8 @@ public class MentorshipDAOImpl extends GenericDAOImpl<Mentorship> implements Men
         Form form = new Form();
         form.setUuid(cursor.getString((cursor.getColumnIndex("form_uuid"))));
         form.setName(cursor.getString((cursor.getColumnIndex("form_name"))));
-        form.setTarget(cursor.getInt(cursor.getColumnIndex("target")));
+        form.setTargetPatient(cursor.getInt(cursor.getColumnIndex("target_patient")));
+        form.setTargetFile(cursor.getInt(cursor.getColumnIndex("target_file")));
         mentorship.setForm(form);
 
         Tutored tutored = new Tutored();
@@ -89,6 +93,8 @@ public class MentorshipDAOImpl extends GenericDAOImpl<Mentorship> implements Men
         mentorship.setEndDate(DateUtil.parse(cursor.getString(cursor.getColumnIndex("end_date"))));
         mentorship.setCreatedAt(DateUtil.parse(cursor.getString(cursor.getColumnIndex("created_at"))));
         mentorship.setPerformedDate(DateUtil.parse(cursor.getString(cursor.getColumnIndex("performed_date")), DateUtil.NORMAL_PATTERN));
+        mentorship.setIterationType(IterationType.valueOf(cursor.getString(cursor.getColumnIndex("iteration_type"))));
+        mentorship.setIterationNumber(cursor.getInt(cursor.getColumnIndex("iteration_number")));
         mentorship.setCabinet(cabinet);
 
         return mentorship;

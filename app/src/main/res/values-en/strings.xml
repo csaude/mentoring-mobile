@@ -53,9 +53,10 @@
     <string name="processing">A processar o pedido....</string>
     <string name="reset_password_success">A Senha foi inicializada com sucesso. Consulte o seu email</string>
     <string name="reset_password_error">Não foi possivel inicializar a senha. Por favor tente novamente</string>
-    <string name="version">© 2018 © v1.7.5</string>
+    <string name="version">© 2018 © v1.7.8</string>
     <string name="no_result">Sem Resultado</string>
     <string name="no_result_found">Nenhum resultado foi encontrado</string>
     <string name="server_error_comunication">Erro de comunicação com o servidor! Tente novamente.</string>
+    <string name="the_iteration_type_must_be_selected">O Tipo de Iteração deve ser Indicado</string>
 
 </resources>

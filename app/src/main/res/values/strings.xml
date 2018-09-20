@@ -42,7 +42,7 @@
     <string name="user_name">Nome</string>
     <string name="new_password">Nova Senha</string>
     <string name="confirm_password">Confirmação da Senha</string>
-    <string name="password_changed_success">Senha alterada com sucesso!</string>
+    <string name="password_changed_success">Senha alterada com sucesso! Retornar ao menú Principal?</string>
     <string name="password_must_be_the_same">As senhas devem ser iguais</string>
     <string name="new_password_must_be_filled">A nova senha deve ser preenchida</string>
     <string name="confirm_password_must_be_filled">A nova senha de confirmação deve ser preenchida</string>
@@ -88,7 +88,7 @@
     <string name="district">Distrito</string>
     <string name="total">Total</string>
 
-    <string name="version">© 2018 © v1.7.6</string>
+    <string name="version">© 2018 © v1.7.9</string>
     <string name="no_result">Sem Resultado</string>
     <string name="no_result_found">Nenhum resultado foi encontrado</string>
     <string name="server_error">Erro de comunicação</string>
@@ -96,5 +96,14 @@
     <string name="start_time_must_be_selected">A hora de Início deve ser indicada</string>
     <string name="end_time_must_be_selected">A hora de término deve ser indicada</string>
     <string name="start_time_must_not_be_lower_than_end_time">A hora de início não deve ser superior nem igual da data de término</string>
+    <string name="the_iteration_type_must_be_selected">O Tipo de Iteração deve ser Indicado</string>
+    <string name="iteration_type">Tipo de Iteração</string>
+    <string name="patient_iterations_exceeded">O número de iterações para pacientes atingiu o limite</string>
+    <string name="file_iterations_exceeded">O número de iterações para processos clínicos atingiu o limite</string>
+    <string name="file">Processo Clínico</string>
+    <string name="patient">Paciente</string>
+    <string name="close_confirmation">Tem a certeza de que deseja interromper a sessão?</string>
+    <string name="ok">Ok</string>
+    <string name="metadata_cannot_be_changed">Metadados como: Formulário, Tutorando e Datas não podem ser alterados por existir uma iteração (de paciente ou processo clínico)!</string>
 
 </resources>

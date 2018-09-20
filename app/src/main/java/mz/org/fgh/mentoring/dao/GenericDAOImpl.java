@@ -20,7 +20,7 @@ import mz.org.fgh.mentoring.util.DateUtil;
 public abstract class GenericDAOImpl<T extends GenericEntity> extends SQLiteOpenHelper implements GenericDAO<T> {
 
     private static final String name = "mentoringdb";
-    private static final int version = 2;
+    private static final int version = 3;
 
     public GenericDAOImpl(Context context) {
         super(context, name, null, version);
@@ -45,11 +45,19 @@ public abstract class GenericDAOImpl<T extends GenericEntity> extends SQLiteOpen
         db.execSQL(CABINET_TABLE);
         db.execSQL(ALTER_MENTORSHIP_TABLE_ADD_CABINET);
         db.execSQL(FORM_TARGETS_TABLE);
+        db.execSQL(ALTER_MENTORSHIP_TABLE_ADD_ITERATION_TYPE_COLUMN);
+        db.execSQL(ALTER_MENTORSHIP_TABLE_ADD_ITERATION_NUMBER_COLUMN);
+        db.execSQL(ALTER_FORM_TABLE_ADD_PATIENT_TARGET);
+        db.execSQL(ALTER_FORM_TABLE_ADD_FILE_TARGET);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL(FORM_TARGETS_TABLE);
+        db.execSQL(ALTER_MENTORSHIP_TABLE_ADD_ITERATION_TYPE_COLUMN);
+        db.execSQL(ALTER_MENTORSHIP_TABLE_ADD_ITERATION_NUMBER_COLUMN);
+        db.execSQL(ALTER_FORM_TABLE_ADD_PATIENT_TARGET);
+        db.execSQL(ALTER_FORM_TABLE_ADD_FILE_TARGET);
     }
 
     @Override
@@ -69,6 +77,7 @@ public abstract class GenericDAOImpl<T extends GenericEntity> extends SQLiteOpen
         values.put("created_at", DateUtil.format(entity.getCreatedAt()));
 
         database.insert(getTableName(), null, values);
+        database.close();
     }
 
     @Override

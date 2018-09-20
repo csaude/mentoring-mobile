@@ -14,8 +14,10 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import mz.org.fgh.mentoring.AlertListner;
 import mz.org.fgh.mentoring.R;
 import mz.org.fgh.mentoring.component.MentoringComponent;
+import mz.org.fgh.mentoring.dialog.AlertDialogManager;
 import mz.org.fgh.mentoring.event.MessageEvent;
 import mz.org.fgh.mentoring.infra.UserContext;
 import mz.org.fgh.mentoring.service.UserService;
@@ -40,6 +42,8 @@ public class ChangePasswordActivity extends BaseAuthenticateActivity {
     @Inject
     UserService userService;
 
+    private AlertDialogManager alertDialogManager;
+
     @Override
     protected void onMentoringCreate(Bundle bundle) {
         setContentView(R.layout.activity_change_password);
@@ -50,6 +54,7 @@ public class ChangePasswordActivity extends BaseAuthenticateActivity {
         loggedUser.setText(application.getAuth().getUser().getFullName());
 
         eventBus.register(this);
+        alertDialogManager = new AlertDialogManager(this);
     }
 
     @OnClick(R.id.change_password)
@@ -78,9 +83,19 @@ public class ChangePasswordActivity extends BaseAuthenticateActivity {
 
     @Subscribe
     public void onChangePassword(MessageEvent event) {
-        startActivity(new Intent(this, MainActivity.class));
-        finish();
-        Toast.makeText(this, getResources().getString(R.string.password_changed_success), Toast.LENGTH_SHORT).show();
+
+        if (event.getError() != null) {
+            alertDialogManager.showAlert(getString(R.string.server_error_comunication));
+            return;
+        }
+
+        alertDialogManager.showAlert(getString(R.string.password_changed_success), new AlertListner() {
+            @Override
+            public void perform() {
+                startActivity(new Intent(ChangePasswordActivity.this, MainActivity.class));
+                finish();
+            }
+        });
     }
 
     @Override

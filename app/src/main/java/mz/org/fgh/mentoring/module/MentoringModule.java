@@ -102,7 +102,7 @@ public class MentoringModule {
     @Named("mentoring")
     public Retrofit provideMentoringRetrofit() {
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://" + ServerConfig.MENTORING.getAddress() +
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://" + ServerConfig.MENTORING.getAddress() +
                 ServerConfig.MENTORING.getService()).addConverterFactory(JacksonConverterFactory.create(mapper))
                 .build();
 
@@ -113,7 +113,7 @@ public class MentoringModule {
     @Named("account")
     public Retrofit provideAccontRetrofit() {
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://" + ServerConfig.ACCOUNT_MANAGER.getAddress() +
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://" + ServerConfig.ACCOUNT_MANAGER.getAddress() +
                 ServerConfig.ACCOUNT_MANAGER.getService()).addConverterFactory(JacksonConverterFactory.create(mapper))
                 .build();
 

@@ -28,6 +28,7 @@ import mz.org.fgh.mentoring.fragment.QuestionFragment;
 import mz.org.fgh.mentoring.fragment.ReportCurrentStageFragment;
 import mz.org.fgh.mentoring.fragment.ReportTypeFragment;
 import mz.org.fgh.mentoring.fragment.SaveFragment;
+import mz.org.fgh.mentoring.fragment.TextFragment;
 import mz.org.fgh.mentoring.fragment.TutoredFragment;
 import mz.org.fgh.mentoring.module.MentoringModule;
 
@@ -85,4 +86,6 @@ public interface MentoringComponent {
     void inject(IterationTypeFragment fragment);
 
     void inject(QuestionFragment fragment);
+
+    void inject(TextFragment fragment);
 }

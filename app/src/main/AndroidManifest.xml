@@ -57,6 +57,9 @@
             android:name=".activities.ReportActivity"
             android:label="@string/reports"
             android:theme="@style/AppTheme"></activity>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="41c62d21d4f0069ce8ee99fda0eae68dba127745" />
     </application>
 
 </manifest>

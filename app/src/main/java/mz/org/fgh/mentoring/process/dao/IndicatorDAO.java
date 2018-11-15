@@ -18,7 +18,7 @@ public interface IndicatorDAO extends GenericDAO<Indicator> {
     class QUERY {
 
         public static final String findAll = "SELECT i.id, i.uuid, i.form_uuid, i.tutor_uuid, i.health_facility_uuid, f.name as form_name, " +
-                "hf.health_facility as health_facility, i.performed_date, i.referred_month, i.created_at " +
+                "hf.health_facility as health_facility, i.performed_date, i.referred_month, i.created_at, f.target_patient, f.target_file " +
                 "FROM " + TABLE_NAME + " i " +
                 "INNER JOIN forms f ON i.form_uuid = f.uuid " +
                 "INNER JOIN health_facilities hf ON i.health_facility_uuid = hf.uuid";

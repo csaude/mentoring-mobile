@@ -57,6 +57,10 @@ public class QuestionAdapter extends BaseAbstractAdapter {
     @BindView(R.id.adapter_no)
     RadioButton noRd;
 
+    @Nullable
+    @BindView(R.id.adapter_not_applicable)
+    RadioButton notApplicableRd;
+
     @Inject
     EventBus eventBus;
 
@@ -100,6 +104,10 @@ public class QuestionAdapter extends BaseAbstractAdapter {
         tvQuestion.setText(formQuestion.getQuestion().getQuestion());
 
         markAnwser(formQuestion.getAnswer());
+
+        if (formQuestion.getApplicable() == Boolean.TRUE) {
+            notApplicableRd.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -159,6 +167,14 @@ public class QuestionAdapter extends BaseAbstractAdapter {
         }
     }
 
+    @Optional
+    @OnClick(R.id.adapter_not_applicable)
+    public void onClickNotApplicable(View view) {
+        if (((RadioButton) view).isChecked()) {
+            response(getFormQuestion(view), QuestionAnswer.NON_APPICABLE.getValue());
+        }
+    }
+
     private FormQuestion getFormQuestion(View view) {
         LinearLayout linearLayout = (LinearLayout) view.getParent().getParent();
         return (FormQuestion) linearLayout.getTag();
@@ -193,6 +209,10 @@ public class QuestionAdapter extends BaseAbstractAdapter {
 
             case "NAO SATISFATRIO":
                 unsastifactoryRd.setChecked(Boolean.TRUE);
+                break;
+
+            case "NA":
+                notApplicableRd.setChecked(Boolean.TRUE);
                 break;
 
             case "true":

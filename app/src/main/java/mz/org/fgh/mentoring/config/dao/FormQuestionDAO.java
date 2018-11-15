@@ -14,7 +14,7 @@ public interface FormQuestionDAO extends GenericDAO<FormQuestion> {
     String FIELD_NAME = "uuid";
 
     class QUERY {
-        public static final String findByFormUuid = "Select fq.id, fq.uuid, fq.question_uuid, fq.form_uuid, fq.sequence, q.question, q.question_type, q.question_category, fq.created_at from " + TABLE_NAME + " fq INNER JOIN questions q ON q.uuid = fq.question_uuid " +
+        public static final String findByFormUuid = "Select fq.id, fq.uuid, fq.question_uuid, fq.form_uuid, fq.sequence, fq.applicable, q.question, q.question_type, q.question_category, fq.created_at from " + TABLE_NAME + " fq INNER JOIN questions q ON q.uuid = fq.question_uuid " +
                 "WHERE fq.form_uuid = ?;";
     }
 

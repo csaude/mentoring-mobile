@@ -74,7 +74,9 @@ public enum QuestionCategory {
 
     FOLLOW_UP_PLAN("Plano de Seguimento"),
 
-    NA("");
+    OTHERS("Outros"),
+
+    NA("N/A");
 
     private String value;
 

@@ -55,6 +55,8 @@ public interface GenericDAO<T extends GenericEntity> {
 
     String ALTER_FORM_TABLE_ADD_FILE_TARGET = "ALTER TABLE forms ADD COLUMN target_file INTEGER";
 
+    String ALTER_FORM_QUESTION_ADD_APPLICABLE = "ALTER TABLE form_questions ADD COLUMN applicable INTEGER DEFAULT 0;";
+
     String getTableName();
 
     String getFieldName();

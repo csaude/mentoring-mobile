@@ -42,6 +42,7 @@ public class FormQuestionDAOImpl extends GenericDAOImpl<FormQuestion> implements
         values.put("form_uuid", formQuestion.getForm().getUuid());
         values.put("question_uuid", formQuestion.getQuestion().getUuid());
         values.put("sequence", formQuestion.getSequence());
+        values.put("applicable", formQuestion.getApplicable() == Boolean.TRUE ? 1 : 0);
 
         return values;
     }
@@ -59,6 +60,7 @@ public class FormQuestionDAOImpl extends GenericDAOImpl<FormQuestion> implements
 
         formQuestion.setUuid(cursor.getString(cursor.getColumnIndex("uuid")));
         formQuestion.setSequence(cursor.getInt(cursor.getColumnIndex("sequence")));
+        formQuestion.setApplicable(cursor.getInt(cursor.getColumnIndex("applicable")) == 1 ? Boolean.TRUE : Boolean.FALSE);
 
         Question question = new Question(cursor.getString(cursor.getColumnIndex("question_uuid")),
                 cursor.getString(cursor.getColumnIndex("question")),

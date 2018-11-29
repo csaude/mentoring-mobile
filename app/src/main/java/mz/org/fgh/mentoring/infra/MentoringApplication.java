@@ -3,10 +3,12 @@ package mz.org.fgh.mentoring.infra;
 import android.app.Application;
 import android.content.SharedPreferences;
 
+import com.crashlytics.android.Crashlytics;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import io.fabric.sdk.android.Fabric;
 import java.io.IOException;
 
 import mz.org.fgh.mentoring.component.DaggerMentoringComponent;
@@ -31,6 +33,7 @@ public class MentoringApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Crashlytics());
 
         sharedPreferences = getSharedPreferences(MentoringApplication.class.getName(), 0);
 

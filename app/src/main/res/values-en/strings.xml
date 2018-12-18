@@ -49,7 +49,7 @@
     <string name="forget_password">Esqueceu a Senha?</string>
     <string name="reset_password_text">Por fovor informe o seu email para que a sua senha seja devidamente actualizada</string>
     <string name="iteration_times">vez (es) foi (ram) preenchida (as). O utilizador deseja continuar?</string>
-    <string name="wait">Aguarde</string>
+    <string name="wait">Wait</string>
     <string name="processing">A processar o pedido....</string>
     <string name="reset_password_success">A Senha foi inicializada com sucesso. Consulte o seu email</string>
     <string name="reset_password_error">Não foi possivel inicializar a senha. Por favor tente novamente</string>
@@ -58,4 +58,14 @@
     <string name="no_result_found">Nenhum resultado foi encontrado</string>
     <string name="server_error_comunication">Erro de comunicação com o servidor! Tente novamente.</string>
     <string name="the_iteration_type_must_be_selected">O Tipo de Iteração deve ser Indicado</string>
+    <string name="sessions_bar_chart_title">Current Month Results</string>
+    <string name="loading_metadata">Loading metadata...</string>
+    <string name="could_not_load_metadata">Could not load metadata. Try later...</string>
+    <string name="loading_report_data">Loading report data...</string>
+    <string name="could_not_load_report_data">Could not load report data. Try later...</string>
+    <string name="completed">Completed</string>
+    <string name="remaining">Remaining</string>
+    <string name="percentage_minimum">% Minimum</string>
+    <string name="percentage_min">% Min</string>
+    <string name="no_data_found">Nenhum dado encontrado!</string>
 </resources>

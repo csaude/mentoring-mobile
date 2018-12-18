@@ -111,5 +111,14 @@
     <string name="tudoreds_synced_with_success">Tutorandos sincronizados com sucesso!</string>
     <string name="point_of_situation">Ponto de Situação</string>
     <string name="per_period">Por Período</string>
-
+    <string name="sessions_bar_chart_title">Resultados de Mes Atual</string>
+    <string name="loading_metadata">A carregar metadados...</string>
+    <string name="could_not_load_metadata">Não foi possivel carregar metadados. Tente mais tarde...</string>
+    <string name="loading_report_data">A carregar dados do relatório...</string>
+    <string name="could_not_load_report_data">Não foi possível carregar os dados do relatório. Tente depois...</string>
+    <string name="completed">Completou</string>
+    <string name="remaining">Restante</string>
+    <string name="percentage_minimum">% Mínima</string>
+    <string name="percentage_min">% Mín</string>
+    <string name="no_data_found">No data found!</string>
 </resources>

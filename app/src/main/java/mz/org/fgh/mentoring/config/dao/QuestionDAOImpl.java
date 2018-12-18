@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +40,12 @@ public class QuestionDAOImpl extends GenericDAOImpl<Question> implements Questio
 
         values.put("question", entity.getQuestion());
         values.put("question_type", entity.getQuestionType().name());
-        values.put("question_category", entity.getQuestionsCategory().getCategory());
+
+        // I don't understand why some questions do not have category associated with them
+        // Maybe Stelio can answer this question or may be it bad data (No Clue)
+        if(entity.getQuestionCategory() != null) {
+            values.put("question_category", entity.getQuestionCategory().name());
+        }
 
         return values;
     }

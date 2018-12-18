@@ -3,6 +3,7 @@
     <color name="colorPrimary">#B2DFDB</color>
     <color name="colorPrimaryDark">#005147</color>
     <color name="colorAccent">#FF4081</color>
-
+    <color name="green">#52BE80</color>
+    <color name="yellow">#F7DC6F</color>
     <color name="row_activated">#c6c4c4</color>
 </resources>

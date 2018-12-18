@@ -1,5 +1,7 @@
 package mz.org.fgh.mentoring.service;
 
+import android.app.ProgressDialog;
+
 import mz.org.fgh.mentoring.activities.BaseActivity;
 import mz.org.fgh.mentoring.infra.UserContext;
 
@@ -8,5 +10,5 @@ import mz.org.fgh.mentoring.infra.UserContext;
  */
 public interface LoadMetadataService {
 
-    void load(final BaseActivity activity, final UserContext userContext);
+    void load(final BaseActivity activity, final ProgressDialog progressDialog, final UserContext userContext);
 }

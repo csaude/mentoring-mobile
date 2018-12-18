@@ -1,13 +1,18 @@
 package mz.org.fgh.mentoring.service;
 
+import java.util.List;
+import java.util.Map;
+
 import mz.org.fgh.mentoring.model.GenericWrapper;
 import mz.org.fgh.mentoring.model.TutoredBeanResource;
+import mz.org.fgh.mentoring.process.model.Mentorship;
 import mz.org.fgh.mentoring.process.model.MentorshipBeanResource;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.QueryMap;
 
 /**
  * Created by Stélio Moiane on 10/25/16.
@@ -31,4 +36,7 @@ public interface SyncDataService {
 
     @GET("metadata/{uuid}")
     Call<GenericWrapper> loadMetadata(@Path("uuid") final String uuid);
+
+    @GET("mentorships")
+    Call<GenericWrapper> fetchMentorships(@QueryMap(encoded = true) Map<String, String> options);
 }

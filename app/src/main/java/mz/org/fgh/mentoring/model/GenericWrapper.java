@@ -10,6 +10,7 @@ import mz.org.fgh.mentoring.config.model.FormQuestion;
 import mz.org.fgh.mentoring.config.model.FormTarget;
 import mz.org.fgh.mentoring.config.model.HealthFacility;
 import mz.org.fgh.mentoring.config.model.PerformedSession;
+import mz.org.fgh.mentoring.process.model.Mentorship;
 
 /**
  * Created by Stélio Moiane on 10/25/16.
@@ -30,6 +31,9 @@ public class GenericWrapper {
 
     @JsonProperty("performedSession")
     private List<PerformedSession> performedSessions;
+
+    @JsonProperty("mentorship")
+    private List<Mentorship> mentorships;
 
     public List<HealthFacility> getHealthFacilities() {
         return this.healthFacilities;
@@ -57,5 +61,9 @@ public class GenericWrapper {
 
     public List<FormTarget> getFormTargets() {
         return formTargets;
+    }
+
+    public List<Mentorship> getMentorships() {
+        return mentorships;
     }
 }

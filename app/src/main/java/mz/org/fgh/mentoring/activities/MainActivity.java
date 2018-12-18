@@ -62,8 +62,6 @@ public class MainActivity extends BaseAuthenticateActivity implements AdapterVie
         listItems.setOnItemClickListener(this);
 
         loadMainItems();
-
-        loadMetadataService.load(this, application.getAuth().getUser());
     }
 
     private void setUserName(NavigationView navigationView) {

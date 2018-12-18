@@ -1,12 +1,14 @@
 package mz.org.fgh.mentoring.service;
 
 import android.app.ProgressDialog;
+import android.content.res.Resources;
 import android.util.Log;
 import android.widget.Toast;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import mz.org.fgh.mentoring.R;
 import mz.org.fgh.mentoring.activities.BaseActivity;
 import mz.org.fgh.mentoring.infra.UserContext;
 import mz.org.fgh.mentoring.model.GenericWrapper;
@@ -47,12 +49,10 @@ public class LoadMetadataServiceImpl implements LoadMetadataService {
     }
 
     @Override
-    public void load(final BaseActivity activity, final UserContext userContext) {
-
-        final ProgressDialog progressDialog = new ProgressDialog(activity);
+    public void load(final BaseActivity activity, final ProgressDialog progressDialog, final UserContext userContext) {
         progressDialog.setCancelable(false);
-        progressDialog.setTitle("Aguarde");
-        progressDialog.setMessage("A carregar metadados...");
+        progressDialog.setTitle(R.string.wait);
+        progressDialog.setMessage(progressDialog.getContext().getString(R.string.loading_metadata));
         progressDialog.show();
 
         SyncDataService syncDataService = retrofit.create(SyncDataService.class);
@@ -71,12 +71,18 @@ public class LoadMetadataServiceImpl implements LoadMetadataService {
 
                 healthFacilitySyncService.processHealthFacilities(data.getHealthFacilities());
                 careerSyncService.processCarres(data.getCareers());
-                formQuestionSyncService.processFormQuestions(data.getFormQuestions());
+                if(data.getFormQuestions() != null) {
+                    formQuestionSyncService.processFormQuestions(data.getFormQuestions());
+                }
                 tutoredService.processFoundTutoredByUser(data.getTutoreds());
                 cabinetService.precessCabinets(data.getCabinets());
                 formTargetService.processFormTarget(data.getFormTargets());
 
-                progressDialog.cancel();
+                if(!activity.isDestroyed()) {
+                    if(progressDialog != null && progressDialog.isShowing()) {
+                        progressDialog.dismiss();
+                    }
+                }
             }
 
             @Override

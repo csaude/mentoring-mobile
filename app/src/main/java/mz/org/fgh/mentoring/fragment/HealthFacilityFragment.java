@@ -3,7 +3,9 @@ package mz.org.fgh.mentoring.fragment;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.text.format.DateFormat;
@@ -99,6 +101,11 @@ public class HealthFacilityFragment extends BaseFragment implements DatePickerDi
     private TimeEvent startTimeEvent;
     private TimeEvent endTimeEvent;
 
+    protected static final String START_TIME_EVENT_HOUR = "mentorship.start.time.event.hour";
+    protected static final String START_TIME_EVENT_MINUTE = "mentorship.start.time.event.minute";
+    protected static final String END_TIME_EVENT_MINUTE = "mentorship.end.time.event.minute";
+    protected static final String END_TIME_EVENT_HOUR = "mentorship.end.time.event.hour";
+
     @Override
     public int getResourceId() {
         return R.layout.fragment_health_facility;
@@ -128,6 +135,40 @@ public class HealthFacilityFragment extends BaseFragment implements DatePickerDi
         provinceSpinner.setAdapter(provinceAdapter);
 
         this.valid = false;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        // Save the sh*t we may need later for fragment restore.
+        if(startTimeEvent != null) {
+            outState.putInt(START_TIME_EVENT_HOUR, startTimeEvent.getStartHour());
+            outState.putInt(START_TIME_EVENT_MINUTE, startTimeEvent.getStartMinute());
+        }
+
+        if(endTimeEvent != null) {
+            outState.putInt(END_TIME_EVENT_HOUR, endTimeEvent.getEndHour());
+            outState.putInt(END_TIME_EVENT_MINUTE, endTimeEvent.getEndMinute());
+        }
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+
+        if(savedInstanceState != null) {
+            // Restore the sh*t we need.
+
+            int hour = savedInstanceState.getInt(START_TIME_EVENT_HOUR);
+            int minute = savedInstanceState.getInt(START_TIME_EVENT_MINUTE);
+            startTimeEvent = new TimeEvent(hour, minute, 0, 0);
+
+            hour = savedInstanceState.getInt(END_TIME_EVENT_HOUR);
+            minute = savedInstanceState.getInt(END_TIME_EVENT_MINUTE);
+
+            endTimeEvent = new TimeEvent(0,0, hour, minute);
+        }
     }
 
     @OnClick({R.id.fragment_date_picker, R.id.fragment_performed_date})

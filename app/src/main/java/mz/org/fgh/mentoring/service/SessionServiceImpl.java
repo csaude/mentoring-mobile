@@ -29,6 +29,10 @@ public class SessionServiceImpl implements SessionService {
     public Session createSession(Session session) {
         sessionDAO.create(session);
 
+        if (session.getUuid() == null) {
+            return session;
+        }
+
         for (Mentorship mentorship : session.getMentorships()) {
             mentorship.setSession(session);
             mentorshipService.createMentorship(mentorship);

@@ -5,9 +5,9 @@ package mz.org.fgh.mentoring.util;
  */
 public enum ServerConfig {
 
-    ACCOUNT_MANAGER("test.fgh.org.mz", "/account-manager-web/services/"),
+    ACCOUNT_MANAGER("prod.fgh.org.mz", "/account-manager-web/services/"),
 
-    MENTORING("test.fgh.org.mz", "/mentoring-integ/services/");
+    MENTORING("prod.fgh.org.mz", "/mentoring-integ/services/");
 
     private String address;
     private String service;

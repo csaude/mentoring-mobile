@@ -35,6 +35,14 @@
             android:text="Não Satisfatório"
             android:textSize="5pt" />
 
+        <RadioButton
+            android:id="@+id/adapter_not_applicable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Não Apliçável"
+            android:textSize="5pt"
+            android:visibility="invisible" />
+
     </RadioGroup>
 
 </LinearLayout>

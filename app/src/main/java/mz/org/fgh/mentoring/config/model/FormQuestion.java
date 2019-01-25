@@ -21,6 +21,8 @@ public class FormQuestion extends GenericEntity {
 
     private Answer answer;
 
+    private Boolean applicable;
+
     public Form getForm() {
         return form;
     }
@@ -51,5 +53,13 @@ public class FormQuestion extends GenericEntity {
 
     public Answer getAnswer() {
         return answer;
+    }
+
+    public Boolean getApplicable() {
+        return applicable;
+    }
+
+    public void setApplicable(Boolean applicable) {
+        this.applicable = applicable;
     }
 }

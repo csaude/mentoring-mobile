@@ -1,7 +1,6 @@
 package mz.org.fgh.mentoring.fragment;
 
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.AdapterView;
@@ -9,21 +8,15 @@ import android.widget.ListView;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import mz.org.fgh.mentoring.R;
-import mz.org.fgh.mentoring.activities.IndicatorActivity;
-import mz.org.fgh.mentoring.activities.MentoringActivity;
 import mz.org.fgh.mentoring.adapter.FormAdapter;
 import mz.org.fgh.mentoring.component.MentoringComponent;
-import mz.org.fgh.mentoring.config.dao.FormDAO;
 import mz.org.fgh.mentoring.config.model.Form;
-import mz.org.fgh.mentoring.config.model.FormType;
 import mz.org.fgh.mentoring.delegate.FormDelegate;
+import mz.org.fgh.mentoring.event.ErrorEvent;
 import mz.org.fgh.mentoring.event.FormEvent;
 import mz.org.fgh.mentoring.validator.FragmentValidator;
 
@@ -31,9 +24,6 @@ public class FormsFragment extends BaseFragment implements AdapterView.OnItemCli
 
     @BindView(R.id.fragment_forms)
     ListView formsListView;
-
-    @Inject
-    FormDAO formDAO;
 
     @Inject
     EventBus eventBus;
@@ -80,7 +70,7 @@ public class FormsFragment extends BaseFragment implements AdapterView.OnItemCli
         }
 
         viewPager.setCurrentItem(position);
-        Snackbar.make(getView(), getString(R.string.form_must_be_selected), Snackbar.LENGTH_SHORT).show();
+        eventBus.post(new ErrorEvent(getString(R.string.form_must_be_selected)));
     }
 
 

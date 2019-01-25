@@ -59,7 +59,8 @@ public class SessionDAOImpl extends GenericDAOImpl<Session> implements SessionDA
         Form form = new Form();
         form.setUuid(cursor.getString((cursor.getColumnIndex("form_uuid"))));
         form.setName(cursor.getString((cursor.getColumnIndex("form_name"))));
-        form.setTarget(cursor.getInt(cursor.getColumnIndex("target")));
+        form.setTargetPatient(cursor.getInt(cursor.getColumnIndex("target_patient")));
+        form.setTargetFile(cursor.getInt(cursor.getColumnIndex("target_file")));
         session.setForm(form);
 
         HealthFacility healthFacility = new HealthFacility();

@@ -1,6 +1,7 @@
 package mz.org.fgh.mentoring.infra;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.crashlytics.android.Crashlytics;
@@ -35,7 +36,7 @@ public class MentoringApplication extends Application {
         super.onCreate();
         Fabric.with(this, new Crashlytics());
 
-        sharedPreferences = getSharedPreferences(MentoringApplication.class.getName(), 0);
+        sharedPreferences = getSharedPreferences(MentoringApplication.class.getName(), Context.MODE_PRIVATE);
 
         mapper = new ObjectMapper();
 

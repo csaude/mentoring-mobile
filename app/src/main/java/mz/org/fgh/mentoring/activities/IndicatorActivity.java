@@ -187,6 +187,6 @@ public class IndicatorActivity extends BaseAuthenticateActivity implements ViewP
 
     @Override
     public List<Form> getForms() {
-        return formDAO.findByFormType(FormType.INDICATORS);
+        return formDAO.findByFormType(FormType.INDICATORS.name());
     }
 }

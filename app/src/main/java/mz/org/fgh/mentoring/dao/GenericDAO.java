@@ -47,6 +47,16 @@ public interface GenericDAO<T extends GenericEntity> {
 
     String FORM_TARGETS_TABLE = "CREATE TABLE form_targets(id INTEGER PRIMARY KEY, form_uuid TEXT, career_uuid TEXT, target INTEGER, uuid TEXT UNIQUE, created_at TEXT);";
 
+    String ALTER_MENTORSHIP_TABLE_ADD_ITERATION_TYPE_COLUMN = "ALTER TABLE mentorships ADD COLUMN iteration_type TEXT";
+
+    String ALTER_MENTORSHIP_TABLE_ADD_ITERATION_NUMBER_COLUMN = "ALTER TABLE mentorships ADD COLUMN iteration_number INTEGER";
+
+    String ALTER_FORM_TABLE_ADD_PATIENT_TARGET = "ALTER TABLE forms ADD COLUMN target_patient INTEGER";
+
+    String ALTER_FORM_TABLE_ADD_FILE_TARGET = "ALTER TABLE forms ADD COLUMN target_file INTEGER";
+
+    String ALTER_FORM_QUESTION_ADD_APPLICABLE = "ALTER TABLE form_questions ADD COLUMN applicable INTEGER DEFAULT 0;";
+
     String getTableName();
 
     String getFieldName();

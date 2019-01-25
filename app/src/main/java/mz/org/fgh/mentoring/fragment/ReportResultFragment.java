@@ -21,6 +21,9 @@ public class ReportResultFragment extends BaseFragment {
     @BindView(R.id.report_fragment_report_result_period)
     TextView period;
 
+    @BindView(R.id.report_fragment_report_total_performed_value)
+    TextView totalPerformed;
+
     @BindView(R.id.repor_fragment_report_result_list)
     RecyclerView resultList;
 
@@ -39,6 +42,8 @@ public class ReportResultFragment extends BaseFragment {
 
         formName.setText(delegate.getForm().getName());
         period.setText("De " + delegate.getStartDate() + " à " + delegate.getEndDate());
+
+        totalPerformed.setText(delegate.getTotalPerformed() + "");
 
         ReportAdapter adapter = new ReportAdapter(getActivity(), delegate.getPerformedSessions());
         resultList.setAdapter(adapter);

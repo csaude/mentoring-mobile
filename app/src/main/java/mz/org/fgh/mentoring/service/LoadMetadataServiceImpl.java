@@ -65,6 +65,7 @@ public class LoadMetadataServiceImpl implements LoadMetadataService {
                 GenericWrapper data = response.body();
 
                 if (data == null) {
+                    progressDialog.cancel();
                     return;
                 }
 

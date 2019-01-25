@@ -74,7 +74,14 @@ public class MentorshipSyncServiceImpl implements SyncService {
                          @Override
                          public void onResponse(Call<MentorshipBeanResource> request, Response<MentorshipBeanResource> response) {
                              MentorshipBeanResource resource = response.body();
+
+                             if (resource == null) {
+                                 errorDialog(dialog);
+                                 return;
+                             }
+
                              List<String> sessionUuids = resource.getSessionUuids();
+
                              sessionService.deleteSessionsByUuids(sessionUuids);
 
                              dialog.dismiss();
@@ -94,22 +101,26 @@ public class MentorshipSyncServiceImpl implements SyncService {
 
                          @Override
                          public void onFailure(Call<MentorshipBeanResource> call, Throwable t) {
-                             dialog.dismiss();
-                             new AlertDialog.Builder(activity)
-                                     .setTitle("Tutorias não enviadas")
-                                     .setMessage("Errors ao sincronizar por favor tente novamente")
-                                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                         public void onClick(DialogInterface dialog, int which) {
-
-                                         }
-                                     })
-                                     .setIcon(android.R.drawable.ic_dialog_info)
-                                     .setCancelable(false)
-                                     .show();
+                             errorDialog(dialog);
                          }
                      }
         );
 
+    }
+
+    private void errorDialog(ProgressDialog dialog) {
+        dialog.dismiss();
+        new AlertDialog.Builder(activity)
+                .setTitle("Tutorias não enviadas")
+                .setMessage("Errors ao sincronizar por favor tente novamente")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .setCancelable(false)
+                .show();
     }
 
     private MentorshipBeanResource prepareSyncData(List<Session> sessions) {

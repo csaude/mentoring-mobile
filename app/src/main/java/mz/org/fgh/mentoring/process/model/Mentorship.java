@@ -12,6 +12,7 @@ import java.util.List;
 import mz.org.fgh.mentoring.config.model.Answer;
 import mz.org.fgh.mentoring.config.model.Cabinet;
 import mz.org.fgh.mentoring.config.model.Form;
+import mz.org.fgh.mentoring.config.model.FormType;
 import mz.org.fgh.mentoring.config.model.HealthFacility;
 import mz.org.fgh.mentoring.config.model.Tutor;
 import mz.org.fgh.mentoring.model.GenericEntity;
@@ -42,6 +43,10 @@ public class Mentorship extends GenericEntity {
     private Cabinet cabinet;
 
     private List<Answer> answers;
+
+    private IterationType iterationType;
+
+    private Integer iterationNumber;
 
     public Mentorship() {
         this.answers = new ArrayList<>();
@@ -134,5 +139,27 @@ public class Mentorship extends GenericEntity {
 
     public void setCabinet(Cabinet cabinet) {
         this.cabinet = cabinet;
+    }
+
+    public void setIterationType(IterationType iterationType) {
+        this.iterationType = iterationType;
+    }
+
+    public IterationType getIterationType() {
+        return iterationType;
+    }
+
+    public void setIterationNumber(Integer iterationNumber) {
+        this.iterationNumber = iterationNumber;
+    }
+
+    public Integer getIterationNumber() {
+        return iterationNumber;
+    }
+
+    public void setDefaultIterationType() {
+        if (FormType.MENTORING.equals(form.getFormType())) {
+            this.iterationType = IterationType.FILE;
+        }
     }
 }

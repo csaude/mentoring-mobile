@@ -27,11 +27,13 @@ public class Form extends GenericEntity {
 
     private FormType formType;
 
-    private Integer target;
-
     private List<FormQuestion> formQuestions;
 
     private List<QuestionCategory> questionCategories;
+
+    private Integer targetPatient;
+
+    private Integer targetFile;
 
     public Form(String uuid, String name, ProgrammaticArea programmaticArea, String version, FormType formType) {
         this.setUuid(uuid);
@@ -67,14 +69,6 @@ public class Form extends GenericEntity {
 
     public FormType getFormType() {
         return formType;
-    }
-
-    public Integer getTarget() {
-        return target;
-    }
-
-    public void setTarget(Integer target) {
-        this.target = target;
     }
 
     public List<FormQuestion> getFormQuestionsByCategory(QuestionCategory questionCategory) {
@@ -121,10 +115,20 @@ public class Form extends GenericEntity {
     }
 
     public int size() {
+
+        if (FormType.MENTORING_CUSTOM.equals(this.getFormType())) {
+            return this.getQuestionCategories().size() + 1;
+        }
+
         return this.questionCategories.size();
     }
 
     public QuestionCategory getQuestionCategoryByPosition(int position) {
+
+        if (FormType.MENTORING_CUSTOM.equals(this.getFormType())) {
+            return this.questionCategories.get(position - 1);
+        }
+
         return this.questionCategories.get(position);
     }
 
@@ -137,5 +141,33 @@ public class Form extends GenericEntity {
     @Override
     public String toString() {
         return name;
+    }
+
+    public void setFormType(FormType formType) {
+        this.formType = formType;
+    }
+
+    public void clearQuestions() {
+        this.formQuestions = new ArrayList<>();
+    }
+
+    public Integer getTargetPatient() {
+        return targetPatient;
+    }
+
+    public void setTargetPatient(Integer targetPatient) {
+        this.targetPatient = targetPatient;
+    }
+
+    public Integer getTargetFile() {
+        return targetFile;
+    }
+
+    public void setTargetFile(Integer targetFile) {
+        this.targetFile = targetFile;
+    }
+
+    public int getTarget() {
+        return this.targetPatient + this.targetFile;
     }
 }

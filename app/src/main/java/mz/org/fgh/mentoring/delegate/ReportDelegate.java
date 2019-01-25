@@ -30,6 +30,6 @@ public interface ReportDelegate {
     String getEndDate();
 
     int getTarget();
-
+  
     int getTotalPerformed();
 }

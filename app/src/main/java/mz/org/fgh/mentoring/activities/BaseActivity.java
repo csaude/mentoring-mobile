@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import butterknife.ButterKnife;
+import mz.org.fgh.mentoring.InputMethodManagerLeaks;
 import mz.org.fgh.mentoring.R;
 import mz.org.fgh.mentoring.component.MentoringComponent;
 import mz.org.fgh.mentoring.infra.MentoringApplication;
@@ -23,6 +24,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         application = (MentoringApplication) getApplication();
 
+        InputMethodManagerLeaks.fixFocusedViewLeak(application);
     }
 
     @Override

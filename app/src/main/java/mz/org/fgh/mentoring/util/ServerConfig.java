@@ -5,16 +5,22 @@ package mz.org.fgh.mentoring.util;
  */
 public enum ServerConfig {
 
-    ACCOUNT_MANAGER("prod.fgh.org.mz", "/account-manager-web/services/"),
+    ACCOUNT_MANAGER("https", "prod.fgh.org.mz", "/account-manager-web/services/"),
 
-    MENTORING("prod.fgh.org.mz", "/mentoring-integ/services/");
+    MENTORING("https", "prod.fgh.org.mz", "/mentoring-integ/services/");
 
+    private String protocol;
     private String address;
     private String service;
 
-    ServerConfig(final String address, final String service) {
+    ServerConfig(final String protocol, final String address, final String service) {
+        this.protocol = protocol;
         this.address = address;
         this.service = service;
+    }
+
+    public String getProtocol() {
+        return protocol;
     }
 
     public String getAddress() {

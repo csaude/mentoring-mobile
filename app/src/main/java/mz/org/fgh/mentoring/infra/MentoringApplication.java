@@ -52,7 +52,7 @@ public class MentoringApplication extends Application {
         mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true)
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-        retrofit = new Retrofit.Builder().baseUrl("http://" + serverConfig.getAddress() +
+        retrofit = new Retrofit.Builder().baseUrl(serverConfig.getProtocol() + "://" + serverConfig.getAddress() +
                 serverConfig.getService()).addConverterFactory(JacksonConverterFactory.create(mapper))
                 .build();
     }

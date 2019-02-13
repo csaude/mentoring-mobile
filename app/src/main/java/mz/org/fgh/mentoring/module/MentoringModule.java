@@ -3,6 +3,7 @@ package mz.org.fgh.mentoring.module;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.support.annotation.NonNull;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -101,10 +102,8 @@ public class MentoringModule {
     @Provides
     @Named("mentoring")
     public Retrofit provideMentoringRetrofit() {
-
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://" + ServerConfig.MENTORING.getAddress() +
-                ServerConfig.MENTORING.getService()).addConverterFactory(JacksonConverterFactory.create(mapper))
-                .build();
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(getBaseUrl(ServerConfig.MENTORING))
+                .addConverterFactory(JacksonConverterFactory.create(mapper)).build();
 
         return retrofit;
     }
@@ -112,10 +111,8 @@ public class MentoringModule {
     @Provides
     @Named("account")
     public Retrofit provideAccontRetrofit() {
-
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://" + ServerConfig.ACCOUNT_MANAGER.getAddress() +
-                ServerConfig.ACCOUNT_MANAGER.getService()).addConverterFactory(JacksonConverterFactory.create(mapper))
-                .build();
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(getBaseUrl(ServerConfig.ACCOUNT_MANAGER))
+                .addConverterFactory(JacksonConverterFactory.create(mapper)).build();
 
         return retrofit;
     }
@@ -250,5 +247,13 @@ public class MentoringModule {
     @Provides
     public FormTargetService proviceFormTargetService(FormTargetServiceImpl formTargetService) {
         return formTargetService;
+    }
+
+    @NonNull
+    private String getBaseUrl(@NonNull final ServerConfig serverConfig) {
+        return new StringBuilder(serverConfig.getProtocol()).append("://")
+                .append(serverConfig.getAddress())
+                .append(serverConfig.getService())
+                .toString();
     }
 }

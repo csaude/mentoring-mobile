@@ -15,8 +15,10 @@ public abstract class BaseAuthenticateActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         UserContext user = application.getAuth().getUser();
+        final String cachedJwtToken =
+                application.getSharedPreferences().getString(UserContext.JWT_TOKEN_NAME, null);
 
-        if (!user.isLogged()) {
+        if (!user.isLogged() || cachedJwtToken == null) {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
             return;

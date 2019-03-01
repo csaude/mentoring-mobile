@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import mz.org.fgh.mentoring.activities.BaseActivity;
+import mz.org.fgh.mentoring.infra.MentoringApplication;
 import mz.org.fgh.mentoring.infra.UserContext;
 import mz.org.fgh.mentoring.model.GenericWrapper;
 import retrofit2.Call;
@@ -19,10 +20,6 @@ import retrofit2.Retrofit;
  * Created by Stélio Moiane on 6/28/17.
  */
 public class LoadMetadataServiceImpl implements LoadMetadataService {
-
-    @Inject
-    @Named("mentoring")
-    Retrofit retrofit;
 
     @Inject
     HealthFacilitySyncService healthFacilitySyncService;
@@ -55,7 +52,9 @@ public class LoadMetadataServiceImpl implements LoadMetadataService {
         progressDialog.setMessage("A carregar metadados...");
         progressDialog.show();
 
-        SyncDataService syncDataService = retrofit.create(SyncDataService.class);
+        Retrofit mentoringRetrofit =
+                ((MentoringApplication) activity.getApplication()).getMentoringRetrofit();
+        SyncDataService syncDataService = mentoringRetrofit.create(SyncDataService.class);
         Call<GenericWrapper> call = syncDataService.loadMetadata(userContext.getUuid());
 
         call.enqueue(new Callback<GenericWrapper>() {

@@ -16,7 +16,7 @@ import mz.org.fgh.mentoring.model.GenericEntity;
 public class UserContext extends GenericEntity {
 
     public static final String USER_CONTEXT = "user";
-
+    public static final String JWT_TOKEN_NAME = "userJwtToken";
     private String fullName;
 
     private String username;
@@ -28,6 +28,9 @@ public class UserContext extends GenericEntity {
     private String phoneNumber;
 
     private Tutor tutor;
+
+    @JsonProperty("jwtToken")
+    public  String JWT_TOKEN;
 
     @JsonProperty("logged")
     private boolean isLogged;

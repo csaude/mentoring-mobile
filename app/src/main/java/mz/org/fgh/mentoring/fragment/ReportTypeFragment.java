@@ -26,6 +26,7 @@ import mz.org.fgh.mentoring.R;
 import mz.org.fgh.mentoring.component.MentoringComponent;
 import mz.org.fgh.mentoring.config.model.PerformedSession;
 import mz.org.fgh.mentoring.delegate.ReportDelegate;
+import mz.org.fgh.mentoring.infra.MentoringApplication;
 import mz.org.fgh.mentoring.model.GenericWrapper;
 import mz.org.fgh.mentoring.service.ReportResource;
 import mz.org.fgh.mentoring.util.DateUtil;
@@ -38,10 +39,6 @@ public class ReportTypeFragment extends BaseFragment {
 
     @BindView(R.id.fragment_report_type_image_view_form_name)
     TextView formName;
-
-    @Inject
-    @Named("mentoring")
-    Retrofit mentoringService;
 
     private ReportDelegate delegate;
 
@@ -68,7 +65,9 @@ public class ReportTypeFragment extends BaseFragment {
         dialog.setMessage(getActivity().getResources().getString(R.string.processing));
         dialog.show();
 
-        ReportResource reportResource = mentoringService.create(ReportResource.class);
+        Retrofit mentoringRetrofit =
+                ((MentoringApplication)getActivity().getApplication()).getMentoringRetrofit();
+        ReportResource reportResource = mentoringRetrofit.create(ReportResource.class);
 
         Calendar startDate = Calendar.getInstance();
         startDate.set(Calendar.DAY_OF_MONTH, startDate.getActualMinimum(Calendar.DAY_OF_MONTH));

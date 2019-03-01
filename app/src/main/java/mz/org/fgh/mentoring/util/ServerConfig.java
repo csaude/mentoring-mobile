@@ -30,4 +30,12 @@ public enum ServerConfig {
     public String getService() {
         return service;
     }
+
+    public String getBaseUrl() {
+        return new StringBuilder(getProtocol())
+                .append("://")
+                .append(getAddress())
+                .append(getService())
+                .toString();
+    }
 }

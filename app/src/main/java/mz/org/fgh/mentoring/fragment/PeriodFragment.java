@@ -24,6 +24,7 @@ import mz.org.fgh.mentoring.activities.ListMentorshipActivity;
 import mz.org.fgh.mentoring.component.MentoringComponent;
 import mz.org.fgh.mentoring.config.model.PerformedSession;
 import mz.org.fgh.mentoring.delegate.ReportDelegate;
+import mz.org.fgh.mentoring.infra.MentoringApplication;
 import mz.org.fgh.mentoring.model.GenericWrapper;
 import mz.org.fgh.mentoring.service.ReportResource;
 import mz.org.fgh.mentoring.validator.TextInputLayoutValidator;
@@ -42,10 +43,6 @@ public class PeriodFragment extends BaseFragment {
 
     @BindView(R.id.report_fragment_period_end_date_input)
     TextInputLayout endDate;
-
-    @Inject
-    @Named("mentoring")
-    Retrofit mentoringService;
 
     private ReportDelegate delegate;
 
@@ -80,7 +77,9 @@ public class PeriodFragment extends BaseFragment {
         dialog.setMessage(getActivity().getResources().getString(R.string.processing));
         dialog.show();
 
-        ReportResource reportResource = mentoringService.create(ReportResource.class);
+        Retrofit mentoringRetrofit =
+                ((MentoringApplication) getActivity().getApplication()).getMentoringRetrofit();
+        ReportResource reportResource = mentoringRetrofit.create(ReportResource.class);
 
         performRequest(dialog, reportResource);
     }

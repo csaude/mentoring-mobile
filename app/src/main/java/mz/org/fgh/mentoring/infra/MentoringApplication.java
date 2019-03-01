@@ -9,13 +9,17 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import io.fabric.sdk.android.Fabric;
 import java.io.IOException;
 
+import io.fabric.sdk.android.Fabric;
 import mz.org.fgh.mentoring.component.DaggerMentoringComponent;
 import mz.org.fgh.mentoring.component.MentoringComponent;
 import mz.org.fgh.mentoring.module.MentoringModule;
 import mz.org.fgh.mentoring.util.ServerConfig;
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
@@ -26,7 +30,8 @@ public class MentoringApplication extends Application {
 
     private Auth auth;
     private SharedPreferences sharedPreferences;
-    private Retrofit retrofit;
+    private Retrofit mentoringRetrofit;
+    private Retrofit accountRetrofit;
     private ObjectMapper mapper;
     private MentoringComponent mentoringComponent;
 
@@ -44,19 +49,79 @@ public class MentoringApplication extends Application {
 
         mentoringComponent = DaggerMentoringComponent.builder().mentoringModule(new MentoringModule(this)).build();
 
-        setUpRetrofit(ServerConfig.MENTORING);
+        // Try if the token exists.
+        String jwtToken = getSharedPreferences().getString(UserContext.JWT_TOKEN_NAME, null);
+        setupAccountRetrofit(jwtToken);
+        setupMentoringRetrofit(jwtToken);
     }
 
-    public void setUpRetrofit(final ServerConfig serverConfig) {
-
+    public void setupMentoringRetrofit(final String jwtToken) {
         mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true)
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-        retrofit = new Retrofit.Builder().baseUrl(serverConfig.getProtocol() + "://" + serverConfig.getAddress() +
-                serverConfig.getService()).addConverterFactory(JacksonConverterFactory.create(mapper))
-                .build();
+        Retrofit.Builder retrofitBuilder = new Retrofit.Builder()
+                .baseUrl(ServerConfig.MENTORING.getBaseUrl())
+                .addConverterFactory(JacksonConverterFactory.create(mapper));
+
+        if(jwtToken != null) {
+            OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
+            clientBuilder.addInterceptor(new Interceptor() {
+                @Override
+                public Response intercept(Chain chain) throws IOException {
+                    Request original = chain.request();
+                    Request modified = original.newBuilder()
+                            .addHeader("Authorization", "Bearer " + jwtToken)
+                            .method(original.method(), original.body())
+                            .build();
+
+                    return chain.proceed(modified);
+                }
+            });
+
+            OkHttpClient client = clientBuilder.build();
+            retrofitBuilder.client(client);
+        }
+
+        mentoringRetrofit = retrofitBuilder.build();
     }
 
+    public void setupMentoringRetrofit() {
+        setupMentoringRetrofit(null);
+    }
+
+    public void setupAccountRetrofit(final String jwtToken) {
+        mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true)
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        Retrofit.Builder retrofitBuilder = new Retrofit.Builder()
+                .baseUrl(ServerConfig.ACCOUNT_MANAGER.getBaseUrl())
+                .addConverterFactory(JacksonConverterFactory.create(mapper));
+
+        if(jwtToken != null) {
+            OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
+            clientBuilder.addInterceptor(new Interceptor() {
+                @Override
+                public Response intercept(Chain chain) throws IOException {
+                    Request original = chain.request();
+                    Request modified = original.newBuilder()
+                            .addHeader("Authorization", "Bearer " + jwtToken)
+                            .method(original.method(), original.body())
+                            .build();
+
+                    return chain.proceed(modified);
+                }
+            });
+
+            OkHttpClient client = clientBuilder.build();
+            retrofitBuilder.client(client);
+        }
+
+        accountRetrofit = retrofitBuilder.build();
+    }
+
+    public void setupAccountRetrofit() {
+        setupAccountRetrofit(null);
+    }
     public Auth getAuth() {
         return this.auth;
     }
@@ -65,8 +130,12 @@ public class MentoringApplication extends Application {
         return this.sharedPreferences;
     }
 
-    public Retrofit getRetrofit() {
-        return this.retrofit;
+    public Retrofit getMentoringRetrofit() {
+        return mentoringRetrofit;
+    }
+
+    public Retrofit getAccountRetrofit() {
+        return accountRetrofit;
     }
 
     public void setUser(final UserContext user) {

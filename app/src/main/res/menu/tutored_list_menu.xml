@@ -4,8 +4,8 @@
     tools:context=".activities.ListTutoredActivity">
 
     <item
-        android:id="@+id/menu_sync_tutoreds"
-        android:icon="@mipmap/ic_upload"
+        android:id="@+id/delete_tutoreds"
+        android:icon="@android:drawable/ic_menu_delete"
         android:title="Sync"
         app:showAsAction="always" />
 </menu>

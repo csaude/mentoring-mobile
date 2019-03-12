@@ -1,12 +1,10 @@
 package mz.org.fgh.mentoring.activities;
 
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.View;
 
 import org.greenrobot.eventbus.EventBus;
@@ -33,7 +31,6 @@ import mz.org.fgh.mentoring.config.model.FormType;
 import mz.org.fgh.mentoring.config.model.HealthFacility;
 import mz.org.fgh.mentoring.delegate.FormDelegate;
 import mz.org.fgh.mentoring.dialog.AlertDialogManager;
-import mz.org.fgh.mentoring.dialog.ProgressDialogManager;
 import mz.org.fgh.mentoring.event.AnswerEvent;
 import mz.org.fgh.mentoring.event.CabinetEvent;
 import mz.org.fgh.mentoring.event.ErrorEvent;
@@ -114,11 +111,6 @@ public class MentoringActivity extends BaseAuthenticateActivity implements ViewP
     }
 
     private void submitProcess() {
-
-        ProgressDialogManager progressDialogManager = new ProgressDialogManager(this);
-        ProgressDialog progressBar = progressDialogManager.getProgressBar(getString(R.string.wait), getString(R.string.processing));
-        progressBar.show();
-
         populateMentorship();
 
         this.session.setEndDate(new Date());
@@ -126,8 +118,6 @@ public class MentoringActivity extends BaseAuthenticateActivity implements ViewP
         this.session.setStatus();
 
         sessionService.createSession(session);
-
-        progressBar.dismiss();
 
         startActivity(new Intent(this, ListMentorshipActivity.class));
         finish();
@@ -377,8 +367,8 @@ public class MentoringActivity extends BaseAuthenticateActivity implements ViewP
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onDestroy() {
+        super.onDestroy();
         eventBus.unregister(this);
     }
 

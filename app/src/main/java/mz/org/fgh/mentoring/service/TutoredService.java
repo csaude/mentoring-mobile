@@ -2,6 +2,7 @@ package mz.org.fgh.mentoring.service;
 
 import java.util.List;
 
+import mz.org.fgh.mentoring.model.LifeCycleStatus;
 import mz.org.fgh.mentoring.model.Tutored;
 
 /**
@@ -10,4 +11,12 @@ import mz.org.fgh.mentoring.model.Tutored;
 public interface TutoredService {
 
     void processFoundTutoredByUser(final List<Tutored> tutoreds);
+
+    Tutored createTutored(Tutored tutored);
+
+    Tutored updateTutored(Tutored Tutored);
+
+    List<Tutored> findTutoredsByLifeCycleStatus(LifeCycleStatus lifeCycleStatus);
+
+    void deleteTutoredsByUuid(List<String> uuids);
 }

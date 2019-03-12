@@ -39,7 +39,7 @@ public class QuestionDAOImpl extends GenericDAOImpl<Question> implements Questio
 
         values.put("question", entity.getQuestion());
         values.put("question_type", entity.getQuestionType().name());
-        values.put("question_category", entity.getQuestionCategory().name());
+        values.put("question_category", entity.getQuestionsCategory().getCategory());
 
         return values;
     }
@@ -50,7 +50,7 @@ public class QuestionDAOImpl extends GenericDAOImpl<Question> implements Questio
         Question question = new Question(cursor.getString(cursor.getColumnIndex("uuid")),
                 cursor.getString(cursor.getColumnIndex("question")),
                 QuestionType.valueOf(cursor.getString(cursor.getColumnIndex("question_type"))),
-                QuestionCategory.valueOf(cursor.getString(cursor.getColumnIndex("question_category"))));
+                new QuestionCategory(cursor.getString(cursor.getColumnIndex("question_category"))));
 
         question.setId(cursor.getLong(cursor.getColumnIndex("id")));
 

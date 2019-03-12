@@ -76,4 +76,29 @@ public class AlertDialogManager {
             }
         });
     }
+
+    public void showSuccessAlert(String message) {
+
+        final AlertDialog dialog = new AlertDialog.Builder(context)
+                .setView(R.layout.dialog_alert)
+                .setCancelable(Boolean.FALSE).create();
+
+        dialog.show();
+
+        TextView messageTxt = dialog.findViewById(R.id.dialog_alert_message);
+        messageTxt.setText(message);
+
+        Button noBtn = dialog.findViewById(R.id.dialog_alert_no_btn);
+        noBtn.setVisibility(View.INVISIBLE);
+
+        Button yesBtn = dialog.findViewById(R.id.dialog_alert_yes_btn);
+        yesBtn.setText(context.getString(R.string.ok));
+
+        yesBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+    }
 }

@@ -10,4 +10,10 @@
         app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="always|collapseActionView" />
 
+    <item
+        android:id="@+id/tutored_menu_sync"
+        android:icon="@mipmap/ic_upload"
+        android:title="sync"
+        app:showAsAction="always" />
+
 </menu>

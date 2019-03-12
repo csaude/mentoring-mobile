@@ -11,16 +11,16 @@ public class Question extends GenericEntity {
 
     private QuestionType questionType;
 
-    private QuestionCategory questionCategory;
+    private QuestionCategory questionsCategory;
 
     public Question() {
     }
 
-    public Question(String uuid, String question, QuestionType questionType, QuestionCategory questionCategory) {
+    public Question(String uuid, String question, QuestionType questionType, QuestionCategory questionsCategory) {
         this.setUuid(uuid);
         this.question = question;
         this.questionType = questionType;
-        this.questionCategory = questionCategory;
+        this.questionsCategory = questionsCategory;
     }
 
     public String getQuestion() {
@@ -31,7 +31,7 @@ public class Question extends GenericEntity {
         return questionType;
     }
 
-    public QuestionCategory getQuestionCategory() {
-        return questionCategory;
+    public QuestionCategory getQuestionsCategory() {
+        return questionsCategory;
     }
 }

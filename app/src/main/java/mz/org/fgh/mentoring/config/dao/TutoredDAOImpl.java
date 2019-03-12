@@ -10,6 +10,7 @@ import java.util.List;
 
 import mz.org.fgh.mentoring.config.model.Career;
 import mz.org.fgh.mentoring.dao.GenericDAOImpl;
+import mz.org.fgh.mentoring.model.LifeCycleStatus;
 import mz.org.fgh.mentoring.model.Tutored;
 
 /**
@@ -39,6 +40,7 @@ public class TutoredDAOImpl extends GenericDAOImpl<Tutored> implements TutoredDA
         values.put("surname", tutored.getSurname());
         values.put("phone_number", tutored.getPhoneNumber());
         values.put("career_uuid", tutored.getCareer().getUuid());
+        values.put("life_cycle_status", tutored.getLifeCycleStatus().name());
 
         return values;
     }
@@ -52,6 +54,7 @@ public class TutoredDAOImpl extends GenericDAOImpl<Tutored> implements TutoredDA
         tutored.setSurname(cursor.getString(cursor.getColumnIndex("surname")));
         tutored.setPhoneNumber(cursor.getString(cursor.getColumnIndex("phone_number")));
         tutored.setUuid(cursor.getString(cursor.getColumnIndex("uuid")));
+        tutored.setLifeCycleStatus(LifeCycleStatus.valueOf(cursor.getString(cursor.getColumnIndex("life_cycle_status"))));
 
         Career career = new Career(cursor.getString(cursor.getColumnIndex("career_uuid")));
         career.setPosition(cursor.getString(cursor.getColumnIndex("position")));
@@ -61,9 +64,9 @@ public class TutoredDAOImpl extends GenericDAOImpl<Tutored> implements TutoredDA
     }
 
     @Override
-    public List<Tutored> findAll() {
+    public List<Tutored> findByLifeCycleStatus(final LifeCycleStatus lifeCycleStatus) {
         SQLiteDatabase database = getReadableDatabase();
-        Cursor cursor = database.rawQuery(TutoredDAO.QUERY.findAll, null);
+        Cursor cursor = database.rawQuery(TutoredDAO.QUERY.findByLifeCycleStatus, new String[]{lifeCycleStatus.name()});
 
         List<Tutored> tutoreds = new ArrayList<>();
 

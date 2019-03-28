@@ -128,7 +128,7 @@ public class TutorUpdateActivity extends BaseAuthenticateActivity implements Vie
 
         user.setTutor(tutor);
 
-        Retrofit retrofit = application.getRetrofit();
+        Retrofit retrofit = application.getMentoringRetrofit();
         TutorService tutorService = retrofit.create(TutorService.class);
 
         TutorBeanResource resource = new TutorBeanResource();

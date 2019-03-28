@@ -42,7 +42,7 @@ public class HealthFacilitySyncServiceImpl implements SyncService, HealthFacilit
     public void execute() {
 
         MentoringApplication application = (MentoringApplication) activity.getApplication();
-        Retrofit retrofit = application.getRetrofit();
+        Retrofit retrofit = application.getMentoringRetrofit();
         SyncDataService syncDataService = retrofit.create(SyncDataService.class);
         Call<GenericWrapper> call = syncDataService.healthFacilities();
 

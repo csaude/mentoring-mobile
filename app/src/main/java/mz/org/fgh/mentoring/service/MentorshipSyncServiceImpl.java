@@ -3,8 +3,12 @@ package mz.org.fgh.mentoring.service;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.widget.Toast;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -41,10 +45,6 @@ public class MentorshipSyncServiceImpl implements SyncService {
     @Inject
     AnswerDAO answerDAO;
 
-    @Inject
-    @Named("mentoring")
-    Retrofit retrofit;
-
     private BaseActivity activity;
 
     @Inject
@@ -61,7 +61,9 @@ public class MentorshipSyncServiceImpl implements SyncService {
         }
 
         MentorshipBeanResource mentorshipBeanResource = prepareSyncData(sessions);
-        SyncDataService syncDataService = retrofit.create(SyncDataService.class);
+        Retrofit mentoringRetrofit =
+                ((MentoringApplication) activity.getApplication()).getMentoringRetrofit();
+        SyncDataService syncDataService = mentoringRetrofit.create(SyncDataService.class);
 
         Call<MentorshipBeanResource> call = syncDataService.syncMentorships(mentorshipBeanResource);
         final ProgressDialog dialog = new ProgressDialog(activity);
@@ -74,8 +76,12 @@ public class MentorshipSyncServiceImpl implements SyncService {
                          @Override
                          public void onResponse(Call<MentorshipBeanResource> request, Response<MentorshipBeanResource> response) {
                              MentorshipBeanResource resource = response.body();
-
                              if (resource == null) {
+                                 try {
+                                     Log.e(getClass().getName(), response.errorBody().string());
+                                 } catch (IOException e) {
+                                     e.printStackTrace();
+                                 }
                                  errorDialog(dialog);
                                  return;
                              }

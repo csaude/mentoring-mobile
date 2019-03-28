@@ -19,6 +19,7 @@ import mz.org.fgh.mentoring.config.model.Answer;
 import mz.org.fgh.mentoring.event.EventType;
 import mz.org.fgh.mentoring.event.ProcessEvent;
 import mz.org.fgh.mentoring.dto.IndicatorHelper;
+import mz.org.fgh.mentoring.infra.MentoringApplication;
 import mz.org.fgh.mentoring.infra.UserContext;
 import mz.org.fgh.mentoring.process.dao.IndicatorDAO;
 import mz.org.fgh.mentoring.process.model.Indicator;
@@ -33,10 +34,6 @@ import retrofit2.Retrofit;
  */
 
 public class IndicatorServiceImpl implements IndicatorService {
-
-    @Inject
-    @Named("mentoring")
-    Retrofit retrofit;
 
     @Inject
     IndicatorDAO indicatorDAO;
@@ -76,7 +73,10 @@ public class IndicatorServiceImpl implements IndicatorService {
         indicatorBeanResource.setUserContext(userContext);
         indicatorBeanResource.setIndicators(indicatorHelpers);
 
-        IndicatorServiceResource indicatorServiceResource = retrofit.create(IndicatorServiceResource.class);
+        Retrofit mentoringRetrofit =
+                ((MentoringApplication) activity.getApplication()).getMentoringRetrofit();
+        IndicatorServiceResource indicatorServiceResource =
+                mentoringRetrofit.create(IndicatorServiceResource.class);
         Call<IndicatorBeanResource> call = indicatorServiceResource.syncIndicators(indicatorBeanResource);
 
         final ProgressDialog dialog = new ProgressDialog(activity);

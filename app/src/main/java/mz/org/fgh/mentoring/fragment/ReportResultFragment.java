@@ -27,10 +27,6 @@ public class ReportResultFragment extends BaseFragment {
     @BindView(R.id.repor_fragment_report_result_list)
     RecyclerView resultList;
 
-    @Inject
-    @Named("mentoring")
-    Retrofit mentoringService;
-
     @Override
     public int getResourceId() {
         return R.layout.fragment_period_report_result;

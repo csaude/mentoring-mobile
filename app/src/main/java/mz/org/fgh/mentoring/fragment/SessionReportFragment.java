@@ -310,8 +310,11 @@ public class SessionReportFragment extends Fragment {
                         }
                     }
                 } else {
-                    List<Mentorship> mentorships = response.body().getMentorships();
-                    sessionReportDataDTO = prepareGraphData(mentorships);
+                    GenericWrapper body = response.body();
+                    if(body != null) {
+                        List<Mentorship> mentorships = response.body().getMentorships();
+                        sessionReportDataDTO = prepareGraphData(mentorships);
+                    }
                 }
 
                 populateStackedBarGraph(sessionReportDataDTO);

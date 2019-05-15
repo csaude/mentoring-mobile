@@ -1,11 +1,11 @@
 package mz.org.fgh.mentoring.infra;
 
 import android.app.Application;
-import android.content.Context;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleObserver;
 import android.arch.lifecycle.OnLifecycleEvent;
 import android.arch.lifecycle.ProcessLifecycleOwner;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
@@ -64,42 +64,8 @@ public class MentoringApplication extends Application implements LifecycleObserv
 
         mentoringComponent = DaggerMentoringComponent.builder().mentoringModule(new MentoringModule(this)).build();
 
-        // Try if the token exists.
-        String jwtToken = getSharedPreferences().getString(UserContext.JWT_TOKEN_NAME, null);
-        setupAccountRetrofit(jwtToken);
-        setupMentoringRetrofit(jwtToken);
-
         ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
-    }
-
-    public void setupMentoringRetrofit(final String jwtToken) {
-        mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true)
-                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
-        Retrofit.Builder retrofitBuilder = new Retrofit.Builder()
-                .baseUrl(ServerConfig.MENTORING.getBaseUrl())
-                .addConverterFactory(JacksonConverterFactory.create(mapper));
-
-        if(jwtToken != null) {
-            OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
-            clientBuilder.addInterceptor(new Interceptor() {
-                @Override
-                public Response intercept(Chain chain) throws IOException {
-                    Request original = chain.request();
-                    Request modified = original.newBuilder()
-                            .addHeader("Authorization", "Bearer " + jwtToken)
-                            .method(original.method(), original.body())
-                            .build();
-
-                    return chain.proceed(modified);
-                }
-            });
-
-            OkHttpClient client = clientBuilder.build();
-            retrofitBuilder.client(client);
-        }
-
-        mentoringRetrofit = retrofitBuilder.build();
+        setUpRetrofit(ServerConfig.MENTORING);
     }
 
     public void setUpRetrofit(final ServerConfig serverConfig) {
@@ -107,7 +73,8 @@ public class MentoringApplication extends Application implements LifecycleObserv
         mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true)
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-        retrofit = new Retrofit.Builder().baseUrl(serverConfig.getBaseUrl()).addConverterFactory(JacksonConverterFactory.create(mapper))
+        retrofit = new Retrofit.Builder().baseUrl(serverConfig.getProtocol() + "://" + serverConfig.getAddress() +
+                serverConfig.getService()).addConverterFactory(JacksonConverterFactory.create(mapper))
                 .build();
     }
 

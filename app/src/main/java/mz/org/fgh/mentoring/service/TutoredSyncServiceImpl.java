@@ -47,7 +47,8 @@ public class TutoredSyncServiceImpl implements TutoredSyncService {
 
     @Override
     public void syncTutoreds(UserContext userContext, List<Tutored> tutoreds) {
-
+        MentoringApplication application = (MentoringApplication) activity.getApplication();
+        Retrofit retrofit = application.getRetrofit();
         SyncDataService syncDataService = retrofit.create(SyncDataService.class);
 
         TutoredBeanResource tutoredBeanResource = new TutoredBeanResource();

@@ -120,11 +120,8 @@ public class MentoringModule {
     @Provides
     @Named("mentoring")
     public Retrofit provideMentoringRetrofit() {
-
         Retrofit retrofit = new Retrofit.Builder().baseUrl(ServerConfig.MENTORING.getBaseUrl())
-                .addConverterFactory(JacksonConverterFactory.create(mapper))
-                .client(okHttpClient)
-                .build();
+                .addConverterFactory(JacksonConverterFactory.create(mapper)).build();
 
         return retrofit;
     }
@@ -132,11 +129,8 @@ public class MentoringModule {
     @Provides
     @Named("account")
     public Retrofit provideAccontRetrofit() {
-
         Retrofit retrofit = new Retrofit.Builder().baseUrl(ServerConfig.ACCOUNT_MANAGER.getBaseUrl())
-                .addConverterFactory(JacksonConverterFactory.create(mapper))
-                .client(okHttpClient)
-                .build();
+                .addConverterFactory(JacksonConverterFactory.create(mapper)).build();
 
         return retrofit;
     }

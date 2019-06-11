@@ -18,6 +18,8 @@ public abstract class GenericEntity implements Serializable {
 
     private Date updatedAt;
 
+    private LifeCycleStatus lifeCycleStatus;
+
     public Long getId() {
         return id;
     }
@@ -48,6 +50,14 @@ public abstract class GenericEntity implements Serializable {
 
     public Date getUpdatedAt() {
         return updatedAt;
+    }
+
+    public LifeCycleStatus getLifeCycleStatus() {
+        return lifeCycleStatus;
+    }
+
+    public void setLifeCycleStatus(LifeCycleStatus lifeCycleStatus) {
+        this.lifeCycleStatus = lifeCycleStatus;
     }
 }
 

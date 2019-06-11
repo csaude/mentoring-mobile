@@ -12,6 +12,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -40,6 +41,7 @@ import mz.org.fgh.mentoring.config.dao.TutoredDAO;
 import mz.org.fgh.mentoring.config.dao.TutoredDAOImpl;
 import mz.org.fgh.mentoring.config.model.Cabinet;
 import mz.org.fgh.mentoring.config.model.PerformedSession;
+import mz.org.fgh.mentoring.dialog.ProgressDialogManager;
 import mz.org.fgh.mentoring.process.dao.IndicatorDAO;
 import mz.org.fgh.mentoring.process.dao.IndictorDAOImpl;
 import mz.org.fgh.mentoring.process.dao.MentorshipDAO;
@@ -68,10 +70,13 @@ import mz.org.fgh.mentoring.service.SessionServiceImpl;
 import mz.org.fgh.mentoring.service.SyncService;
 import mz.org.fgh.mentoring.service.TutoredService;
 import mz.org.fgh.mentoring.service.TutoredServiceImpl;
+import mz.org.fgh.mentoring.service.TutoredSyncService;
+import mz.org.fgh.mentoring.service.TutoredSyncServiceImpl;
 import mz.org.fgh.mentoring.service.UserService;
 import mz.org.fgh.mentoring.service.UserServiceImpl;
 import mz.org.fgh.mentoring.util.ServerConfig;
 import mz.org.fgh.mentoring.validator.TextViewValidator;
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
@@ -86,12 +91,20 @@ public class MentoringModule {
 
     private final ObjectMapper mapper;
 
+    private final OkHttpClient okHttpClient;
+
     public MentoringModule(Context context) {
         this.context = context;
 
         this.mapper = new ObjectMapper();
         this.mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true)
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        okHttpClient = new OkHttpClient.Builder()
+                .connectTimeout(20, TimeUnit.SECONDS)
+                .readTimeout(15, TimeUnit.SECONDS)
+                .writeTimeout(15, TimeUnit.SECONDS)
+                .build();
     }
 
     @Provides
@@ -102,8 +115,11 @@ public class MentoringModule {
     @Provides
     @Named("mentoring")
     public Retrofit provideMentoringRetrofit() {
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(getBaseUrl(ServerConfig.MENTORING))
-                .addConverterFactory(JacksonConverterFactory.create(mapper)).build();
+
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(ServerConfig.MENTORING.getBaseUrl())
+                .addConverterFactory(JacksonConverterFactory.create(mapper))
+                .client(okHttpClient)
+                .build();
 
         return retrofit;
     }
@@ -111,8 +127,11 @@ public class MentoringModule {
     @Provides
     @Named("account")
     public Retrofit provideAccontRetrofit() {
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(getBaseUrl(ServerConfig.ACCOUNT_MANAGER))
-                .addConverterFactory(JacksonConverterFactory.create(mapper)).build();
+
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(ServerConfig.ACCOUNT_MANAGER.getBaseUrl())
+                .addConverterFactory(JacksonConverterFactory.create(mapper))
+                .client(okHttpClient)
+                .build();
 
         return retrofit;
     }
@@ -249,11 +268,8 @@ public class MentoringModule {
         return formTargetService;
     }
 
-    @NonNull
-    private String getBaseUrl(@NonNull final ServerConfig serverConfig) {
-        return new StringBuilder(serverConfig.getProtocol()).append("://")
-                .append(serverConfig.getAddress())
-                .append(serverConfig.getService())
-                .toString();
+    @Provides
+    public TutoredSyncService provideTutoredSyncService(TutoredSyncServiceImpl tutoredSyncService) {
+        return tutoredSyncService;
     }
 }

@@ -50,6 +50,7 @@ public abstract class GenericDAOImpl<T extends GenericEntity> extends SQLiteOpen
         db.execSQL(ALTER_FORM_TABLE_ADD_PATIENT_TARGET);
         db.execSQL(ALTER_FORM_TABLE_ADD_FILE_TARGET);
         db.execSQL(ALTER_FORM_QUESTION_ADD_APPLICABLE);
+        db.execSQL(ALTER_TUTORED_TABLE_ADD_LIFE_CYCLE_STATUS);
     }
 
     @Override
@@ -60,6 +61,7 @@ public abstract class GenericDAOImpl<T extends GenericEntity> extends SQLiteOpen
         db.execSQL(ALTER_FORM_TABLE_ADD_PATIENT_TARGET);
         db.execSQL(ALTER_FORM_TABLE_ADD_FILE_TARGET);
         db.execSQL(ALTER_FORM_QUESTION_ADD_APPLICABLE);
+        db.execSQL(ALTER_TUTORED_TABLE_ADD_LIFE_CYCLE_STATUS);
     }
 
     @Override

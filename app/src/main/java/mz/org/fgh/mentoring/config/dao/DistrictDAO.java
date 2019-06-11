@@ -10,6 +10,10 @@ import mz.org.fgh.mentoring.dao.GenericDAO;
  */
 public interface DistrictDAO extends GenericDAO<District> {
 
+    String TABLE_NAME = "districts";
+
+    String FIELD_NAME = "uuid";
+
     class QUERY {
         public static final String findAll = "SELECT * FROM districts;";
     }

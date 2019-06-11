@@ -54,7 +54,7 @@ public class QuestionFragment extends BaseFragment implements FragmentValidator 
 
         Bundle bundle = getArguments();
         Form form = (Form) bundle.get("form");
-        QuestionCategory questionCategory = (QuestionCategory) bundle.get("category");
+        String questionCategory = bundle.getString("category");
 
         formQuestions = form.getFormQuestionsByCategory(questionCategory);
 

@@ -1,5 +1,7 @@
 package mz.org.fgh.mentoring.util;
 
+import android.support.annotation.NonNull;
+
 /**
  * Created by Stélio Moiane on 5/22/17.
  */
@@ -19,15 +21,10 @@ public enum ServerConfig {
         this.service = service;
     }
 
-    public String getProtocol() {
-        return protocol;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public String getService() {
-        return service;
+    public String getBaseUrl() {
+        return new StringBuilder(protocol).append("://")
+                .append(address)
+                .append(service)
+                .toString();
     }
 }

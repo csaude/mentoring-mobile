@@ -18,6 +18,7 @@ import mz.org.fgh.mentoring.component.MentoringComponent;
 import mz.org.fgh.mentoring.config.dao.TutoredDAO;
 import mz.org.fgh.mentoring.event.ErrorEvent;
 import mz.org.fgh.mentoring.event.TutoredEvent;
+import mz.org.fgh.mentoring.model.LifeCycleStatus;
 import mz.org.fgh.mentoring.model.Tutored;
 import mz.org.fgh.mentoring.validator.FragmentValidator;
 
@@ -43,7 +44,7 @@ public class TutoredFragment extends BaseFragment implements AdapterView.OnItemC
         MentoringComponent component = application.getMentoringComponent();
         component.inject(this);
 
-        List<Tutored> tutoreds = tutoredDAO.findAll();
+        List<Tutored> tutoreds = tutoredDAO.findByLifeCycleStatus(LifeCycleStatus.ACTIVE);
 
         TutoredItemAdapter adapter = new TutoredItemAdapter(getActivity(), tutoreds);
         tutoredsList.setAdapter(adapter);

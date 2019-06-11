@@ -89,10 +89,6 @@ public interface MentoringComponent {
     void inject(QuestionFragment fragment);
 
     void inject(TextFragment fragment);
-<<<<<<< HEAD
-}
-=======
 
     void inject(ListTutoredActivity activity);
 }
->>>>>>> 1a53e459b65896eb00a2dc72c8aeeeeb862e2ddc

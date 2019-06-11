@@ -16,9 +16,6 @@ import mz.org.fgh.mentoring.dao.GenericDAOImpl;
  */
 public class DistrictDAOImpl extends GenericDAOImpl<District> implements DistrictDAO {
 
-    private static final String TABLE_NAME = "districts";
-    private static final String FIELD_NAME = "district";
-
     public DistrictDAOImpl(Context context) {
         super(context);
     }

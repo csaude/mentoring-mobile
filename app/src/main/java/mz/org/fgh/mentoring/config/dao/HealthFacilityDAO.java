@@ -11,7 +11,7 @@ import mz.org.fgh.mentoring.dao.GenericDAO;
 public interface HealthFacilityDAO extends GenericDAO<HealthFacility> {
 
     String TABLE_NAME = "health_facilities";
-    String FIELD_NAME = "health_facility";
+    String FIELD_NAME = "uuid";
 
     class QUERY {
         public static final String findAll = "SELECT hf.id, hf.uuid, hf.health_facility, hf.district_uuid, d.district " +

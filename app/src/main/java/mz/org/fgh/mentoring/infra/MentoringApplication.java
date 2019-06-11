@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.fabric.sdk.android.Fabric;
+
 import java.io.IOException;
 
 import mz.org.fgh.mentoring.component.DaggerMentoringComponent;
@@ -52,8 +53,7 @@ public class MentoringApplication extends Application {
         mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true)
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-        retrofit = new Retrofit.Builder().baseUrl(serverConfig.getProtocol() + "://" + serverConfig.getAddress() +
-                serverConfig.getService()).addConverterFactory(JacksonConverterFactory.create(mapper))
+        retrofit = new Retrofit.Builder().baseUrl(serverConfig.getBaseUrl()).addConverterFactory(JacksonConverterFactory.create(mapper))
                 .build();
     }
 

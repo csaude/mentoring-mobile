@@ -57,6 +57,8 @@ public interface GenericDAO<T extends GenericEntity> {
 
     String ALTER_FORM_QUESTION_ADD_APPLICABLE = "ALTER TABLE form_questions ADD COLUMN applicable INTEGER DEFAULT 0;";
 
+    String ALTER_TUTORED_TABLE_ADD_LIFE_CYCLE_STATUS = "ALTER TABLE tutoreds ADD COLUMN life_cycle_status TEXT";
+
     String getTableName();
 
     String getFieldName();

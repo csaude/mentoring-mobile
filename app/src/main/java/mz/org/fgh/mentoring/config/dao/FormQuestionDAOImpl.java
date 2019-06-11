@@ -65,7 +65,7 @@ public class FormQuestionDAOImpl extends GenericDAOImpl<FormQuestion> implements
         Question question = new Question(cursor.getString(cursor.getColumnIndex("question_uuid")),
                 cursor.getString(cursor.getColumnIndex("question")),
                 QuestionType.valueOf(cursor.getString(cursor.getColumnIndex("question_type"))),
-                QuestionCategory.valueOf(cursor.getString(cursor.getColumnIndex("question_category"))));
+                new QuestionCategory(cursor.getString(cursor.getColumnIndex("question_category"))));
 
         formQuestion.setQuestion(question);
 

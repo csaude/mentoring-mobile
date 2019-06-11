@@ -22,6 +22,7 @@ import mz.org.fgh.mentoring.config.dao.CareerDAO;
 import mz.org.fgh.mentoring.config.dao.TutoredDAO;
 import mz.org.fgh.mentoring.config.model.Career;
 import mz.org.fgh.mentoring.config.model.CareerType;
+import mz.org.fgh.mentoring.model.LifeCycleStatus;
 import mz.org.fgh.mentoring.model.Tutored;
 import mz.org.fgh.mentoring.validator.FieldsValidator;
 import mz.org.fgh.mentoring.validator.TextViewValidator;
@@ -67,6 +68,8 @@ public class TutoredActivity extends BaseAuthenticateActivity implements FieldsV
         component.inject(this);
 
         tutored = new Tutored();
+        tutored.setLifeCycleStatus(LifeCycleStatus.ACTIVE);
+
         validator.addViews(tudoredName, tutoredSurname, tutoredPhoneNumber);
 
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, Arrays.asList(CareerType.values()));

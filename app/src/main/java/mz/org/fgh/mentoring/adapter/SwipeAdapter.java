@@ -147,7 +147,7 @@ public class SwipeAdapter extends FragmentStatePagerAdapter {
             }
         }
 
-        return form.getQuestionCategoryByPosition(position - PAGES_TO_REDUCE - DECREMENTER).getValue();
+        return form.getQuestionCategoryByPosition(position - PAGES_TO_REDUCE - DECREMENTER);
     }
 
     public void setForm(Form form) {

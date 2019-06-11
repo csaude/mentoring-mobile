@@ -29,7 +29,7 @@ public class Form extends GenericEntity {
 
     private List<FormQuestion> formQuestions;
 
-    private List<QuestionCategory> questionCategories;
+    private List<String> questionCategories;
 
     private Integer targetPatient;
 
@@ -71,13 +71,13 @@ public class Form extends GenericEntity {
         return formType;
     }
 
-    public List<FormQuestion> getFormQuestionsByCategory(QuestionCategory questionCategory) {
+    public List<FormQuestion> getFormQuestionsByCategory(String questionCategory) {
 
         List<FormQuestion> formQuestions = new ArrayList<>();
 
         for (FormQuestion formQuestion : this.formQuestions) {
 
-            if (questionCategory.equals(formQuestion.getQuestion().getQuestionCategory())) {
+            if (questionCategory.equals(formQuestion.getQuestion().getQuestionsCategory().getCategory())) {
                 formQuestions.add(formQuestion);
             }
         }
@@ -89,13 +89,13 @@ public class Form extends GenericEntity {
         this.formQuestions.add(formQuestion);
     }
 
-    public List<QuestionCategory> getQuestionCategories() {
+    public List<String> getQuestionCategories() {
         Collections.sort(this.formQuestions, getComparator());
 
         for (FormQuestion formQuestion : formQuestions) {
 
-            if (!questionCategories.contains(formQuestion.getQuestion().getQuestionCategory())) {
-                questionCategories.add(formQuestion.getQuestion().getQuestionCategory());
+            if (!questionCategories.contains(formQuestion.getQuestion().getQuestionsCategory().getCategory())) {
+                questionCategories.add(formQuestion.getQuestion().getQuestionsCategory().getCategory());
             }
         }
 
@@ -123,7 +123,7 @@ public class Form extends GenericEntity {
         return this.questionCategories.size();
     }
 
-    public QuestionCategory getQuestionCategoryByPosition(int position) {
+    public String getQuestionCategoryByPosition(int position) {
 
         if (FormType.MENTORING_CUSTOM.equals(this.getFormType())) {
             return this.questionCategories.get(position - 1);

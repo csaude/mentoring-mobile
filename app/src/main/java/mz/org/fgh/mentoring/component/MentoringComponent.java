@@ -7,6 +7,7 @@ import mz.org.fgh.mentoring.activities.ChangePasswordActivity;
 import mz.org.fgh.mentoring.activities.IndicatorActivity;
 import mz.org.fgh.mentoring.activities.ListIndicatorsActivity;
 import mz.org.fgh.mentoring.activities.ListMentorshipActivity;
+import mz.org.fgh.mentoring.activities.ListTutoredActivity;
 import mz.org.fgh.mentoring.activities.LoginActivity;
 import mz.org.fgh.mentoring.activities.MainActivity;
 import mz.org.fgh.mentoring.activities.MentoringActivity;
@@ -88,4 +89,10 @@ public interface MentoringComponent {
     void inject(QuestionFragment fragment);
 
     void inject(TextFragment fragment);
+<<<<<<< HEAD
 }
+=======
+
+    void inject(ListTutoredActivity activity);
+}
+>>>>>>> 1a53e459b65896eb00a2dc72c8aeeeeb862e2ddc

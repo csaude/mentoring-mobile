@@ -5,6 +5,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import mz.org.fgh.mentoring.config.dao.TutoredDAO;
+import mz.org.fgh.mentoring.model.LifeCycleStatus;
 import mz.org.fgh.mentoring.model.Tutored;
 
 /**
@@ -33,4 +34,27 @@ public class TutoredServiceImpl implements TutoredService {
         }
 
     }
+
+    @Override
+    public Tutored createTutored(Tutored tutored) {
+        tutoredDAO.create(tutored);
+        return tutored;
+    }
+
+    @Override
+    public Tutored updateTutored(Tutored tutored) {
+        tutoredDAO.update(tutored);
+        return tutored;
+    }
+
+    @Override
+    public List<Tutored> findTutoredsByLifeCycleStatus(final LifeCycleStatus lifeCycleStatus) {
+        return tutoredDAO.findByLifeCycleStatus(lifeCycleStatus);
+    }
+
+    @Override
+    public void deleteTutoredsByUuid(List<String> uuids) {
+        tutoredDAO.delete("uuid IN (?)", uuids);
+    }
+
 }

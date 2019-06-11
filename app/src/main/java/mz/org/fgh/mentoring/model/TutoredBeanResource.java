@@ -11,6 +11,8 @@ public class TutoredBeanResource extends BeanResource {
 
     private Tutored tutored;
 
+    private List<String> tutoredUuids;
+
     public TutoredBeanResource() {
     }
 
@@ -28,5 +30,13 @@ public class TutoredBeanResource extends BeanResource {
 
     public void setTutored(Tutored tutored) {
         this.tutored = tutored;
+    }
+
+    public List<String> getTutoredsUuids() {
+        return tutoredUuids;
+    }
+
+    public void setTutoredUuids(List<String> tutoredUuids) {
+        this.tutoredUuids = tutoredUuids;
     }
 }

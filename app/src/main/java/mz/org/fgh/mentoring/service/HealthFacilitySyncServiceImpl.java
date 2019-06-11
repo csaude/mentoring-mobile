@@ -85,11 +85,11 @@ public class HealthFacilitySyncServiceImpl implements SyncService, HealthFacilit
 
         for (HealthFacility healthFacility : healthFacilities) {
 
-            if (!districtDAO.exist(healthFacility.getDistrict().getDistrict())) {
+            if (!districtDAO.exist(healthFacility.getDistrict().getUuid())) {
                 districtDAO.create(healthFacility.getDistrict());
             }
 
-            if (!healthFacilityDAO.exist(healthFacility.getHealthFacility())) {
+            if (!healthFacilityDAO.exist(healthFacility.getUuid())) {
                 healthFacilityDAO.create(healthFacility);
             }
         }

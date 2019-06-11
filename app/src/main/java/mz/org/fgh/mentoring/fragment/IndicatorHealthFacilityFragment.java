@@ -1,6 +1,7 @@
 package mz.org.fgh.mentoring.fragment;
 
 import android.app.DatePickerDialog;
+import android.graphics.Color;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.widget.ArrayAdapter;
@@ -8,6 +9,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
@@ -26,6 +28,7 @@ import mz.org.fgh.mentoring.component.MentoringComponent;
 import mz.org.fgh.mentoring.config.dao.DistrictDAO;
 import mz.org.fgh.mentoring.config.dao.HealthFacilityDAO;
 import mz.org.fgh.mentoring.config.model.Answer;
+import mz.org.fgh.mentoring.config.model.Cabinet;
 import mz.org.fgh.mentoring.config.model.District;
 import mz.org.fgh.mentoring.config.model.HealthFacility;
 import mz.org.fgh.mentoring.event.HealthFacilityEvent;
@@ -65,6 +68,16 @@ public class IndicatorHealthFacilityFragment extends BaseFragment implements Dat
 
     private List<HealthFacility> healthFacilitiesPerDistrict;
 
+    private List<String> provinces;
+
+    private String province;
+
+    private District district;
+
+    private HealthFacility healthFacility;
+
+    private boolean valid;
+
     @Override
     public int getResourceId() {
         return R.layout.fragment_indicator_health_facility;
@@ -76,10 +89,20 @@ public class IndicatorHealthFacilityFragment extends BaseFragment implements Dat
         MentoringComponent component = application.getMentoringComponent();
         component.inject(this);
 
-        districts = districtDAO.findAll();
+        District district = new District();
+        district.setDistrict(getString(R.string.select));
+
+        districts = new ArrayList<>();
+        districts.add(district);
+        districts.addAll(districtDAO.findAll());
+
         healthFacilities = healthFacilityDAO.findAll();
 
-        ArrayAdapter<String> provinceAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, getProvinces(districts));
+        provinces = new ArrayList<>();
+        provinces.add(getString(R.string.select));
+        provinces.addAll(getProvinces(districts));
+
+        ArrayAdapter<String> provinceAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, provinces);
         provinceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         provinceSpinner.setAdapter(provinceAdapter);
     }
@@ -98,18 +121,38 @@ public class IndicatorHealthFacilityFragment extends BaseFragment implements Dat
     }
 
     @OnItemSelected(R.id.fragment_province)
-    public void onSelectProvince() {
+    public void onSelectProvince(int position) {
+
+        province = provinces.get(position);
+
+        if (getResources().getString(R.string.select).equals(province)) {
+            clearDropDowns();
+            return;
+        }
+
         ArrayAdapter<District> districtAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, districts);
         districtAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         districtSpinner.setAdapter(districtAdapter);
     }
 
+    private void clearDropDowns() {
+        ArrayAdapter<District> districtAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, new ArrayList<District>());
+        districtSpinner.setAdapter(districtAdapter);
+
+        healthFacility = null;
+        ArrayAdapter<HealthFacility> healthFacilityAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, new ArrayList<HealthFacility>());
+        healthFacilitySpinner.setAdapter(healthFacilityAdapter);
+    }
+
     @OnItemSelected(R.id.fragment_distric)
     public void onSelectDistrict(int position) {
 
-        District district = districts.get(position);
+        district = districts.get(position);
 
-        healthFacilitiesPerDistrict = getHealthFacilities(healthFacilities, district.getUuid());
+        healthFacilitiesPerDistrict = new ArrayList<>();
+        healthFacilitiesPerDistrict.add(new HealthFacility(getString(R.string.select)));
+        healthFacilitiesPerDistrict.addAll(getHealthFacilities(healthFacilities, district.getUuid()));
+
         ArrayAdapter<HealthFacility> healthFacilityAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, healthFacilitiesPerDistrict);
         healthFacilityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
@@ -118,7 +161,8 @@ public class IndicatorHealthFacilityFragment extends BaseFragment implements Dat
 
     @OnItemSelected(R.id.fragment_health_facility)
     public void onSelectHealthFacility(final int position) {
-        HealthFacility healthFacility = healthFacilitiesPerDistrict.get(position);
+
+        healthFacility = healthFacilitiesPerDistrict.get(position);
 
         eventBus.post(new HealthFacilityEvent(healthFacility));
     }
@@ -131,7 +175,7 @@ public class IndicatorHealthFacilityFragment extends BaseFragment implements Dat
 
             String province = district.getProvince();
 
-            if (!provinces.contains(province)) {
+            if (province != null && !provinces.contains(province)) {
                 provinces.add(province);
             }
         }
@@ -165,16 +209,55 @@ public class IndicatorHealthFacilityFragment extends BaseFragment implements Dat
     @Override
     public void validate(ViewPager viewPager, int position) {
 
-        if (!referredMonthDate.getText().toString().isEmpty()) {
+        if (referredMonthDate.getText().toString().isEmpty()) {
+            viewPager.setCurrentItem(position);
+            Snackbar.make(getView(), getString(R.string.referred_month_must_be_selected), Snackbar.LENGTH_SHORT).show();
+            valid = false;
             return;
         }
 
-        viewPager.setCurrentItem(position);
-        Snackbar.make(getView(), getString(R.string.referred_month_must_be_selected), Snackbar.LENGTH_SHORT).show();
+        TextView provinceView = (TextView) provinceSpinner.getSelectedView();
+        provinceView.setError(null);
+
+        if (getString(R.string.select).equals(province)) {
+            provinceView.setTextColor(Color.RED);
+            provinceView.setError(getString(R.string.province_must_be_selected));
+
+            viewPager.setCurrentItem(position);
+            valid = false;
+            return;
+        }
+
+        TextView districtView = (TextView) districtSpinner.getSelectedView();
+        districtView.setError(null);
+
+        if (district == null || getString(R.string.select).equals(district.getDistrict())) {
+            districtView.setTextColor(Color.RED);
+            districtView.setError(getString(R.string.district_must_be_selected));
+
+            viewPager.setCurrentItem(position);
+            valid = false;
+            return;
+        }
+
+        TextView healthFacilityView = (TextView) healthFacilitySpinner.getSelectedView();
+        healthFacilityView.setError(null);
+
+        if (healthFacility == null || getString(R.string.select).equals(healthFacility.getHealthFacility())) {
+
+            healthFacilityView.setTextColor(Color.RED);
+            healthFacilityView.setError(getString(R.string.health_facility_must_be_selected));
+
+            viewPager.setCurrentItem(position);
+            valid = false;
+            return;
+        }
+
+        valid = true;
     }
 
     @Override
     public boolean isValid() {
-        return !referredMonthDate.getText().toString().isEmpty();
+        return valid;
     }
 }

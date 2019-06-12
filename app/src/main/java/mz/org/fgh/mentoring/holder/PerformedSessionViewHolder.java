@@ -6,24 +6,20 @@ import android.widget.TextView;
 
 import mz.org.fgh.mentoring.R;
 import mz.org.fgh.mentoring.config.model.PerformedSession;
-import mz.org.fgh.mentoring.config.model.TextAnswer;
 
 public class PerformedSessionViewHolder extends RecyclerView.ViewHolder {
 
-    private final TextView distric;
-    private final TextView healthFacility;
+    private final TextView formName;
     private final TextView total;
 
     public PerformedSessionViewHolder(View view) {
         super(view);
-        this.distric = view.findViewById(R.id.report_result_item_district);
-        this.healthFacility = view.findViewById(R.id.report_result_item_health_facility);
+        this.formName = view.findViewById(R.id.report_result_item_form);
         this.total = view.findViewById(R.id.report_result_item_total);
     }
 
     public void populate(PerformedSession performedSession) {
-        distric.setText(performedSession.getDistrict());
-        healthFacility.setText(performedSession.getHealthFacility());
+        formName.setText(performedSession.getFormName());
         total.setText(performedSession.getTotalPerformed() + "");
     }
 }

@@ -7,24 +7,15 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-
 import java.util.List;
 
 import javax.inject.Inject;
 
 import mz.org.fgh.mentoring.R;
 import mz.org.fgh.mentoring.component.MentoringComponent;
-import mz.org.fgh.mentoring.config.dao.FormDAO;
-import mz.org.fgh.mentoring.config.model.Form;
 import mz.org.fgh.mentoring.config.model.FormTarget;
-import mz.org.fgh.mentoring.config.model.FormType;
 import mz.org.fgh.mentoring.config.model.PerformedSession;
-import mz.org.fgh.mentoring.delegate.FormDelegate;
 import mz.org.fgh.mentoring.delegate.ReportDelegate;
-import mz.org.fgh.mentoring.event.FormEvent;
-import mz.org.fgh.mentoring.fragment.FormsFragment;
 import mz.org.fgh.mentoring.fragment.PeriodFragment;
 import mz.org.fgh.mentoring.fragment.ReportCurrentStageFragment;
 import mz.org.fgh.mentoring.fragment.ReportResultFragment;
@@ -32,20 +23,11 @@ import mz.org.fgh.mentoring.fragment.ReportTypeFragment;
 import mz.org.fgh.mentoring.infra.UserContext;
 import mz.org.fgh.mentoring.service.FormTargetService;
 
-public class ReportActivity extends BaseAuthenticateActivity implements FormDelegate, ReportDelegate, View.OnClickListener {
-
-    public static final int DEFAULT_TARGET = 1;
-
-    @Inject
-    FormDAO formDAO;
-
-    @Inject
-    EventBus eventBus;
+public class ReportActivity extends BaseAuthenticateActivity implements ReportDelegate, View.OnClickListener {
 
     @Inject
     FormTargetService formTargetService;
 
-    private Form seletectForm;
     private List<PerformedSession> performedSessions;
     private String startDate;
     private String endDate;
@@ -60,9 +42,7 @@ public class ReportActivity extends BaseAuthenticateActivity implements FormDele
         MentoringComponent component = application.getMentoringComponent();
         component.inject(this);
 
-        eventBus.register(this);
-
-        showFragment(new FormsFragment(), Boolean.FALSE);
+        showFragment(new ReportTypeFragment(), Boolean.FALSE);
     }
 
     private void showFragment(Fragment fragment, boolean onStack) {
@@ -75,30 +55,6 @@ public class ReportActivity extends BaseAuthenticateActivity implements FormDele
         }
 
         transaction.commit();
-    }
-
-    @Override
-    public List<Form> getForms() {
-        return formDAO.findByFormType(FormType.MENTORING.name(), FormType.MENTORING_CUSTOM.name());
-    }
-
-
-    @Subscribe
-    public void onFormSelected(FormEvent formEvent) {
-
-        this.seletectForm = formEvent.getForm();
-        showFragment(new ReportTypeFragment(), Boolean.TRUE);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        eventBus.unregister(this);
-    }
-
-    @Override
-    public Form getForm() {
-        return this.seletectForm;
     }
 
     @Override
@@ -134,14 +90,13 @@ public class ReportActivity extends BaseAuthenticateActivity implements FormDele
 
     @Override
     public int getTarget() {
+        FormTarget target = formTargetService.findFormTargetByCareerUuid(getUser().getTutor().getCareer().getUuid());
 
-        FormTarget formTarget = formTargetService.findFormTargetByFormUuid(getForm().getUuid());
-
-        if (formTarget == null) {
-            return DEFAULT_TARGET;
+        if (target == null) {
+            return 0;
         }
 
-        return formTarget.getTarget();
+        return target.getTarget();
     }
 
     @Override

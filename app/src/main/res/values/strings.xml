@@ -88,7 +88,7 @@
     <string name="district">Distrito</string>
     <string name="total">Total</string>
 
-    <string name="version">© 2019 © v1.5.0</string>
+    <string name="version">© 2019 © v1.5.1</string>
     <string name="no_result">Sem Resultado</string>
     <string name="no_result_found">Nenhum resultado foi encontrado</string>
     <string name="server_error">Erro de comunicação</string>
@@ -109,5 +109,7 @@
     <string name="all_sessions_must_be_sync">Todas as sessões de tutoria deve ser sincronizadas!</string>
     <string name="no_data_to_sync">Sem dados por sincronizar!</string>
     <string name="tudoreds_synced_with_success">Tutorandos sincronizados com sucesso!</string>
+    <string name="point_of_situation">Ponto de Situação</string>
+    <string name="per_period">Por Período</string>
 
 </resources>

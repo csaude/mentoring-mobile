@@ -1,6 +1,5 @@
 package mz.org.fgh.mentoring.fragment;
 
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.AdapterView;

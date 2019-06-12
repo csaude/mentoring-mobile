@@ -8,6 +8,8 @@ public class PerformedSession implements Serializable {
 
     private String healthFacility;
 
+    private String formName;
+
     private int totalPerformed;
 
 
@@ -30,5 +32,9 @@ public class PerformedSession implements Serializable {
 
     public int getTotalPerformed() {
         return totalPerformed;
+    }
+
+    public String getFormName() {
+        return formName;
     }
 }

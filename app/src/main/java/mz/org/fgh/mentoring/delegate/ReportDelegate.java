@@ -9,8 +9,6 @@ import mz.org.fgh.mentoring.infra.UserContext;
 
 public interface ReportDelegate {
 
-    Form getForm();
-
     UserContext getUser();
 
     void showResultFragment(List<PerformedSession> performedSessions);
@@ -30,6 +28,6 @@ public interface ReportDelegate {
     String getEndDate();
 
     int getTarget();
-  
+
     int getTotalPerformed();
 }

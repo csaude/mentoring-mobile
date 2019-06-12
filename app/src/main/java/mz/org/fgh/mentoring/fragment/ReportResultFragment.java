@@ -1,6 +1,7 @@
 package mz.org.fgh.mentoring.fragment;
 
 
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 
@@ -40,12 +41,12 @@ public class ReportResultFragment extends BaseFragment {
     public void onCreateView() {
         ReportDelegate delegate = (ReportDelegate) getActivity();
 
-        formName.setText(delegate.getForm().getName());
         period.setText("De " + delegate.getStartDate() + " à " + delegate.getEndDate());
 
         totalPerformed.setText(delegate.getTotalPerformed() + "");
 
         ReportAdapter adapter = new ReportAdapter(getActivity(), delegate.getPerformedSessions());
+        resultList.addItemDecoration(new DividerItemDecoration(resultList.getContext(), DividerItemDecoration.VERTICAL));
         resultList.setAdapter(adapter);
     }
 }

@@ -1,30 +1,18 @@
 package mz.org.fgh.mentoring.fragment;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.net.Uri;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import butterknife.BindView;
 import butterknife.OnClick;
 import mz.org.fgh.mentoring.R;
 import mz.org.fgh.mentoring.component.MentoringComponent;
-import mz.org.fgh.mentoring.config.model.PerformedSession;
 import mz.org.fgh.mentoring.delegate.ReportDelegate;
 import mz.org.fgh.mentoring.model.GenericWrapper;
 import mz.org.fgh.mentoring.service.ReportResource;
@@ -35,9 +23,6 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class ReportTypeFragment extends BaseFragment {
-
-    @BindView(R.id.fragment_report_type_image_view_form_name)
-    TextView formName;
 
     @Inject
     @Named("mentoring")
@@ -56,7 +41,6 @@ public class ReportTypeFragment extends BaseFragment {
         component.inject(this);
 
         delegate = (ReportDelegate) getActivity();
-        formName.setText(delegate.getForm().getName());
     }
 
     @OnClick(R.id.fragment_report_type_current_stage)
@@ -79,7 +63,7 @@ public class ReportTypeFragment extends BaseFragment {
         delegate.setStartDate(DateUtil.format(startDate.getTime(), DateUtil.NORMAL_PATTERN));
         delegate.setEndDate(DateUtil.format(endDate.getTime(), DateUtil.NORMAL_PATTERN));
 
-        reportResource.findPerformedSessionsByTutorAndForm(delegate.getUser().getUuid(), delegate.getForm().getUuid(),
+        reportResource.findPerformedSessionsByTutor(delegate.getUser().getUuid(),
                 delegate.getStartDate(), delegate.getEndDate()).enqueue(new Callback<GenericWrapper>() {
             @Override
             public void onResponse(Call<GenericWrapper> call, Response<GenericWrapper> response) {

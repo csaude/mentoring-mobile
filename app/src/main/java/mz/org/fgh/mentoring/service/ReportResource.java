@@ -10,7 +10,7 @@ import retrofit2.http.Query;
 
 public interface ReportResource {
 
-    @GET("mentorships/performed-sessions-by-tutor-and-form")
-    Call<GenericWrapper> findPerformedSessionsByTutorAndForm(@Query("tutorUuid") final String tutorUuid, @Query("formUuid") final String formUuid, @Query("startDate") final String startDate, @Query("endDate") final String endDate);
+    @GET("mentorships/performed-sessions-by-tutor")
+    Call<GenericWrapper> findPerformedSessionsByTutor(@Query("tutorUuid") final String tutorUuid, @Query("startDate") final String startDate, @Query("endDate") final String endDate);
 
 }

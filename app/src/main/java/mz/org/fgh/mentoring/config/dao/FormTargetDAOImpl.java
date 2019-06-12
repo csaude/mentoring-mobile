@@ -64,10 +64,10 @@ public class FormTargetDAOImpl extends GenericDAOImpl<FormTarget> implements For
     }
 
     @Override
-    public FormTarget findByFormUuid(String formUuid) {
+    public FormTarget findByCareerUuid(String careerUuid) {
         SQLiteDatabase db = getReadableDatabase();
 
-        Cursor cursor = db.rawQuery(QUERY.findByFormUuid, new String[]{formUuid});
+        Cursor cursor = db.rawQuery(QUERY.findByCareerUuid, new String[]{careerUuid});
         cursor.moveToFirst();
 
         FormTarget formTarget = getPopulatedEntity(cursor);

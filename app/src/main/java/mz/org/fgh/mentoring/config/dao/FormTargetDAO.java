@@ -9,9 +9,9 @@ public interface FormTargetDAO extends GenericDAO<FormTarget> {
     String FIELD_NAME = "uuid";
 
     class QUERY {
-        public static final String findByFormUuid = "SELECT ft.id, ft.uuid, ft.form_uuid, ft.career_uuid, ft.target FROM " + TABLE_NAME + " ft " +
-                "WHERE ft.form_uuid = ?;";
+        public static final String findByCareerUuid = "SELECT ft.id, ft.uuid, ft.form_uuid, ft.career_uuid, ft.target FROM " + TABLE_NAME + " ft " +
+                "WHERE ft.career_uuid = ?;";
     }
 
-    FormTarget findByFormUuid(final String formUuid);
+    FormTarget findByCareerUuid(final String careerUuid);
 }

@@ -8,6 +8,6 @@ public interface FormTargetService {
 
     void processFormTarget(final List<FormTarget> formTargets);
 
-    FormTarget findFormTargetByFormUuid(final String formUuid);
+    FormTarget findFormTargetByCareerUuid(final String formUuid);
 
 }

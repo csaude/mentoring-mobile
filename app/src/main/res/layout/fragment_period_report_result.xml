@@ -27,14 +27,14 @@
         android:layout_marginRight="8dp"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
+        android:text="@string/per_period"
         android:textAlignment="center"
         android:textColor="@android:color/white"
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/report_fragment_report_result_image_view"
         app:layout_constraintStart_toStartOf="@+id/report_fragment_report_result_image_view"
-        app:layout_constraintTop_toTopOf="@+id/report_fragment_report_result_image_view"
-        tools:text="Nome do Relatório" />
+        app:layout_constraintTop_toTopOf="@+id/report_fragment_report_result_image_view" />
 
     <TextView
         android:id="@+id/report_fragment_report_result_period"
@@ -57,68 +57,52 @@
         tools:text="De 21-07-2018 à 20-06-2018" />
 
     <TextView
-        android:id="@+id/report_result_item_district"
+        android:id="@+id/report_result_item_form"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginRight="2dp"
         android:layout_marginTop="8dp"
         android:background="#ccc"
         android:padding="6dp"
-        android:text="@string/district"
+        android:text="@string/form"
         android:textColor="#000"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/report_result_item_health_facility"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintEnd_toStartOf="@+id/report_result_item_total"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
-        app:layout_constraintHorizontal_weight="2"
+        app:layout_constraintHorizontal_weight="4"
         app:layout_constraintStart_toStartOf="@+id/report_fragment_report_result_image_view"
         app:layout_constraintTop_toBottomOf="@+id/report_fragment_report_result_image_view" />
 
     <TextView
-        android:id="@+id/report_result_item_health_facility"
+        android:id="@+id/report_result_item_total"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="2dp"
-        android:layout_marginRight="2dp"
-        android:background="#ccc"
-        android:padding="6dp"
-        android:text="@string/health_facility"
-        android:textColor="#000"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/report_result_item_district"
-        app:layout_constraintEnd_toStartOf="@+id/report_result_item_total"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_weight="3"
-        app:layout_constraintStart_toEndOf="@+id/report_result_item_district" />
-
-    <TextView
-        android:id="@+id/report_result_item_total"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
         android:background="#ccc"
         android:padding="6dp"
         android:text="@string/total"
+        android:textAlignment="center"
         android:textColor="#000"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/report_result_item_health_facility"
+        app:layout_constraintBottom_toBottomOf="@+id/report_result_item_form"
         app:layout_constraintEnd_toEndOf="@+id/report_fragment_report_result_image_view"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/report_result_item_health_facility" />
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toEndOf="@+id/report_result_item_form" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/repor_fragment_report_result_list"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"
         app:layout_constraintBottom_toTopOf="@+id/report_fragment_report_total_performed"
         app:layout_constraintEnd_toEndOf="@+id/report_result_item_total"
-        app:layout_constraintStart_toStartOf="@+id/report_result_item_district"
-        app:layout_constraintTop_toBottomOf="@+id/report_result_item_district" />
-
+        app:layout_constraintStart_toStartOf="@+id/report_result_item_form"
+        app:layout_constraintTop_toBottomOf="@+id/report_result_item_form"
+        tools:listitem="@layout/report_result_item" />
 
     <TextView
         android:id="@+id/report_fragment_report_total_performed"
@@ -134,20 +118,21 @@
         app:layout_constraintEnd_toStartOf="@+id/report_fragment_report_total_performed_value"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_weight="3"
-        app:layout_constraintStart_toStartOf="@+id/report_result_item_district" />
+        app:layout_constraintStart_toStartOf="@+id/repor_fragment_report_result_list" />
 
     <TextView
         android:id="@+id/report_fragment_report_total_performed_value"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         android:background="#00695C"
         android:padding="6dp"
         android:textAlignment="center"
         android:textColor="#FFF"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/report_fragment_report_total_performed"
-        app:layout_constraintEnd_toEndOf="@+id/report_result_item_total"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_weight="1"
         app:layout_constraintStart_toEndOf="@+id/report_fragment_report_total_performed"
         tools:text="200" />

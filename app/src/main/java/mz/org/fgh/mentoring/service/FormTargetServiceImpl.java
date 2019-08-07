@@ -36,7 +36,7 @@ public class FormTargetServiceImpl implements FormTargetService {
     }
 
     @Override
-    public FormTarget findFormTargetByFormUuid(String formUuid) {
-        return formTargetDAO.findByFormUuid(formUuid);
+    public FormTarget findFormTargetByCareerUuid(String formUuid) {
+        return formTargetDAO.findByCareerUuid(formUuid);
     }
 }

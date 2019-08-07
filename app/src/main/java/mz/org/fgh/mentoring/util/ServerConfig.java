@@ -1,7 +1,5 @@
 package mz.org.fgh.mentoring.util;
 
-import android.support.annotation.NonNull;
-
 /**
  * Created by Stélio Moiane on 5/22/17.
  */

@@ -1,5 +1,6 @@
 package mz.org.fgh.mentoring.fragment;
 
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 
@@ -39,7 +40,6 @@ public class ReportCurrentStageFragment extends BaseFragment {
     public void onCreateView() {
 
         ReportDelegate delegate = (ReportDelegate) getActivity();
-        formName.setText(delegate.getForm().getName());
 
         period.setText("De " + delegate.getStartDate() + " à " + delegate.getEndDate());
 
@@ -50,6 +50,7 @@ public class ReportCurrentStageFragment extends BaseFragment {
         achievement.setText(getAchievement(delegate) + "%");
 
         ReportAdapter adapter = new ReportAdapter(getActivity(), delegate.getPerformedSessions());
+        resultList.addItemDecoration(new DividerItemDecoration(resultList.getContext(), DividerItemDecoration.VERTICAL));
         resultList.setAdapter(adapter);
     }
 
@@ -58,6 +59,6 @@ public class ReportCurrentStageFragment extends BaseFragment {
         BigDecimal value = new BigDecimal(delegate.getTotalPerformed()).multiply(new BigDecimal(100));
         value = value.divide(new BigDecimal(delegate.getTarget()), 2, BigDecimal.ROUND_CEILING);
 
-        return (value.toString());
+        return value.toString();
     }
 }

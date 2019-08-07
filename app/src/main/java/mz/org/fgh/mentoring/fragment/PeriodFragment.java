@@ -12,7 +12,6 @@ import android.widget.TextView;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Calendar;
-import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -20,9 +19,7 @@ import javax.inject.Named;
 import butterknife.BindView;
 import butterknife.OnClick;
 import mz.org.fgh.mentoring.R;
-import mz.org.fgh.mentoring.activities.ListMentorshipActivity;
 import mz.org.fgh.mentoring.component.MentoringComponent;
-import mz.org.fgh.mentoring.config.model.PerformedSession;
 import mz.org.fgh.mentoring.delegate.ReportDelegate;
 import mz.org.fgh.mentoring.model.GenericWrapper;
 import mz.org.fgh.mentoring.service.ReportResource;
@@ -62,7 +59,6 @@ public class PeriodFragment extends BaseFragment {
         component.inject(this);
 
         delegate = (ReportDelegate) getActivity();
-        formName.setText(delegate.getForm().getName());
 
         validator = new TextInputLayoutValidator(getActivity());
         validator.addTextInputLayputs(startDate, endDate);
@@ -86,8 +82,8 @@ public class PeriodFragment extends BaseFragment {
     }
 
     private void performRequest(final ProgressDialog dialog, ReportResource reportResource) {
-        reportResource.findPerformedSessionsByTutorAndForm(delegate.getUser().getUuid(), delegate.getForm().getUuid(),
-                startDate.getEditText().getText().toString(), endDate.getEditText().getText().toString()).enqueue(new Callback<GenericWrapper>() {
+        reportResource.findPerformedSessionsByTutor(delegate.getUser().getUuid(),
+                delegate.getStartDate(), delegate.getEndDate()).enqueue(new Callback<GenericWrapper>() {
             @Override
             public void onResponse(Call<GenericWrapper> call, Response<GenericWrapper> response) {
 

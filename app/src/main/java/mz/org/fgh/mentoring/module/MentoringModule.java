@@ -7,10 +7,12 @@ import android.support.annotation.NonNull;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -74,6 +76,7 @@ import mz.org.fgh.mentoring.service.TutoredSyncService;
 import mz.org.fgh.mentoring.service.TutoredSyncServiceImpl;
 import mz.org.fgh.mentoring.service.UserService;
 import mz.org.fgh.mentoring.service.UserServiceImpl;
+import mz.org.fgh.mentoring.util.CustomJacksonDateDeserializer;
 import mz.org.fgh.mentoring.util.ServerConfig;
 import mz.org.fgh.mentoring.validator.TextViewValidator;
 import okhttp3.OkHttpClient;
@@ -97,6 +100,8 @@ public class MentoringModule {
         this.context = context;
 
         this.mapper = new ObjectMapper();
+        this.mapper.registerModule(new SimpleModule()
+                .addDeserializer(Date.class, new CustomJacksonDateDeserializer()));
         this.mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true)
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
@@ -115,11 +120,8 @@ public class MentoringModule {
     @Provides
     @Named("mentoring")
     public Retrofit provideMentoringRetrofit() {
-
         Retrofit retrofit = new Retrofit.Builder().baseUrl(ServerConfig.MENTORING.getBaseUrl())
-                .addConverterFactory(JacksonConverterFactory.create(mapper))
-                .client(okHttpClient)
-                .build();
+                .addConverterFactory(JacksonConverterFactory.create(mapper)).build();
 
         return retrofit;
     }
@@ -127,11 +129,8 @@ public class MentoringModule {
     @Provides
     @Named("account")
     public Retrofit provideAccontRetrofit() {
-
         Retrofit retrofit = new Retrofit.Builder().baseUrl(ServerConfig.ACCOUNT_MANAGER.getBaseUrl())
-                .addConverterFactory(JacksonConverterFactory.create(mapper))
-                .client(okHttpClient)
-                .build();
+                .addConverterFactory(JacksonConverterFactory.create(mapper)).build();
 
         return retrofit;
     }

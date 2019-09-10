@@ -1,11 +1,13 @@
 package mz.org.fgh.mentoring.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import mz.org.fgh.mentoring.config.dao.AnswerDAO;
 import mz.org.fgh.mentoring.config.model.Answer;
+import mz.org.fgh.mentoring.infra.UserContext;
 import mz.org.fgh.mentoring.process.dao.MentorshipDAO;
 import mz.org.fgh.mentoring.process.model.Mentorship;
 import mz.org.fgh.mentoring.process.model.Session;
@@ -42,6 +44,13 @@ public class MentorshipServiceImpl implements MentorshipService {
     @Override
     public List<Mentorship> findMentorshipsBySession(Session session) {
         return mentorshipDAO.findBySession(session);
+    }
+
+    @Override
+    public List<Mentorship> findMentorshipsByUserAndPerformedDate(final UserContext context,
+                                                                  final LocalDate performedStartDate,
+                                                                  final LocalDate performedEndDate) {
+        return null;
     }
 
     @Override

@@ -39,7 +39,12 @@ public class QuestionDAOImpl extends GenericDAOImpl<Question> implements Questio
 
         values.put("question", entity.getQuestion());
         values.put("question_type", entity.getQuestionType().name());
-        values.put("question_category", entity.getQuestionsCategory().getCategory());
+
+        // I don't understand why some questions do not have category associated with them
+        // Maybe Stelio can answer this question or may be it bad data (No Clue)
+        if(entity.getQuestionsCategory() != null) {
+            values.put("question_category", entity.getQuestionsCategory().getCategory());
+        }
 
         return values;
     }

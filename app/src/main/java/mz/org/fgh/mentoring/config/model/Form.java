@@ -5,12 +5,13 @@ package mz.org.fgh.mentoring.config.model;
 
 import android.support.annotation.NonNull;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import mz.org.fgh.mentoring.model.GenericEntity;
 
@@ -18,6 +19,8 @@ import mz.org.fgh.mentoring.model.GenericEntity;
  * Created by Stélio Moiane on 11/16/16.
  */
 public class Form extends GenericEntity {
+
+    private String code;
 
     private String name;
 
@@ -49,6 +52,14 @@ public class Form extends GenericEntity {
     public Form() {
         this.questionCategories = new ArrayList<>();
         this.formQuestions = new ArrayList<>();
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getName() {
@@ -169,5 +180,31 @@ public class Form extends GenericEntity {
 
     public int getTarget() {
         return this.targetPatient + this.targetFile;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Form form = (Form) o;
+
+        return new EqualsBuilder()
+                .append(code, form.code)
+                .append(name, form.name)
+                .append(version, form.version)
+                .append(formType, form.formType)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(code)
+                .append(name)
+                .append(version)
+                .append(formType)
+                .toHashCode();
     }
 }

@@ -8,6 +8,8 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.greenrobot.eventbus.EventBus;
+
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -16,6 +18,7 @@ import butterknife.OnClick;
 import mz.org.fgh.mentoring.R;
 import mz.org.fgh.mentoring.component.MentoringComponent;
 import mz.org.fgh.mentoring.config.model.Tutor;
+import mz.org.fgh.mentoring.event.LoginEvent;
 import mz.org.fgh.mentoring.infra.UserContext;
 import mz.org.fgh.mentoring.service.TutorService;
 import mz.org.fgh.mentoring.service.UserServiceResource;
@@ -39,6 +42,9 @@ public class LoginActivity extends BaseActivity {
     @Inject
     @Named("account")
     Retrofit retrofit;
+
+    @Inject
+    EventBus eventBus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,46 +81,55 @@ public class LoginActivity extends BaseActivity {
         loginCall.enqueue(new Callback<UserContext>() {
             @Override
             public void onResponse(Call<UserContext> call, Response<UserContext> response) {
-                final UserContext userContext = response.body();
 
-                if (userContext == null) {
+                if(response.isSuccessful() && response.code() == 200) {
+                    final UserContext userContext = response.body();
+                    if (userContext.getUsername() == null) {
+                        progressDialog.cancel();
+                        Toast.makeText(LoginActivity.this, "Credências Inválidas!", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    application.setUpRetrofit(ServerConfig.MENTORING);
+                    TutorService tutorService = application.getRetrofit().create(TutorService.class);
+
+                    Call<Tutor> tutorCall = tutorService.findTutorByUuid(userContext.getUuid());
+
+                    tutorCall.enqueue(new Callback<Tutor>() {
+                        @Override
+                        public void onResponse(Call<Tutor> call, Response<Tutor> response) {
+                            if(response.isSuccessful() && response.code() == 200) {
+                                Tutor tutor = response.body();
+                                userContext.setTutor(tutor);
+
+                                application.setUser(userContext);
+                                eventBus.post(new LoginEvent(userContext));
+                                startActivity(new Intent(LoginActivity.this, SessionsReportActivity.class));
+                                finish();
+                                progressDialog.cancel();
+                            } else if(response.code() == 401) {
+                                progressDialog.cancel();
+                                Toast.makeText(LoginActivity.this, "Credências Inválidas!", Toast.LENGTH_SHORT).show();
+                            } else {
+                                progressDialog.cancel();
+                                Toast.makeText(LoginActivity.this, "Problemas de conexão com o servidor de Mentoria! Por favor Contacte o Administrador", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Tutor> call, Throwable t) {
+                            progressDialog.cancel();
+                            Log.i("Error connection... ", t.getMessage());
+                            Toast.makeText(LoginActivity.this, "Problemas de conexão com o servidor de Mentoria! Por favor Contacte o Administrador", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } else if(response.code() == 401) {
+                    progressDialog.cancel();
+                    Toast.makeText(LoginActivity.this, "Credências Inválidas!", Toast.LENGTH_SHORT).show();
+                } else {
                     progressDialog.cancel();
                     Toast.makeText(LoginActivity.this, "Problemas de Conexão com o Servidor. Por favor tente novamente!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
-                if (userContext.getUsername() == null) {
-                    progressDialog.cancel();
-                    Toast.makeText(LoginActivity.this, "Credências Inválidas!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                application.setUpRetrofit(ServerConfig.MENTORING);
-                TutorService tutorService = application.getRetrofit().create(TutorService.class);
-
-                Call<Tutor> tutorCall = tutorService.findTutorByUuid(userContext.getUuid());
-
-                tutorCall.enqueue(new Callback<Tutor>() {
-                    @Override
-                    public void onResponse(Call<Tutor> call, Response<Tutor> response) {
-
-                        Tutor tutor = response.body();
-                        userContext.setTutor(tutor);
-
-                        application.setUser(userContext);
-
-                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                        finish();
-                        progressDialog.cancel();
-                    }
-
-                    @Override
-                    public void onFailure(Call<Tutor> call, Throwable t) {
-                        progressDialog.cancel();
-                        Log.i("Error connection... ", t.getMessage());
-                        Toast.makeText(LoginActivity.this, "Problemas de conexão com o servidor de Mentoria! Por favor Contacte o Administrador", Toast.LENGTH_SHORT).show();
-                    }
-                });
             }
 
             @Override

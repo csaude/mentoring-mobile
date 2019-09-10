@@ -7,5 +7,5 @@
     android:background="#128174"
     app:navigationIcon="@mipmap/ic_menu"
     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-    app:theme="@style/Base.ThemeOverlay.AppCompat.Dark" />
+    android:theme="@style/Base.ThemeOverlay.AppCompat.Dark" />
 

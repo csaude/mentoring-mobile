@@ -13,6 +13,7 @@ import mz.org.fgh.mentoring.activities.MainActivity;
 import mz.org.fgh.mentoring.activities.MentoringActivity;
 import mz.org.fgh.mentoring.activities.ReportActivity;
 import mz.org.fgh.mentoring.activities.ResetPasswordActivity;
+import mz.org.fgh.mentoring.activities.SessionsReportActivity;
 import mz.org.fgh.mentoring.activities.TutoredActivity;
 import mz.org.fgh.mentoring.adapter.QuestionAdapter;
 import mz.org.fgh.mentoring.fragment.BaseFragment;
@@ -30,6 +31,7 @@ import mz.org.fgh.mentoring.fragment.ReportCurrentStageFragment;
 import mz.org.fgh.mentoring.fragment.ReportTypeFragment;
 import mz.org.fgh.mentoring.fragment.SaveFragment;
 import mz.org.fgh.mentoring.fragment.TextFragment;
+import mz.org.fgh.mentoring.fragment.SessionReportFragment;
 import mz.org.fgh.mentoring.fragment.TutoredFragment;
 import mz.org.fgh.mentoring.module.MentoringModule;
 
@@ -91,4 +93,8 @@ public interface MentoringComponent {
     void inject(TextFragment fragment);
 
     void inject(ListTutoredActivity activity);
+
+    void inject(SessionsReportActivity activity);
+
+    void inject(SessionReportFragment fragment);
 }

@@ -25,4 +25,16 @@ public enum ServerConfig {
                 .append(service)
                 .toString();
     }
+
+    public String getProtocol() {
+        return protocol;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getService() {
+        return service;
+    }
 }

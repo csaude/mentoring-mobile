@@ -1,8 +1,14 @@
 package mz.org.fgh.mentoring.infra;
 
 import android.app.Application;
+import android.arch.lifecycle.Lifecycle;
+import android.arch.lifecycle.LifecycleObserver;
+import android.arch.lifecycle.OnLifecycleEvent;
+import android.arch.lifecycle.ProcessLifecycleOwner;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -13,6 +19,9 @@ import io.fabric.sdk.android.Fabric;
 
 import java.io.IOException;
 
+import io.fabric.sdk.android.Fabric;
+import mz.org.fgh.mentoring.activities.BaseAuthenticateActivity;
+import mz.org.fgh.mentoring.activities.SessionsReportActivity;
 import mz.org.fgh.mentoring.component.DaggerMentoringComponent;
 import mz.org.fgh.mentoring.component.MentoringComponent;
 import mz.org.fgh.mentoring.module.MentoringModule;
@@ -23,7 +32,7 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 /**
  * Created by Stélio Moiane on 10/18/16.
  */
-public class MentoringApplication extends Application {
+public class MentoringApplication extends Application implements LifecycleObserver {
 
     private Auth auth;
     private SharedPreferences sharedPreferences;
@@ -31,6 +40,16 @@ public class MentoringApplication extends Application {
     private ObjectMapper mapper;
     private MentoringComponent mentoringComponent;
 
+    @OnLifecycleEvent(Lifecycle.Event.ON_START)
+    protected void onAppSentToBackground() {
+        Log.d(getClass().getSimpleName(), "Application event ON_START");
+        if(BaseAuthenticateActivity.instance != null &&
+                !(BaseAuthenticateActivity.instance instanceof SessionsReportActivity)) {
+            Intent intent = new Intent(BaseAuthenticateActivity.instance, SessionsReportActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
+    }
 
     @Override
     public void onCreate() {
@@ -45,6 +64,7 @@ public class MentoringApplication extends Application {
 
         mentoringComponent = DaggerMentoringComponent.builder().mentoringModule(new MentoringModule(this)).build();
 
+        ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
         setUpRetrofit(ServerConfig.MENTORING);
     }
 
@@ -53,7 +73,8 @@ public class MentoringApplication extends Application {
         mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true)
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-        retrofit = new Retrofit.Builder().baseUrl(serverConfig.getBaseUrl()).addConverterFactory(JacksonConverterFactory.create(mapper))
+        retrofit = new Retrofit.Builder().baseUrl(serverConfig.getProtocol() + "://" + serverConfig.getAddress() +
+                serverConfig.getService()).addConverterFactory(JacksonConverterFactory.create(mapper))
                 .build();
     }
 

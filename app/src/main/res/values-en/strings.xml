@@ -5,7 +5,7 @@
     <string name="title_activity_login">LoginActivity</string>
     <string name="title">Mentoring App</string>
 
-    <string name="mentoring_process">Mentoring Process</string>
+    <string name="mentoring_process">Mentoring Sessions</string>
     <string name="tudoreds">Tutoreds</string>
     <string name="reports">Reports</string>
     <string name="indicators">Indicators</string>
@@ -16,7 +16,7 @@
     <string name="server_address">SERVER_ADDRESS</string>
     <string name="title_activity_mentoring">MentoringActivity</string>
 
-    <string name="title_activity_list_mentorship">Mentoring Process</string>
+    <string name="title_activity_list_mentorship">Mentoring Sessions</string>
     <string name="title_activity_tutor_update">User Details</string>
 
     <string name="tutored_must_be_selected">The tutored must be selected!</string>

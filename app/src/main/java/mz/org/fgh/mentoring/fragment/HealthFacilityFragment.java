@@ -40,10 +40,14 @@ import mz.org.fgh.mentoring.config.model.Form;
 import mz.org.fgh.mentoring.config.model.FormType;
 import mz.org.fgh.mentoring.config.model.HealthFacility;
 import mz.org.fgh.mentoring.event.CabinetEvent;
+import mz.org.fgh.mentoring.event.DoorEvent;
 import mz.org.fgh.mentoring.event.ErrorEvent;
 import mz.org.fgh.mentoring.event.HealthFacilityEvent;
 import mz.org.fgh.mentoring.event.MessageEvent;
 import mz.org.fgh.mentoring.event.TimeEvent;
+import mz.org.fgh.mentoring.event.TimetableEvent;
+import mz.org.fgh.mentoring.process.model.Door;
+import mz.org.fgh.mentoring.process.model.Timetable;
 import mz.org.fgh.mentoring.service.CabinetService;
 import mz.org.fgh.mentoring.util.DateUtil;
 import mz.org.fgh.mentoring.validator.FragmentValidator;
@@ -76,6 +80,30 @@ public class HealthFacilityFragment extends BaseFragment implements DatePickerDi
 
     @BindView(R.id.fragment_cabinet_text)
     TextView cabinetTxt;
+
+    @BindView(R.id.fragment_timetable)
+    Spinner timetableSpinner;
+
+    @BindView(R.id.fragment_timetable_text)
+    TextView timetableTxt;
+
+    @BindView(R.id.fragment_door)
+    Spinner doorSpinner;
+
+    @BindView(R.id.fragment_door_text)
+    TextView doorTxt;
+
+    @BindView(R.id.fragment_start_time_picker_text)
+    TextView startTimeTxt;
+
+    @BindView(R.id.fragment_end_time_picker_text)
+    TextView endTimeTxt;
+
+    @BindView(R.id.fragment_start_time_picker)
+    ImageButton startTimeImgBtn;
+
+    @BindView(R.id.fragment_end_time_picker)
+    ImageButton endTimeImgBtn;
 
     @Inject
     DistrictDAO districtDAO;
@@ -112,6 +140,10 @@ public class HealthFacilityFragment extends BaseFragment implements DatePickerDi
 
     private Form form;
 
+    private String door;
+
+    private String timetable;
+
     @Override
     public int getResourceId() {
         return R.layout.fragment_health_facility;
@@ -143,6 +175,9 @@ public class HealthFacilityFragment extends BaseFragment implements DatePickerDi
         this.valid = false;
 
         configureCabinetSpinner();
+
+        configureDoorAndTimetableSpinner();
+        configureCustomLabels();
     }
 
     private void configureCabinetSpinner() {
@@ -157,6 +192,48 @@ public class HealthFacilityFragment extends BaseFragment implements DatePickerDi
         if (form != null && FormType.MENTORING_CUSTOM.equals(form.getFormType())) {
             cabinetSpinner.setVisibility(View.INVISIBLE);
             cabinetTxt.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    /**
+     * For some forms specific labels have to be displayed in different
+     * word such as Cabinet, for 'Monitoria do ATS' form the Techical Team
+     * prefer Sector
+     */
+    private void configureCustomLabels() {
+
+        Bundle arguments = getArguments();
+        form = (Form) arguments.get("form");
+
+        if (form != null && form.getUuid().equals("122399f86199439cbbfe3deef149be87")) {
+            cabinetTxt.setText("Sector:");
+        }
+
+    }
+
+    /**
+     * Display Door and Time Table only for form Monitoria do ATS
+     * Hide Start and End time for the same form
+     */
+    private void configureDoorAndTimetableSpinner() {
+
+        Bundle arguments = getArguments();
+        form = (Form) arguments.get("form");
+
+        doorSpinner.setVisibility(View.INVISIBLE);
+        doorTxt.setVisibility(View.INVISIBLE);
+        timetableSpinner.setVisibility(View.GONE);
+        timetableTxt.setVisibility(View.GONE);
+
+        if (form != null && form.getUuid().equals("122399f86199439cbbfe3deef149be87")) {
+            doorSpinner.setVisibility(View.VISIBLE);
+            doorTxt.setVisibility(View.VISIBLE);
+            startTime.setVisibility(View.GONE);
+            endTime.setVisibility(View.GONE);
+            startTimeTxt.setVisibility(View.GONE);
+            endTimeTxt.setVisibility(View.GONE);
+            startTimeImgBtn.setVisibility(View.GONE);
+            endTimeImgBtn.setVisibility(View.GONE);
         }
     }
 
@@ -229,6 +306,16 @@ public class HealthFacilityFragment extends BaseFragment implements DatePickerDi
         cabinetsArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         cabinetSpinner.setAdapter(cabinetsArrayAdapter);
 
+        String[] timetableOptions = { "Seleccione...","DIA", "TARDE/NOITE"};
+        ArrayAdapter<String> timetableArrayAdapter =new ArrayAdapter<String>(getActivity(),   android.R.layout.simple_spinner_item, timetableOptions);
+        timetableArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        timetableSpinner.setAdapter(timetableArrayAdapter);
+
+        String[] doorOptions = { "Seleccione...","1", "2", "3", "4"};
+        ArrayAdapter<String> doorArrayAdapter =new ArrayAdapter<String>(getActivity(),   android.R.layout.simple_spinner_item, doorOptions);
+        doorArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        doorSpinner.setAdapter(doorArrayAdapter);
+
         eventBus.post(new HealthFacilityEvent(healthFacility));
     }
 
@@ -275,7 +362,35 @@ public class HealthFacilityFragment extends BaseFragment implements DatePickerDi
     public void onCabinetSelected(int position) {
 
         this.cabinet = cabinets.get(position);
+
+        /**
+         * Display timetable only for ´Monitoria do ATS´ form and
+         * Cabinet 'Banco de Socorro'
+         */
+        if(form.getUuid().equals("122399f86199439cbbfe3deef149be87")&&this.cabinet.toString().equals("Banco de Socorro")){
+            timetableSpinner.setVisibility(View.VISIBLE);
+            timetableTxt.setVisibility(View.VISIBLE);
+        }else if(form.getUuid().equals("122399f86199439cbbfe3deef149be87")&&!this.cabinet.toString().equals("Banco de Socorro")){
+            timetableSpinner.setVisibility(View.GONE);
+            timetableTxt.setVisibility(View.GONE);
+        }
+
         eventBus.post(new CabinetEvent(this.cabinet));
+    }
+
+    @OnItemSelected(R.id.fragment_door)
+    public void onDoorSelected(int position) {
+        String door=position+"";
+        this.door=door;
+        eventBus.post(new DoorEvent<>(door));
+    }
+
+    @OnItemSelected(R.id.fragment_timetable)
+    public void onTimetableSelected(int position) {
+        String timetable=position+"";
+        System.out.println(timetable);
+        this.timetable=timetable;
+        eventBus.post(new TimetableEvent<>(timetable));
     }
 
     @Override
@@ -295,29 +410,63 @@ public class HealthFacilityFragment extends BaseFragment implements DatePickerDi
             return;
         }
 
-        startTime.setError(null);
+        /**
+         * This validation is applicable only for forms different of 'Monitoria do ATS'
+         */
+        if(!form.getUuid().equals("122399f86199439cbbfe3deef149be87")) {
+            startTime.setError(null);
 
-        if (isEmptyStartTime()) {
-            startTime.setError(getString(R.string.start_time_must_be_selected));
-            viewPager.setCurrentItem(position);
-            valid = false;
-            return;
+            if (isEmptyStartTime()) {
+                startTime.setError(getString(R.string.start_time_must_be_selected));
+                viewPager.setCurrentItem(position);
+                valid = false;
+                return;
+            }
+
+            endTime.setError(null);
+
+            if (isEmptyEndTime()) {
+                endTime.setError(getString(R.string.end_time_must_be_selected));
+                viewPager.setCurrentItem(position);
+                valid = false;
+                return;
+            }
+
+            if (IsStartTimeLowerThanEndTime()) {
+                viewPager.setCurrentItem(position);
+                eventBus.post(new ErrorEvent(getString(R.string.start_time_must_not_be_lower_than_end_time)));
+                valid = false;
+                return;
+            }
         }
 
-        endTime.setError(null);
+        if(form.getUuid().equals("122399f86199439cbbfe3deef149be87")) {
+            TextView doorView = (TextView) doorSpinner.getSelectedView();
+            doorView.setError(null);
 
-        if (isEmptyEndTime()) {
-            endTime.setError(getString(R.string.end_time_must_be_selected));
-            viewPager.setCurrentItem(position);
-            valid = false;
-            return;
-        }
+            if(this.cabinet.getName().equals("Banco de Socorro")){
+                TextView timetableView = (TextView) timetableSpinner.getSelectedView();
+                timetableView.setError(null);
 
-        if (IsStartTimeLowerThanEndTime()) {
-            viewPager.setCurrentItem(position);
-            eventBus.post(new ErrorEvent(getString(R.string.start_time_must_not_be_lower_than_end_time)));
-            valid = false;
-            return;
+                if (this.timetable.equals("0")) {
+                    timetableView.setTextColor(Color.RED);
+                    timetableView.setError(getString(R.string.timetable_must_be_selected));
+
+                    viewPager.setCurrentItem(position);
+                    valid = false;
+                    return;
+                }
+            }
+
+            if (this.door.equals("0")) {
+                doorView.setTextColor(Color.RED);
+                doorView.setError(getString(R.string.door_must_be_selected));
+
+                viewPager.setCurrentItem(position);
+                valid = false;
+                return;
+            }
+
         }
 
         TextView provinceView = (TextView) provinceSpinner.getSelectedView();

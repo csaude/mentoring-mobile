@@ -88,7 +88,7 @@ public class MentorshipSyncServiceImpl implements SyncService {
 
                              new AlertDialog.Builder(activity)
                                      .setTitle("Tutorias enviadas")
-                                     .setMessage(sessionUuids.size() + " Processo(s) de Tutoria fora(m) sincronizado(s) com sucesso!")
+                                     .setMessage(sessionUuids.size() ==1 ? "1 Sessão de Tutoria foi enviada com sucesso!" : sessionUuids.size()+" Sessões de Tutoria foram enviadas com sucesso!")
                                      .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                          public void onClick(DialogInterface dialog, int which) {
                                              ((ListMentorshipActivity) activity).setMentorships();

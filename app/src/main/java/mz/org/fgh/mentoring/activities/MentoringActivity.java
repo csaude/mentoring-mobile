@@ -33,19 +33,23 @@ import mz.org.fgh.mentoring.delegate.FormDelegate;
 import mz.org.fgh.mentoring.dialog.AlertDialogManager;
 import mz.org.fgh.mentoring.event.AnswerEvent;
 import mz.org.fgh.mentoring.event.CabinetEvent;
+import mz.org.fgh.mentoring.event.DoorEvent;
 import mz.org.fgh.mentoring.event.ErrorEvent;
 import mz.org.fgh.mentoring.event.FormEvent;
 import mz.org.fgh.mentoring.event.HealthFacilityEvent;
 import mz.org.fgh.mentoring.event.MessageEvent;
 import mz.org.fgh.mentoring.event.ProcessEvent;
 import mz.org.fgh.mentoring.event.TimeEvent;
+import mz.org.fgh.mentoring.event.TimetableEvent;
 import mz.org.fgh.mentoring.event.TutoredEvent;
 import mz.org.fgh.mentoring.fragment.ConfirmationFragment;
 import mz.org.fgh.mentoring.fragment.SaveFragment;
 import mz.org.fgh.mentoring.model.Tutored;
+import mz.org.fgh.mentoring.process.model.Door;
 import mz.org.fgh.mentoring.process.model.IterationType;
 import mz.org.fgh.mentoring.process.model.Mentorship;
 import mz.org.fgh.mentoring.process.model.Session;
+import mz.org.fgh.mentoring.process.model.Timetable;
 import mz.org.fgh.mentoring.provider.AnswerProvider;
 import mz.org.fgh.mentoring.provider.SessionProvider;
 import mz.org.fgh.mentoring.service.SessionService;
@@ -222,6 +226,42 @@ public class MentoringActivity extends BaseAuthenticateActivity implements ViewP
 
         String date = datePerformedEvent.getMessage();
         this.session.setPerformedDate(DateUtil.parse(date, DateUtil.NORMAL_PATTERN));
+
+        if(session.getForm().getUuid().equals("122399f86199439cbbfe3deef149be87")){
+            this.mentorship.setStartDate(DateUtil.parse(session.getPerformedDate(), DateUtil.NORMAL_PATTERN));
+            this.mentorship.setEndDate(DateUtil.parse(session.getPerformedDate(), DateUtil.NORMAL_PATTERN));
+
+        }
+    }
+
+    @Subscribe
+    public void onDoorSelected(DoorEvent<String> doorEvent) {
+
+        if (!(doorEvent.getMessage() instanceof String)) {
+            return;
+        }
+
+        String door = doorEvent.getMessage();
+        switch (door){
+            case "1":this.mentorship.setDoor(Door.P1);break;
+            case "2":this.mentorship.setDoor(Door.P2);break;
+            case "3":this.mentorship.setDoor(Door.P3);break;
+            case "4":this.mentorship.setDoor(Door.P4);break;
+        }
+    }
+
+    @Subscribe
+    public void onTimetableSelected(TimetableEvent<String> timetableEvent) {
+
+        if (!(timetableEvent.getMessage() instanceof String)) {
+            return;
+        }
+
+        String timetable = timetableEvent.getMessage();
+        switch (timetable){
+            case "1":this.mentorship.setTimetable(Timetable.DAY);break;
+            case "2":this.mentorship.setTimetable(Timetable.LATE_NIGHT);break;
+        }
     }
 
     @Subscribe
@@ -241,6 +281,10 @@ public class MentoringActivity extends BaseAuthenticateActivity implements ViewP
 
         if (cabinet.getUuid() == null) {
             return;
+        }
+
+        if(cabinet.getName()!="Banco de Socorro"&&session.getForm().getUuid().equals("122399f86199439cbbfe3deef149be87")){
+            this.mentorship.setTimetable(null);
         }
 
         this.session.setCabinet(cabinet);

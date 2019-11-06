@@ -15,7 +15,7 @@ public interface CabinetDAO extends GenericDAO<Cabinet> {
     String FIELD_NAME = "uuid";
 
     class QUERY {
-        public static final String findAll = "Select c.uuid, c.name, c.created_at from " + TABLE_NAME + " c;";
+        public static final String findAll = "Select c.uuid, c.name, c.created_at from " + TABLE_NAME + " c ORDER BY c.name ASC;";
     }
 
     List<Cabinet> findAll();

@@ -16,7 +16,7 @@ public interface TutoredDAO extends GenericDAO<Tutored> {
     String FIELD_NAME = "uuid";
 
     class QUERY {
-        public static final String findByLifeCycleStatus = "SELECT t.id, t.name, t.surname, t.phone_number, c.position, t.career_uuid, t.uuid, t.life_cycle_status FROM tutoreds t INNER JOIN careers c ON t.career_uuid=c.uuid WHERE t.life_cycle_status = :lifeCycleStatus;";
+        public static final String findByLifeCycleStatus = "SELECT t.id, t.name, t.surname, t.phone_number, c.position, t.career_uuid, t.uuid, t.life_cycle_status FROM tutoreds t INNER JOIN careers c ON t.career_uuid=c.uuid WHERE t.life_cycle_status = :lifeCycleStatus ORDER BY t.name, t.surname ASC;";
     }
 
     List<Tutored> findByLifeCycleStatus(LifeCycleStatus lifeCycleStatus);

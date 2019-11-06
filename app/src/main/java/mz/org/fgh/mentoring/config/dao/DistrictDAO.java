@@ -15,7 +15,7 @@ public interface DistrictDAO extends GenericDAO<District> {
     String FIELD_NAME = "uuid";
 
     class QUERY {
-        public static final String findAll = "SELECT * FROM districts;";
+        public static final String findAll = "SELECT * FROM districts order by district ASC;";
     }
 
     List<District> findAll();

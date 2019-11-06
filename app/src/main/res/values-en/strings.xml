@@ -68,4 +68,7 @@
     <string name="percentage_minimum">% Minimum</string>
     <string name="percentage_min">% Min</string>
     <string name="no_data_found">Nenhum dado encontrado!</string>
+
+    <string name="door_must_be_selected">A porta deve ser seleccionada</string>
+    <string name="timetable_must_be_selected">O horário deve ser seleccionado</string>
 </resources>

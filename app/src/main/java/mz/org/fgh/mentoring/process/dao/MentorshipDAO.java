@@ -19,7 +19,8 @@ public interface MentorshipDAO extends GenericDAO<Mentorship> {
         public static final String findAll = "SELECT m.id, m.uuid, m.form_uuid, m.tutored_uuid, m.health_facility_uuid, m.iteration_type, m.iteration_number, f.name as form_name, " +
                 "t.name as tutored_name, t.surname as tutored_surname, t.phone_number as tutored_phone_number, " +
                 "hf.health_facility as health_facility, m.start_date, m.end_date, m.performed_date, m.created_at, " +
-                "c.uuid as tutored_career_uuid, f.target_patient, f.target_file " +
+                "c.uuid as tutored_career_uuid, f.target_patient, f.target_file, " +
+                "m.timetable, m.door " +
                 "FROM " + TABLE_NAME + " m " +
                 "INNER JOIN forms f ON m.form_uuid = f.uuid " +
                 "INNER JOIN tutoreds t ON m.tutored_uuid = t.uuid " +
@@ -29,7 +30,8 @@ public interface MentorshipDAO extends GenericDAO<Mentorship> {
         public static final String findBySession = "SELECT m.id, m.uuid, m.form_uuid, m.tutored_uuid, m.health_facility_uuid, m.iteration_type, m.iteration_number, f.name as form_name, " +
                 "t.name as tutored_name, t.surname as tutored_surname, t.phone_number as tutored_phone_number, " +
                 "hf.health_facility as health_facility, m.start_date, m.end_date, m.performed_date, m.created_at, " +
-                "c.uuid as tutored_career_uuid, m.cabinet_uuid, f.target_patient, f.target_file " +
+                "c.uuid as tutored_career_uuid, m.cabinet_uuid, f.target_patient, f.target_file, " +
+                "m.timetable, m.door " +
                 "FROM " + TABLE_NAME + " m " +
                 "INNER JOIN forms f ON m.form_uuid = f.uuid " +
                 "INNER JOIN tutoreds t ON m.tutored_uuid = t.uuid " +

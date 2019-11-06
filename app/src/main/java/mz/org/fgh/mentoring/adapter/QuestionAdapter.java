@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -17,6 +18,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import butterknife.OnTextChanged;
 import butterknife.Optional;
 import mz.org.fgh.mentoring.R;
 import mz.org.fgh.mentoring.component.MentoringComponent;
@@ -38,6 +40,11 @@ public class QuestionAdapter extends BaseAbstractAdapter {
     @BindView(R.id.adapter_question)
     TextView tvQuestion;
 
+    /**
+     * Added @Nullable annotation because this view is optional.
+     * It is not necessary for NUMERIC Question Type.
+     */
+    @Nullable
     @BindView(R.id.radio_group)
     RadioGroup radioGroup;
 
@@ -61,6 +68,14 @@ public class QuestionAdapter extends BaseAbstractAdapter {
     @BindView(R.id.adapter_not_applicable)
     RadioButton notApplicableRd;
 
+    /**
+     * This field comes from layout file 'numeric_adapter'.
+     * Is necessary to handle NUMERIC questions.
+     */
+    @Nullable
+    @BindView(R.id.numeric_value)
+    EditText numericValue;
+
     @Inject
     EventBus eventBus;
 
@@ -69,6 +84,14 @@ public class QuestionAdapter extends BaseAbstractAdapter {
     private Context context;
 
     private List<FormQuestion> formQuestions;
+
+    /**
+     * Declare formQuestion globally to use the variable on
+     * onNumberChanged() method to get and populate  the answer
+     * to the current NUMERIC question
+     *
+     */
+    private FormQuestion formQuestion;
 
     public QuestionAdapter(Context context, List<FormQuestion> formQuestions) {
         this.context = context;
@@ -91,6 +114,12 @@ public class QuestionAdapter extends BaseAbstractAdapter {
 
             case BOOLEAN:
                 return R.layout.boolean_adapter;
+
+            /**
+             * Support for NUMERIC Question Type
+             */
+            case NUMERIC:
+                return R.layout.numeric_adapter;
         }
 
         return R.layout.text_adapter;
@@ -99,7 +128,7 @@ public class QuestionAdapter extends BaseAbstractAdapter {
     @Override
     public void onCreateView(int position) {
         this.component.inject(this);
-        FormQuestion formQuestion = formQuestions.get(position);
+        formQuestion = formQuestions.get(position);
         linearLayout.setTag(formQuestion);
         tvQuestion.setText(formQuestion.getQuestion().getQuestion());
 
@@ -108,6 +137,7 @@ public class QuestionAdapter extends BaseAbstractAdapter {
         if (formQuestion.getApplicable() == Boolean.TRUE) {
             notApplicableRd.setVisibility(View.VISIBLE);
         }
+
     }
 
     @Override
@@ -175,6 +205,17 @@ public class QuestionAdapter extends BaseAbstractAdapter {
         }
     }
 
+    /**
+     * Trigger event after Value Numeric Changed
+     */
+    @Optional
+    @OnTextChanged(R.id.numeric_value)
+    public void onNumberChanged() {
+        if(numericValue.getText().toString().length()>0)
+            response(formQuestion, numericValue.getText().toString());
+
+    }
+
     private FormQuestion getFormQuestion(View view) {
         LinearLayout linearLayout = (LinearLayout) view.getParent().getParent();
         return (FormQuestion) linearLayout.getTag();
@@ -196,7 +237,12 @@ public class QuestionAdapter extends BaseAbstractAdapter {
     }
 
     public void markAnwser(Answer answer) {
+        /**
+         * Do not clear on a null object reference
+         */
+        if(radioGroup!=null){
         radioGroup.clearCheck();
+        }
 
         if (answer == null) {
             return;

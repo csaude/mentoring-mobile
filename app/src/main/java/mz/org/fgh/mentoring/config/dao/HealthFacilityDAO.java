@@ -15,7 +15,7 @@ public interface HealthFacilityDAO extends GenericDAO<HealthFacility> {
 
     class QUERY {
         public static final String findAll = "SELECT hf.id, hf.uuid, hf.health_facility, hf.district_uuid, d.district " +
-                "FROM " + TABLE_NAME + " hf INNER JOIN districts d ON hf.district_uuid = d.uuid ORDER BY hf.health_facility ASC;";
+                "FROM " + TABLE_NAME + " hf INNER JOIN districts d ON hf.district_uuid = d.uuid;";
     }
 
     List<HealthFacility> findAll();

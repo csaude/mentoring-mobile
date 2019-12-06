@@ -59,7 +59,7 @@ public interface GenericDAO<T extends GenericEntity> {
 
     String ALTER_TUTORED_TABLE_ADD_LIFE_CYCLE_STATUS = "ALTER TABLE tutoreds ADD COLUMN life_cycle_status TEXT";
 
-    String ALTER_MENTORSHIP_TABLE_ADD_TIMETABLE_COLUMN = "ALTER TABLE mentorships ADD COLUMN timetable TEXT";
+    String ALTER_MENTORSHIP_TABLE_ADD_TIME_OF_DAY_COLUMN = "ALTER TABLE mentorships ADD COLUMN time_of_day TEXT";
 
     String ALTER_MENTORSHIP_TABLE_ADD_DOOR_COLUMN = "ALTER TABLE mentorships ADD COLUMN door TEXT";
 

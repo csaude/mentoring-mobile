@@ -49,11 +49,11 @@ public class Mentorship extends GenericEntity {
     private Integer iterationNumber;
 
     /**
-     * Timetable is a field required by the form HTS Monitoring 'Monitoria do ATS'
+     * TimeOfDay is a field required by the form HTS Monitoring 'Monitoria do ATS'
      * Only for the Cabinet Banco de Socorros this field should be collected
      * Two possible answers DAY or LATE_NIGHT.
      */
-    private Timetable timetable;
+    private TimeOfDay timeOfDay;
 
     /**
      * Door is a field required by the form HTS Monitoring 'Monitoria do ATS'
@@ -176,12 +176,12 @@ public class Mentorship extends GenericEntity {
         }
     }
 
-    public Timetable getTimetable() {
-        return timetable;
+    public TimeOfDay getTimeOfDay() {
+        return timeOfDay;
     }
 
-    public void setTimetable(Timetable timetable) {
-        this.timetable = timetable;
+    public void setTimeOfDay(TimeOfDay timeOfDay) {
+        this.timeOfDay = timeOfDay;
     }
 
     public Door getDoor() {

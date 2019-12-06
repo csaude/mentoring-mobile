@@ -1,19 +1,19 @@
 package mz.org.fgh.mentoring.event;
 
 /**
- * Created by Stélio Moiane on 7/10/17.
+ * Created by Damaceno Lopes on 6/12/19.
  */
-public class TimetableEvent<T extends Object> {
+public class TimeOfDayEvent<T extends Object> {
 
     private T t;
 
     private String error;
 
-    public TimetableEvent(T t) {
+    public TimeOfDayEvent(T t) {
         this.t = t;
     }
 
-    public TimetableEvent() {
+    public TimeOfDayEvent() {
     }
 
     public T getMessage() {

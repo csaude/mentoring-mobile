@@ -18,7 +18,7 @@ import mz.org.fgh.mentoring.process.model.Door;
 import mz.org.fgh.mentoring.process.model.IterationType;
 import mz.org.fgh.mentoring.process.model.Mentorship;
 import mz.org.fgh.mentoring.process.model.Session;
-import mz.org.fgh.mentoring.process.model.Timetable;
+import mz.org.fgh.mentoring.process.model.TimeOfDay;
 import mz.org.fgh.mentoring.util.DateUtil;
 
 /**
@@ -54,7 +54,7 @@ public class MentorshipDAOImpl extends GenericDAOImpl<Mentorship> implements Men
         values.put("cabinet_uuid", mentorship.getCabinet() != null ? mentorship.getCabinet().getUuid() : null);
         values.put("iteration_type", mentorship.getIterationType().name());
         values.put("iteration_number", mentorship.getIterationNumber());
-        values.put("timetable", mentorship.getTimetable()!= null ? mentorship.getTimetable().name() : null);
+        values.put("time_of_day", mentorship.getTimeOfDay()!= null ? mentorship.getTimeOfDay().name() : null);
         values.put("door", mentorship.getDoor() != null ? mentorship.getDoor().name(): null);
 
         return values;
@@ -100,7 +100,7 @@ public class MentorshipDAOImpl extends GenericDAOImpl<Mentorship> implements Men
         mentorship.setIterationType(IterationType.valueOf(cursor.getString(cursor.getColumnIndex("iteration_type"))));
         mentorship.setIterationNumber(cursor.getInt(cursor.getColumnIndex("iteration_number")));
         mentorship.setCabinet(cabinet);
-        mentorship.setTimetable(cursor.getString(cursor.getColumnIndex("timetable"))!=null ? Timetable.valueOf(cursor.getString(cursor.getColumnIndex("timetable"))):null);
+        mentorship.setTimeOfDay(cursor.getString(cursor.getColumnIndex("time_of_day"))!=null ? TimeOfDay.valueOf(cursor.getString(cursor.getColumnIndex("time_of_day"))):null);
         mentorship.setDoor(cursor.getString(cursor.getColumnIndex("door"))!=null ? Door.valueOf(cursor.getString(cursor.getColumnIndex("door"))):null);
 
         return mentorship;

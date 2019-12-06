@@ -1,7 +1,7 @@
 package mz.org.fgh.mentoring.event;
 
 /**
- * Created by Stélio Moiane on 7/10/17.
+ * Created by Damaceno Lopes on 6/12/19.
  */
 public class DoorEvent<T extends Object> {
 

@@ -40,7 +40,7 @@ import mz.org.fgh.mentoring.event.HealthFacilityEvent;
 import mz.org.fgh.mentoring.event.MessageEvent;
 import mz.org.fgh.mentoring.event.ProcessEvent;
 import mz.org.fgh.mentoring.event.TimeEvent;
-import mz.org.fgh.mentoring.event.TimetableEvent;
+import mz.org.fgh.mentoring.event.TimeOfDayEvent;
 import mz.org.fgh.mentoring.event.TutoredEvent;
 import mz.org.fgh.mentoring.fragment.ConfirmationFragment;
 import mz.org.fgh.mentoring.fragment.SaveFragment;
@@ -49,7 +49,7 @@ import mz.org.fgh.mentoring.process.model.Door;
 import mz.org.fgh.mentoring.process.model.IterationType;
 import mz.org.fgh.mentoring.process.model.Mentorship;
 import mz.org.fgh.mentoring.process.model.Session;
-import mz.org.fgh.mentoring.process.model.Timetable;
+import mz.org.fgh.mentoring.process.model.TimeOfDay;
 import mz.org.fgh.mentoring.provider.AnswerProvider;
 import mz.org.fgh.mentoring.provider.SessionProvider;
 import mz.org.fgh.mentoring.service.SessionService;
@@ -251,16 +251,16 @@ public class MentoringActivity extends BaseAuthenticateActivity implements ViewP
     }
 
     @Subscribe
-    public void onTimetableSelected(TimetableEvent<String> timetableEvent) {
+    public void onTimeOfDaySelected(TimeOfDayEvent<String> timeOfDayEvent) {
 
-        if (!(timetableEvent.getMessage() instanceof String)) {
+        if (!(timeOfDayEvent.getMessage() instanceof String)) {
             return;
         }
 
-        String timetable = timetableEvent.getMessage();
+        String timetable = timeOfDayEvent.getMessage();
         switch (timetable){
-            case "1":this.mentorship.setTimetable(Timetable.DAY);break;
-            case "2":this.mentorship.setTimetable(Timetable.LATE_NIGHT);break;
+            case "1":this.mentorship.setTimeOfDay(TimeOfDay.DAY);break;
+            case "2":this.mentorship.setTimeOfDay(TimeOfDay.LATE_NIGHT);break;
         }
     }
 
@@ -284,7 +284,7 @@ public class MentoringActivity extends BaseAuthenticateActivity implements ViewP
         }
 
         if(cabinet.getName()!="Banco de Socorro"&&session.getForm().getUuid().equals("122399f86199439cbbfe3deef149be87")){
-            this.mentorship.setTimetable(null);
+            this.mentorship.setTimeOfDay(null);
         }
 
         this.session.setCabinet(cabinet);

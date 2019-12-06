@@ -20,7 +20,7 @@ public interface MentorshipDAO extends GenericDAO<Mentorship> {
                 "t.name as tutored_name, t.surname as tutored_surname, t.phone_number as tutored_phone_number, " +
                 "hf.health_facility as health_facility, m.start_date, m.end_date, m.performed_date, m.created_at, " +
                 "c.uuid as tutored_career_uuid, f.target_patient, f.target_file, " +
-                "m.timetable, m.door " +
+                "m.time_of_day, m.door " +
                 "FROM " + TABLE_NAME + " m " +
                 "INNER JOIN forms f ON m.form_uuid = f.uuid " +
                 "INNER JOIN tutoreds t ON m.tutored_uuid = t.uuid " +
@@ -31,7 +31,7 @@ public interface MentorshipDAO extends GenericDAO<Mentorship> {
                 "t.name as tutored_name, t.surname as tutored_surname, t.phone_number as tutored_phone_number, " +
                 "hf.health_facility as health_facility, m.start_date, m.end_date, m.performed_date, m.created_at, " +
                 "c.uuid as tutored_career_uuid, m.cabinet_uuid, f.target_patient, f.target_file, " +
-                "m.timetable, m.door " +
+                "m.time_of_day, m.door " +
                 "FROM " + TABLE_NAME + " m " +
                 "INNER JOIN forms f ON m.form_uuid = f.uuid " +
                 "INNER JOIN tutoreds t ON m.tutored_uuid = t.uuid " +

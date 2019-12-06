@@ -6,7 +6,6 @@ import android.app.TimePickerDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.text.format.DateFormat;
 import android.view.View;
@@ -45,9 +44,7 @@ import mz.org.fgh.mentoring.event.ErrorEvent;
 import mz.org.fgh.mentoring.event.HealthFacilityEvent;
 import mz.org.fgh.mentoring.event.MessageEvent;
 import mz.org.fgh.mentoring.event.TimeEvent;
-import mz.org.fgh.mentoring.event.TimetableEvent;
-import mz.org.fgh.mentoring.process.model.Door;
-import mz.org.fgh.mentoring.process.model.Timetable;
+import mz.org.fgh.mentoring.event.TimeOfDayEvent;
 import mz.org.fgh.mentoring.service.CabinetService;
 import mz.org.fgh.mentoring.util.DateUtil;
 import mz.org.fgh.mentoring.validator.FragmentValidator;
@@ -81,11 +78,11 @@ public class HealthFacilityFragment extends BaseFragment implements DatePickerDi
     @BindView(R.id.fragment_cabinet_text)
     TextView cabinetTxt;
 
-    @BindView(R.id.fragment_timetable)
-    Spinner timetableSpinner;
+    @BindView(R.id.fragment_time_of_day)
+    Spinner timeOfDaySpinner;
 
-    @BindView(R.id.fragment_timetable_text)
-    TextView timetableTxt;
+    @BindView(R.id.fragment_time_of_day_text)
+    TextView timeOfDayTxt;
 
     @BindView(R.id.fragment_door)
     Spinner doorSpinner;
@@ -142,7 +139,7 @@ public class HealthFacilityFragment extends BaseFragment implements DatePickerDi
 
     private String door;
 
-    private String timetable;
+    private String timeOfDay;
 
     @Override
     public int getResourceId() {
@@ -176,7 +173,7 @@ public class HealthFacilityFragment extends BaseFragment implements DatePickerDi
 
         configureCabinetSpinner();
 
-        configureDoorAndTimetableSpinner();
+        configureDoorAndTimeOfDaySpinner();
         configureCustomLabels();
     }
 
@@ -215,15 +212,15 @@ public class HealthFacilityFragment extends BaseFragment implements DatePickerDi
      * Display Door and Time Table only for form Monitoria do ATS
      * Hide Start and End time for the same form
      */
-    private void configureDoorAndTimetableSpinner() {
+    private void configureDoorAndTimeOfDaySpinner() {
 
         Bundle arguments = getArguments();
         form = (Form) arguments.get("form");
 
         doorSpinner.setVisibility(View.INVISIBLE);
         doorTxt.setVisibility(View.INVISIBLE);
-        timetableSpinner.setVisibility(View.GONE);
-        timetableTxt.setVisibility(View.GONE);
+        timeOfDaySpinner.setVisibility(View.GONE);
+        timeOfDayTxt.setVisibility(View.GONE);
 
         if (form != null && form.getUuid().equals("122399f86199439cbbfe3deef149be87")) {
             doorSpinner.setVisibility(View.VISIBLE);
@@ -306,10 +303,10 @@ public class HealthFacilityFragment extends BaseFragment implements DatePickerDi
         cabinetsArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         cabinetSpinner.setAdapter(cabinetsArrayAdapter);
 
-        String[] timetableOptions = { "Seleccione...","DIA", "TARDE/NOITE"};
-        ArrayAdapter<String> timetableArrayAdapter =new ArrayAdapter<String>(getActivity(),   android.R.layout.simple_spinner_item, timetableOptions);
-        timetableArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        timetableSpinner.setAdapter(timetableArrayAdapter);
+        String[] timeOfDayOptions = { "Seleccione...","DIA", "TARDE/NOITE"};
+        ArrayAdapter<String> timeOfDayArrayAdapter =new ArrayAdapter<String>(getActivity(),   android.R.layout.simple_spinner_item, timeOfDayOptions);
+        timeOfDayArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        timeOfDaySpinner.setAdapter(timeOfDayArrayAdapter);
 
         String[] doorOptions = { "Seleccione...","1", "2", "3", "4"};
         ArrayAdapter<String> doorArrayAdapter =new ArrayAdapter<String>(getActivity(),   android.R.layout.simple_spinner_item, doorOptions);
@@ -364,15 +361,15 @@ public class HealthFacilityFragment extends BaseFragment implements DatePickerDi
         this.cabinet = cabinets.get(position);
 
         /**
-         * Display timetable only for ´Monitoria do ATS´ form and
+         * Display timeOfDay only for ´Monitoria do ATS´ form and
          * Cabinet 'Banco de Socorro'
          */
         if(form.getUuid().equals("122399f86199439cbbfe3deef149be87")&&this.cabinet.toString().equals("Banco de Socorro")){
-            timetableSpinner.setVisibility(View.VISIBLE);
-            timetableTxt.setVisibility(View.VISIBLE);
+            timeOfDaySpinner.setVisibility(View.VISIBLE);
+            timeOfDayTxt.setVisibility(View.VISIBLE);
         }else if(form.getUuid().equals("122399f86199439cbbfe3deef149be87")&&!this.cabinet.toString().equals("Banco de Socorro")){
-            timetableSpinner.setVisibility(View.GONE);
-            timetableTxt.setVisibility(View.GONE);
+            timeOfDaySpinner.setVisibility(View.GONE);
+            timeOfDayTxt.setVisibility(View.GONE);
         }
 
         eventBus.post(new CabinetEvent(this.cabinet));
@@ -385,12 +382,12 @@ public class HealthFacilityFragment extends BaseFragment implements DatePickerDi
         eventBus.post(new DoorEvent<>(door));
     }
 
-    @OnItemSelected(R.id.fragment_timetable)
-    public void onTimetableSelected(int position) {
-        String timetable=position+"";
-        System.out.println(timetable);
-        this.timetable=timetable;
-        eventBus.post(new TimetableEvent<>(timetable));
+    @OnItemSelected(R.id.fragment_time_of_day)
+    public void ontimeOfDaySelected(int position) {
+        String timeOfDay=position+"";
+        System.out.println(timeOfDay);
+        this.timeOfDay =timeOfDay;
+        eventBus.post(new TimeOfDayEvent<>(timeOfDay));
     }
 
     @Override
@@ -445,12 +442,12 @@ public class HealthFacilityFragment extends BaseFragment implements DatePickerDi
             doorView.setError(null);
 
             if(this.cabinet.getName().equals("Banco de Socorro")){
-                TextView timetableView = (TextView) timetableSpinner.getSelectedView();
-                timetableView.setError(null);
+                TextView timeOfDayView = (TextView) timeOfDaySpinner.getSelectedView();
+                timeOfDayView.setError(null);
 
-                if (this.timetable.equals("0")) {
-                    timetableView.setTextColor(Color.RED);
-                    timetableView.setError(getString(R.string.timetable_must_be_selected));
+                if (this.timeOfDay.equals("0")) {
+                    timeOfDayView.setTextColor(Color.RED);
+                    timeOfDayView.setError(getString(R.string.time_of_day_must_be_selected));
 
                     viewPager.setCurrentItem(position);
                     valid = false;

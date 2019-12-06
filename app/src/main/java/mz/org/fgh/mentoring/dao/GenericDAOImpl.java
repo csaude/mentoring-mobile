@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.database.sqlite.SQLiteQueryBuilder;
 
 import java.util.Date;
 import java.util.List;
@@ -51,7 +50,7 @@ public abstract class GenericDAOImpl<T extends GenericEntity> extends SQLiteOpen
         db.execSQL(ALTER_FORM_TABLE_ADD_FILE_TARGET);
         db.execSQL(ALTER_FORM_QUESTION_ADD_APPLICABLE);
         db.execSQL(ALTER_TUTORED_TABLE_ADD_LIFE_CYCLE_STATUS);
-        db.execSQL(ALTER_MENTORSHIP_TABLE_ADD_TIMETABLE_COLUMN);
+        db.execSQL(ALTER_MENTORSHIP_TABLE_ADD_TIME_OF_DAY_COLUMN);
         db.execSQL(ALTER_MENTORSHIP_TABLE_ADD_DOOR_COLUMN);
     }
 
@@ -64,7 +63,7 @@ public abstract class GenericDAOImpl<T extends GenericEntity> extends SQLiteOpen
         db.execSQL(ALTER_FORM_TABLE_ADD_FILE_TARGET);
         db.execSQL(ALTER_FORM_QUESTION_ADD_APPLICABLE);
         db.execSQL(ALTER_TUTORED_TABLE_ADD_LIFE_CYCLE_STATUS);
-        db.execSQL(ALTER_MENTORSHIP_TABLE_ADD_TIMETABLE_COLUMN);
+        db.execSQL(ALTER_MENTORSHIP_TABLE_ADD_TIME_OF_DAY_COLUMN);
         db.execSQL(ALTER_MENTORSHIP_TABLE_ADD_DOOR_COLUMN);
     }
 

@@ -1,6 +1,6 @@
 package mz.org.fgh.mentoring.process.model;
 
-public enum Timetable {
+public enum TimeOfDay {
 
     DAY, LATE_NIGHT
 }

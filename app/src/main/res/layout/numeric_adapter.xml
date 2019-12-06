@@ -25,6 +25,7 @@
         android:background="@drawable/fields_background"
         android:inputType="number"
         android:maxLength="10"
+        android:focusableInTouchMode="true"
         android:padding="10dp" />
 
 </LinearLayout>

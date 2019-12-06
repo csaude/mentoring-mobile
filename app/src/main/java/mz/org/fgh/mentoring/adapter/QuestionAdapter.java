@@ -27,6 +27,7 @@ import mz.org.fgh.mentoring.config.model.FormQuestion;
 import mz.org.fgh.mentoring.config.model.QuestionType;
 import mz.org.fgh.mentoring.event.AnswerEvent;
 import mz.org.fgh.mentoring.model.QuestionAnswer;
+import mz.org.fgh.mentoring.util.Validations;
 
 /**
  * Created by steliomo on 4/18/18.
@@ -211,8 +212,37 @@ public class QuestionAdapter extends BaseAbstractAdapter {
     @Optional
     @OnTextChanged(R.id.numeric_value)
     public void onNumberChanged() {
-        if(numericValue.getText().toString().length()>0)
+        if(numericValue.getText().toString().length()>0){
             response(formQuestion, numericValue.getText().toString());
+            String questionCatergory=formQuestion.getQuestion().getQuestionsCategory().getCategory();
+            Validations v = Validations.getInstance();
+            if(questionCatergory.equals("Questão 1")){
+                v.setQuestion1(Integer.valueOf(numericValue.getText().toString()));
+                v.setQuestion2(0);
+                v.setQuestion3(0);
+                v.setQuestion4(0);
+                v.setQuestion5(0);
+            } else
+            if(questionCatergory.equals("Questão 2")){
+                v.setQuestion2(Integer.valueOf(numericValue.getText().toString()));
+                v.setQuestion3(0);
+                v.setQuestion4(0);
+                v.setQuestion5(0);
+            } else
+            if(questionCatergory.equals("Questão 3")){
+                v.setQuestion3(Integer.valueOf(numericValue.getText().toString()));
+                v.setQuestion4(0);
+                v.setQuestion5(0);
+            } else
+            if(questionCatergory.equals("Questão 4")){
+                v.setQuestion4(Integer.valueOf(numericValue.getText().toString()));
+                v.setQuestion5(0);
+            } else
+            if(questionCatergory.equals("Questão 5")){
+                v.setQuestion5(Integer.valueOf(numericValue.getText().toString()));
+            }
+        }
+
 
     }
 

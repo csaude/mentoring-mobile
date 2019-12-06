@@ -53,7 +53,7 @@
     <string name="processing">A processar o pedido....</string>
     <string name="reset_password_success">A Senha foi inicializada com sucesso. Consulte o seu email</string>
     <string name="reset_password_error">Não foi possivel inicializar a senha. Por favor tente novamente</string>
-    <string name="version">© 2019 © v1.5.1</string>
+    <string name="version">© 2019 © v1.5.2</string>
     <string name="no_result">Sem Resultado</string>
     <string name="no_result_found">Nenhum resultado foi encontrado</string>
     <string name="server_error_comunication">Erro de comunicação com o servidor! Tente novamente.</string>
@@ -70,5 +70,5 @@
     <string name="no_data_found">Nenhum dado encontrado!</string>
 
     <string name="door_must_be_selected">A porta deve ser seleccionada</string>
-    <string name="timetable_must_be_selected">O horário deve ser seleccionado</string>
+    <string name="time_of_day_must_be_selected">O horário deve ser seleccionado</string>
 </resources>

@@ -48,6 +48,19 @@ public class Mentorship extends GenericEntity {
 
     private Integer iterationNumber;
 
+    /**
+     * TimeOfDay is a field required by the form HTS Monitoring 'Monitoria do ATS'
+     * Only for the Cabinet Banco de Socorros this field should be collected
+     * Two possible answers DAY or LATE_NIGHT.
+     */
+    private TimeOfDay timeOfDay;
+
+    /**
+     * Door is a field required by the form HTS Monitoring 'Monitoria do ATS'
+     * For all Sectors the system should collect also the door number (P1, P2, P3 or P4).
+     */
+    private Door door;
+
     public Mentorship() {
         this.answers = new ArrayList<>();
         this.startDate = new Date();
@@ -161,5 +174,21 @@ public class Mentorship extends GenericEntity {
         if (FormType.MENTORING.equals(form.getFormType())) {
             this.iterationType = IterationType.FILE;
         }
+    }
+
+    public TimeOfDay getTimeOfDay() {
+        return timeOfDay;
+    }
+
+    public void setTimeOfDay(TimeOfDay timeOfDay) {
+        this.timeOfDay = timeOfDay;
+    }
+
+    public Door getDoor() {
+        return door;
+    }
+
+    public void setDoor(Door door) {
+        this.door = door;
     }
 }

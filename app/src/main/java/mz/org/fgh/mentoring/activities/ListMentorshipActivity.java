@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.Date;
 import java.util.List;
@@ -56,6 +57,15 @@ public class ListMentorshipActivity extends BaseAuthenticateActivity implements 
     public void setMentorships() {
         List<Session> sessions = sessionService.findAllSessions();
         MentorshipAdapter adapter = new MentorshipAdapter(this, sessions);
+
+        /**
+         * After reaching 5 sessions without sending to the server
+         * remember tutor to send the data to the server
+         */
+        if(sessions.size()>=5) {
+            Toast toast = Toast.makeText(this, getString(R.string.remeber_send_data_to_server), Toast.LENGTH_LONG);
+            toast.show();
+        }
         mentorshipListView.setAdapter(adapter);
     }
 

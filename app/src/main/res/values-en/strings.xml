@@ -5,7 +5,7 @@
     <string name="title_activity_login">LoginActivity</string>
     <string name="title">Mentoring App</string>
 
-    <string name="mentoring_process">Mentoring Process</string>
+    <string name="mentoring_process">Mentoring Sessions</string>
     <string name="tudoreds">Tutoreds</string>
     <string name="reports">Reports</string>
     <string name="indicators">Indicators</string>
@@ -16,7 +16,7 @@
     <string name="server_address">SERVER_ADDRESS</string>
     <string name="title_activity_mentoring">MentoringActivity</string>
 
-    <string name="title_activity_list_mentorship">Mentoring Process</string>
+    <string name="title_activity_list_mentorship">Mentoring Sessions</string>
     <string name="title_activity_tutor_update">User Details</string>
 
     <string name="tutored_must_be_selected">The tutored must be selected!</string>
@@ -53,7 +53,7 @@
     <string name="processing">A processar o pedido....</string>
     <string name="reset_password_success">A Senha foi inicializada com sucesso. Consulte o seu email</string>
     <string name="reset_password_error">Não foi possivel inicializar a senha. Por favor tente novamente</string>
-    <string name="version">© 2019 © v1.5.1</string>
+    <string name="version">© 2019 © v1.5.2</string>
     <string name="no_result">Sem Resultado</string>
     <string name="no_result_found">Nenhum resultado foi encontrado</string>
     <string name="server_error_comunication">Erro de comunicação com o servidor! Tente novamente.</string>
@@ -68,4 +68,7 @@
     <string name="percentage_minimum">% Minimum</string>
     <string name="percentage_min">% Min</string>
     <string name="no_data_found">Nenhum dado encontrado!</string>
+
+    <string name="door_must_be_selected">A porta deve ser seleccionada</string>
+    <string name="time_of_day_must_be_selected">O horário deve ser seleccionado</string>
 </resources>

@@ -5,7 +5,7 @@
     <string name="title">Aplicativo de Tutoria</string>
 
 
-    <string name="mentoring_process">Processo de Tutoria</string>
+    <string name="mentoring_process">Sessões de Tutoria</string>
     <string name="tudoreds">Tutorados</string>
     <string name="reports">Relatórios</string>
     <string name="indicators">Indicadores</string>
@@ -24,7 +24,7 @@
     </array>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="title_activity_list_mentorship">Processos de Tutoria</string>
+    <string name="title_activity_list_mentorship">Sessões de Tutoria</string>
     <string name="title_activity_tutor_update">Detalhes do Utilizador</string>
     <string name="title_activity_indicator_collection">Recolha de Indicadores</string>
 
@@ -121,4 +121,12 @@
     <string name="percentage_minimum">% Mínima</string>
     <string name="percentage_min">% Mín</string>
     <string name="no_data_found">No data found!</string>
+
+    <string name="door_must_be_selected">A porta deve ser seleccionada</string>
+    <string name="time_of_day_must_be_selected">O horário deve ser seleccionado</string>
+    <string name="attended_must_be_greather_than_previous">Os HIV+ prévios não devem ser maiores que o número de utentes atendidos no sector.</string>
+    <string name="previous_must_be_greather_than_previous_and_tested">Os Testados mais o prévios não devem ser maior que o número de utentes atendidos no sector.</string>
+    <string name="tested_must_be_greather_than_positive">Os positivos não devem ser maior que os testados.</string>
+    <string name="positive_must_be_greather_than_enrolled">Os inscritos não devem ser maior que os positivos.</string>
+    <string name="remeber_send_data_to_server">Possui 5 ou mais registos de tutoria no celular não se esqueça de enviar ao servidor em breve!</string>
 </resources>

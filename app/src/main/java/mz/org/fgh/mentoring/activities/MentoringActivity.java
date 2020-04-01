@@ -179,6 +179,7 @@ public class MentoringActivity extends BaseAuthenticateActivity implements ViewP
     @Subscribe
     public void onTutoredSelected(TutoredEvent tutoredEvent) {
         this.tutored = tutoredEvent.getTutored();
+        session.setTutored(this.tutored);
     }
 
     @Subscribe

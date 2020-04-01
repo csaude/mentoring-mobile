@@ -63,6 +63,8 @@ public interface GenericDAO<T extends GenericEntity> {
 
     String ALTER_MENTORSHIP_TABLE_ADD_DOOR_COLUMN = "ALTER TABLE mentorships ADD COLUMN door TEXT";
 
+    String ALTER_SESSION_TABLE_ADD_TUTORED_COLUMN = "ALTER TABLE sessions ADD COLUMN tutored_uuid TEXT";
+
     String getTableName();
 
     String getFieldName();

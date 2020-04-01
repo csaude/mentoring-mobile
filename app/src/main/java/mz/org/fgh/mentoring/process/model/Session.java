@@ -8,6 +8,7 @@ import mz.org.fgh.mentoring.config.model.Cabinet;
 import mz.org.fgh.mentoring.config.model.Form;
 import mz.org.fgh.mentoring.config.model.HealthFacility;
 import mz.org.fgh.mentoring.model.GenericEntity;
+import mz.org.fgh.mentoring.model.Tutored;
 import mz.org.fgh.mentoring.util.DateUtil;
 
 /**
@@ -35,6 +36,9 @@ public class Session extends GenericEntity {
     private List<Mentorship> mentorships;
 
     private Cabinet cabinet;
+
+    /*Include tutored metadata(name) on Session, this will be used to displayed on Sessions list.*/
+    private Tutored tutored;
 
     public Session() {
         this.mentorships = new ArrayList<>();
@@ -145,4 +149,13 @@ public class Session extends GenericEntity {
 
         return performed;
     }
+
+    public Tutored getTutored() {
+        return tutored;
+    }
+
+    public void setTutored(Tutored tutored) {
+        this.tutored = tutored;
+    }
+
 }

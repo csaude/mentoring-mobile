@@ -4,12 +4,28 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
-    <ImageView
-        android:id="@+id/mentorship_image"
-        android:layout_width="54dp"
-        android:layout_height="54dp"
-        android:layout_marginRight="6dp"
-        android:src="@mipmap/ic_process" />
+    <FrameLayout
+        android:layout_width="60dp"
+        android:layout_height="60dp">
+
+        <ImageView
+            android:id="@+id/mentorship_image"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:layout_marginRight="6dp"
+            android:src="@mipmap/ic_process" />
+
+        <ImageView
+            android:id="@+id/selected_row"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="bottom|end"
+            android:background="@drawable/selected_row_icon"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/ic_check"
+            android:visibility="gone" />
+
+    </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -32,7 +48,15 @@
             android:layout_height="wrap_content"
             android:text="Session Status"
             android:textSize="5pt"
-            android:textStyle="bold|italic" />
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tutored_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tutored Name"
+            android:textSize="5pt"
+            android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"

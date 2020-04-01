@@ -385,7 +385,6 @@ public class HealthFacilityFragment extends BaseFragment implements DatePickerDi
     @OnItemSelected(R.id.fragment_time_of_day)
     public void ontimeOfDaySelected(int position) {
         String timeOfDay=position+"";
-        System.out.println(timeOfDay);
         this.timeOfDay =timeOfDay;
         eventBus.post(new TimeOfDayEvent<>(timeOfDay));
     }

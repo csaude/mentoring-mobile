@@ -60,14 +60,16 @@ public class MentorshipSyncServiceImpl implements SyncService {
             return;
         }
 
-        MentorshipBeanResource mentorshipBeanResource = prepareSyncData(sessions);
+        List<Session> sessionsToSync = sessionService.findAllSessionsToSync();
+
+        MentorshipBeanResource mentorshipBeanResource = prepareSyncData(sessionsToSync);
         SyncDataService syncDataService = retrofit.create(SyncDataService.class);
 
         Call<MentorshipBeanResource> call = syncDataService.syncMentorships(mentorshipBeanResource);
         final ProgressDialog dialog = new ProgressDialog(activity);
         dialog.setCancelable(false);
         dialog.setTitle("Aguarde");
-        dialog.setMessage("A enviar dados....");
+        dialog.setMessage("A enviar até 5 sessões de tutoria desta vez...");
         dialog.show();
 
         call.enqueue(new Callback<MentorshipBeanResource>() {

@@ -14,5 +14,7 @@ public interface SessionService {
 
     List<Session> findAllSessions();
 
+    List<Session> findAllSessionsToSync();
+
     void deleteSessionsByUuids(List<String> uuids);
 }

@@ -28,6 +28,9 @@ public class MentorshipAdapter extends BaseAbstractAdapter {
     @BindView(R.id.health_facility)
     TextView healthFacility;
 
+    @BindView(R.id.tutored_name)
+    TextView tutoredName;
+
     @BindView(R.id.process_date)
     TextView sessionDate;
 

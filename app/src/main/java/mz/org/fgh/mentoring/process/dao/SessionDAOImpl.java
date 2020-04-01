@@ -106,6 +106,24 @@ public class SessionDAOImpl extends GenericDAOImpl<Session> implements SessionDA
     }
 
     @Override
+    public List<Session> findAllToSync() {
+        SQLiteDatabase database = getReadableDatabase();
+
+        Cursor cursor = database.rawQuery(QUERY.findAllToSync, null);
+        List<Session> sessions = new ArrayList<>();
+
+        while (cursor.moveToNext()) {
+            Session session = getPopulatedEntity(cursor);
+            sessions.add(session);
+        }
+
+        database.close();
+        cursor.close();
+
+        return sessions;
+    }
+
+    @Override
     public void deleteByUuids(List<String> uuids) {
         delete("uuid IN (?)", uuids);
     }

@@ -47,6 +47,11 @@ public class SessionServiceImpl implements SessionService {
     }
 
     @Override
+    public List<Session> findAllSessionsToSync() {
+        return sessionDAO.findAllToSync();
+    }
+
+    @Override
     public void deleteSessionsByUuids(List<String> uuids) {
         mentorshipService.deleteBySessionUuid(uuids);
         sessionDAO.deleteByUuids(uuids);

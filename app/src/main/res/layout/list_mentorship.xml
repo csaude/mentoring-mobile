@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:text="Session Status"
             android:textSize="5pt"
-            android:textStyle="bold|italic" />
+            android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"

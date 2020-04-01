@@ -52,6 +52,7 @@ public abstract class GenericDAOImpl<T extends GenericEntity> extends SQLiteOpen
         db.execSQL(ALTER_TUTORED_TABLE_ADD_LIFE_CYCLE_STATUS);
         db.execSQL(ALTER_MENTORSHIP_TABLE_ADD_TIME_OF_DAY_COLUMN);
         db.execSQL(ALTER_MENTORSHIP_TABLE_ADD_DOOR_COLUMN);
+        db.execSQL(ALTER_SESSION_TABLE_ADD_TUTORED_COLUMN);
     }
 
     @Override
@@ -65,6 +66,7 @@ public abstract class GenericDAOImpl<T extends GenericEntity> extends SQLiteOpen
         db.execSQL(ALTER_TUTORED_TABLE_ADD_LIFE_CYCLE_STATUS);
         db.execSQL(ALTER_MENTORSHIP_TABLE_ADD_TIME_OF_DAY_COLUMN);
         db.execSQL(ALTER_MENTORSHIP_TABLE_ADD_DOOR_COLUMN);
+        db.execSQL(ALTER_SESSION_TABLE_ADD_TUTORED_COLUMN);
     }
 
     @Override

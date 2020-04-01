@@ -11,6 +11,7 @@ import java.util.List;
 import mz.org.fgh.mentoring.config.model.Form;
 import mz.org.fgh.mentoring.config.model.HealthFacility;
 import mz.org.fgh.mentoring.dao.GenericDAOImpl;
+import mz.org.fgh.mentoring.model.Tutored;
 import mz.org.fgh.mentoring.process.model.Session;
 import mz.org.fgh.mentoring.process.model.SessionStatus;
 import mz.org.fgh.mentoring.util.DateUtil;
@@ -40,6 +41,7 @@ public class SessionDAOImpl extends GenericDAOImpl<Session> implements SessionDA
 
         ContentValues values = new ContentValues();
         values.put("form_uuid", session.getForm().getUuid());
+        values.put("tutored_uuid", session.getTutored().getUuid());
         values.put("health_facility_uuid", session.getHealthFacility().getUuid());
         values.put("start_date", session.getStartDate());
         values.put("end_date", session.getEndDate());
@@ -75,6 +77,11 @@ public class SessionDAOImpl extends GenericDAOImpl<Session> implements SessionDA
 
         session.setStatus(SessionStatus.valueOf(cursor.getString(cursor.getColumnIndex("status"))));
         session.setReason(cursor.getString(cursor.getColumnIndex("reason")));
+
+        Tutored tutored = new Tutored();
+        tutored.setUuid(cursor.getString((cursor.getColumnIndex("tutored_uuid"))));
+        tutored.setName(cursor.getString((cursor.getColumnIndex("tutored_name"))));
+        session.setTutored(tutored);
 
         return session;
     }

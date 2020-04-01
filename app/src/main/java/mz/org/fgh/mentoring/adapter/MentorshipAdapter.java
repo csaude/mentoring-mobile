@@ -28,6 +28,9 @@ public class MentorshipAdapter extends BaseAbstractAdapter {
     @BindView(R.id.health_facility)
     TextView healthFacility;
 
+    @BindView(R.id.tutored_name)
+    TextView tutoredName;
+
     @BindView(R.id.process_date)
     TextView sessionDate;
 
@@ -55,7 +58,8 @@ public class MentorshipAdapter extends BaseAbstractAdapter {
         Session session = sessions.get(position);
 
         formName.setText(session.getForm().getName());
-        sessionStatus.setText(session.getStatus().equals(SessionStatus.COMPLETE) ? context.getString(R.string.complete)+" - "+session.getTutored().getName() : context.getString(R.string.incomplete)+" - "+session.getTutored().getName());
+        sessionStatus.setText(session.getStatus().equals(SessionStatus.COMPLETE) ? context.getString(R.string.complete): context.getString(R.string.incomplete));
+        tutoredName.setText(session.getTutored().getName());
         healthFacility.setText(session.getHealthFacility().getHealthFacility());
         sessionDate.setText("( " + DateUtil.format(session.getCreatedAt(), DateUtil.HOURS_PATTERN) + " )");
     }

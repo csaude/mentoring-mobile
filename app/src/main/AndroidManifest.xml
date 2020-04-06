@@ -26,7 +26,8 @@
             android:label="@string/config" />
         <activity
             android:name=".activities.MentoringActivity"
-            android:label="@string/title_activity_list_mentorship" />
+            android:label="@string/title_activity_list_mentorship"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".activities.ListMentorshipActivity"
             android:label="@string/title_activity_list_mentorship"

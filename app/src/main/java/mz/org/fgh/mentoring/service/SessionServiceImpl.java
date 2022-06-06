@@ -1,5 +1,6 @@
 package mz.org.fgh.mentoring.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -56,4 +57,11 @@ public class SessionServiceImpl implements SessionService {
         mentorshipService.deleteBySessionUuid(uuids);
         sessionDAO.deleteByUuids(uuids);
     }
+
+    @Override
+    public List<Session> findSessionsByUuids(String selectecdItemsUuid) {
+     return   sessionDAO.findSessionsByUuids(selectecdItemsUuid);
+    }
+
+
 }

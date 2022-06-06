@@ -91,6 +91,8 @@ public class MentoringActivity extends BaseAuthenticateActivity implements ViewP
 
     private AlertDialogManager dialogManager;
 
+    public static boolean active = false;
+
     @SuppressLint("ResourceType")
     @Override
     protected void onMentoringCreate(Bundle bundle) {
@@ -378,9 +380,11 @@ public class MentoringActivity extends BaseAuthenticateActivity implements ViewP
     }
 
     private void onbackPressed() {
+
         dialogManager.showAlert(getString(R.string.close_confirmation), new AlertListner() {
             @Override
             public void perform() {
+                active = false;
                 startActivity(new Intent(MentoringActivity.this, ListMentorshipActivity.class));
                 finish();
             }
@@ -415,6 +419,13 @@ public class MentoringActivity extends BaseAuthenticateActivity implements ViewP
     protected void onDestroy() {
         super.onDestroy();
         eventBus.unregister(this);
+    }
+
+
+    @Override
+    protected void onResume() {
+        active = true;
+        super.onResume();
     }
 
     @Override

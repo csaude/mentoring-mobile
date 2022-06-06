@@ -1,5 +1,6 @@
 package mz.org.fgh.mentoring.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import mz.org.fgh.mentoring.process.model.Session;
@@ -17,4 +18,6 @@ public interface SessionService {
     List<Session> findAllSessionsToSync();
 
     void deleteSessionsByUuids(List<String> uuids);
+
+    List<Session> findSessionsByUuids(String selectecdItemsUuid);
 }

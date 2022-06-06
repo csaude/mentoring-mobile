@@ -141,7 +141,7 @@ public class LoginActivity extends BaseActivity {
         });
     }
 
-    @OnClick({R.id.reset_password_btn, R.id.reset_password})
+    @OnClick({R.id.reset_password})
     public void resetPassword() {
         startActivity(new Intent(this, ResetPasswordActivity.class));
     }

@@ -88,7 +88,7 @@
     <string name="district">Distrito</string>
     <string name="total">Total</string>
 
-    <string name="version">© 2020 © v1.5.3</string>
+    <string name="version">© 2022 © v1.5.4</string>
     <string name="no_result">Sem Resultado</string>
     <string name="no_result_found">Nenhum resultado foi encontrado</string>
     <string name="server_error">Erro de comunicação</string>
@@ -129,4 +129,6 @@
     <string name="tested_must_be_greather_than_positive">Os positivos não devem ser maior que os testados.</string>
     <string name="positive_must_be_greather_than_enrolled">Os inscritos não devem ser maior que os positivos.</string>
     <string name="remeber_send_data_to_server">Possui 5 ou mais registos de tutoria no celular não se esqueça de enviar ao servidor em breve!</string>
+    <string name="delete_confirmation">Deseja remover a(s) tutoria(s)?</string>
+    <string name="sync_confirmation">Deseja enviar a(s) tutoria(s)?</string>
 </resources>

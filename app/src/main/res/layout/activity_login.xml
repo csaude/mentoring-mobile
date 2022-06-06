@@ -45,6 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:drawableLeft="@drawable/ic_baseline_person_gray_24"
             android:hint="Utilizador"
             android:singleLine="true" />
 
@@ -52,11 +53,38 @@
             android:id="@+id/login_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:drawableLeft="@drawable/ic_baseline_lock_gray_24"
             android:hint="@string/password"
-            android:password="true"
+            android:inputType="textPassword"
             android:singleLine="true" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/reset_password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:gravity="right"
+                android:text="@string/forget_password"
+                android:textColor="#00695C"
+                android:textSize="8pt"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -66,39 +94,15 @@
                 android:id="@+id/login_loginButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="30dp"
                 android:background="#00695C"
                 android:text="@string/enter"
-                android:textAllCaps="false"
                 android:textColor="#fff"
                 android:textStyle="bold" />
 
         </RelativeLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal">
 
-            <ImageButton
-                android:id="@+id/reset_password_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#EEEEEE"
-                android:src="@mipmap/ic_forward" />
-
-            <TextView
-                android:id="@+id/reset_password"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
-                android:text="@string/forget_password"
-                android:textColor="#00695C"
-                android:textSize="7pt"
-                android:textStyle="bold|italic" />
-
-        </LinearLayout>
 
 
     </LinearLayout>

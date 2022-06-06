@@ -1,0 +1,18 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activities.ListTutoredActivity">
+
+    <item
+        android:id="@+id/delete_mentorships"
+        android:icon="@android:drawable/ic_menu_delete"
+        android:title="Sync"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/sync_mentorships"
+        android:icon="@android:drawable/ic_menu_upload"
+        android:title="Sync"
+        app:showAsAction="always" />
+</menu>
+

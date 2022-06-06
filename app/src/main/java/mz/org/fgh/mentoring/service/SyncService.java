@@ -10,4 +10,6 @@ public interface SyncService {
     void execute();
 
     void setActivity(final BaseActivity activity);
+
+    void executeByUuids(String uuid);
 }

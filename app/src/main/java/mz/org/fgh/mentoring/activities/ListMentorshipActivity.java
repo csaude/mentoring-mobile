@@ -2,6 +2,8 @@ package mz.org.fgh.mentoring.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -61,6 +63,8 @@ public class ListMentorshipActivity extends BaseAuthenticateActivity implements 
 
     private AlertDialogManager dialogManager;
 
+    public static boolean active = false;
+
     @Override
     protected void onMentoringCreate(Bundle bundle) {
         setContentView(R.layout.activity_list_mentorship);
@@ -95,6 +99,7 @@ public class ListMentorshipActivity extends BaseAuthenticateActivity implements 
             }
         });
 
+        active=true;
         setMentorships();
     }
 
@@ -130,8 +135,15 @@ public class ListMentorshipActivity extends BaseAuthenticateActivity implements 
 
         switch (item.getItemId()) {
             case R.id.mentoring_menu_sync:
-                syncService.setActivity(this);
-                syncService.execute();
+
+                dialogManager.showAlert(getString(R.string.sync_confirmation), new AlertListner() {
+                    @Override
+                    public void perform() {
+                        syncService.setActivity(ListMentorshipActivity.this);
+                        syncService.execute();
+                    }
+                });
+
                 break;
         }
 
@@ -148,7 +160,7 @@ public class ListMentorshipActivity extends BaseAuthenticateActivity implements 
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
             MenuInflater menuInflater = mode.getMenuInflater();
-            menuInflater.inflate(R.menu.tutored_list_menu, menu);
+            menuInflater.inflate(R.menu.mentoring_selected_list_menu, menu);
 
             actionMode = mode;
             selectecdItems = new ArrayList<>();
@@ -162,12 +174,31 @@ public class ListMentorshipActivity extends BaseAuthenticateActivity implements 
         }
 
         @Override
-        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+        public boolean onActionItemClicked(final ActionMode mode, MenuItem item) {
 
             switch (item.getItemId()) {
-                case R.id.delete_tutoreds:
-                    deleteSessions();
-                    mode.finish();
+                case R.id.delete_mentorships:
+
+                    dialogManager.showAlert(getString(R.string.delete_confirmation), new AlertListner() {
+                        @Override
+                        public void perform() {
+                            deleteSessions();
+                            mode.finish();
+                        }
+                    });
+
+                    return true;
+
+                case R.id.sync_mentorships:
+
+                    dialogManager.showAlert(getString(R.string.sync_confirmation), new AlertListner() {
+                        @Override
+                        public void perform() {
+                            syncSessions();
+                            mode.finish();
+                        }
+                    });
+
                     return true;
 
                 default:
@@ -219,5 +250,16 @@ public class ListMentorshipActivity extends BaseAuthenticateActivity implements 
     private void deleteSessions(){
         sessionService.deleteSessionsByUuids(this.selectecdItemsUuid);
         setMentorships();
+    }
+
+    private void syncSessions(){
+        syncService.setActivity(this);
+        syncService.executeByUuids(this.selectecdItemsUuid.toString().replaceAll("\\[","'").replaceAll("\\]","'").replaceAll("\\,","','"));
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        active = false;
     }
 }

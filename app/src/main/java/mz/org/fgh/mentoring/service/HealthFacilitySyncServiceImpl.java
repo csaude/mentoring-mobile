@@ -102,4 +102,9 @@ public class HealthFacilitySyncServiceImpl implements SyncService, HealthFacilit
     public void setActivity(BaseActivity activity) {
         this.activity = activity;
     }
+
+    @Override
+    public void executeByUuids(String uuid) {
+
+    }
 }

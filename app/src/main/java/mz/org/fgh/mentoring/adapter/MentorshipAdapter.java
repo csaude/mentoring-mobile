@@ -34,9 +34,6 @@ public class MentorshipAdapter extends BaseAbstractAdapter {
     @BindView(R.id.process_date)
     TextView sessionDate;
 
-    @BindView(R.id.tutored_name)
-    TextView tutoredName;
-
     private Context context;
 
     private List<Session> sessions;

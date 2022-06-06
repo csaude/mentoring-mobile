@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -110,6 +111,31 @@ public class SessionDAOImpl extends GenericDAOImpl<Session> implements SessionDA
         SQLiteDatabase database = getReadableDatabase();
 
         Cursor cursor = database.rawQuery(QUERY.findAllToSync, null);
+        List<Session> sessions = new ArrayList<>();
+
+        while (cursor.moveToNext()) {
+            Session session = getPopulatedEntity(cursor);
+            sessions.add(session);
+        }
+
+        database.close();
+        cursor.close();
+
+        return sessions;
+    }
+
+    @Override
+    public List<Session> findSessionsByUuids(String uuids) {
+        SQLiteDatabase database = getReadableDatabase();
+
+        String findToSyncByUuid = "SELECT s.id, s.uuid, s.form_uuid, s.health_facility_uuid, f.name as form_name, s.tutored_uuid, t.name || ' ' || t.surname as tutored_name, " +
+                "hf.health_facility as health_facility, s.start_date, s.end_date, s.performed_date, s.status, s.reason, s.created_at, f.target_patient, f.target_file " +
+                "FROM " + TABLE_NAME + " s " +
+                "INNER JOIN forms f ON s.form_uuid = f.uuid " +
+                "INNER JOIN tutoreds t ON s.tutored_uuid = t.uuid " +
+                "INNER JOIN health_facilities hf ON s.health_facility_uuid = hf.uuid AND s.uuid IN ("+uuids+") ORDER BY s.id ASC LIMIT 5";
+
+        Cursor cursor = database.rawQuery(findToSyncByUuid, null);
         List<Session> sessions = new ArrayList<>();
 
         while (cursor.moveToNext()) {

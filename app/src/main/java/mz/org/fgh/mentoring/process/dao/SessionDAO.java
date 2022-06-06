@@ -30,12 +30,15 @@ public interface SessionDAO extends GenericDAO<Session> {
                 "INNER JOIN tutoreds t ON s.tutored_uuid = t.uuid " +
                 "INNER JOIN health_facilities hf ON s.health_facility_uuid = hf.uuid ORDER BY s.id ASC LIMIT 5";
 
+
         public static final String deleteByUuids = "DELETE s.* FROM sessions s WHERE s.uuid IN (?)";
     }
 
     List<Session> findAll();
 
     List<Session> findAllToSync();
+
+    List<Session> findSessionsByUuids(String uuids);
 
     void deleteByUuids(List<String> uuids);
 

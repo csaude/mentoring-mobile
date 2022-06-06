@@ -87,6 +87,11 @@ public class FormQuestionSyncServiceImpl implements SyncService, FormQuestionSyn
     }
 
     @Override
+    public void executeByUuids(String uuid) {
+
+    }
+
+    @Override
     public void processFormQuestions(List<FormQuestion> formQuestions) {
 
         for (FormQuestion formQuestion : formQuestions) {

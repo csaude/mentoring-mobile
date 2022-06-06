@@ -75,6 +75,11 @@ public class CareerSyncServiceImpl implements SyncService, CareerSyncService {
     }
 
     @Override
+    public void executeByUuids(String uuid) {
+
+    }
+
+    @Override
     public void processCarres(List<Career> careers) {
 
         //TODO: remove when complete the Injection refactory

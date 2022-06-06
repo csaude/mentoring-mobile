@@ -159,4 +159,62 @@ public class MentorshipSyncServiceImpl implements SyncService {
     public void setActivity(BaseActivity activity) {
         this.activity = activity;
     }
+
+    @Override
+    public void executeByUuids(String uuid) {
+        List<Session> sessions = sessionService.findSessionsByUuids(uuid);
+
+        if (sessions.isEmpty()) {
+            Toast.makeText(activity, "Nenhum dado disponivel para sincronizar!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        List<Session> sessionsToSync = sessionService.findSessionsByUuids(uuid);
+
+        MentorshipBeanResource mentorshipBeanResource = prepareSyncData(sessionsToSync);
+        SyncDataService syncDataService = retrofit.create(SyncDataService.class);
+
+        Call<MentorshipBeanResource> call = syncDataService.syncMentorships(mentorshipBeanResource);
+        final ProgressDialog dialog = new ProgressDialog(activity);
+        dialog.setCancelable(false);
+        dialog.setTitle("Aguarde");
+        dialog.setMessage("A enviar até 5 sessões de tutoria desta vez...");
+        dialog.show();
+
+        call.enqueue(new Callback<MentorshipBeanResource>() {
+                         @Override
+                         public void onResponse(Call<MentorshipBeanResource> request, Response<MentorshipBeanResource> response) {
+                             MentorshipBeanResource resource = response.body();
+
+                             if (resource == null) {
+                                 errorDialog(dialog);
+                                 return;
+                             }
+
+                             List<String> sessionUuids = resource.getSessionUuids();
+
+                             sessionService.deleteSessionsByUuids(sessionUuids);
+
+                             dialog.dismiss();
+
+                             new AlertDialog.Builder(activity)
+                                     .setTitle("Tutorias enviadas")
+                                     .setMessage(sessionUuids.size() ==1 ? "1 Sessão de Tutoria foi enviada com sucesso!" : sessionUuids.size()+" Sessões de Tutoria foram enviadas com sucesso!")
+                                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                         public void onClick(DialogInterface dialog, int which) {
+                                             ((ListMentorshipActivity) activity).setMentorships();
+                                         }
+                                     })
+                                     .setIcon(android.R.drawable.ic_dialog_info)
+                                     .setCancelable(false)
+                                     .show();
+                         }
+
+                         @Override
+                         public void onFailure(Call<MentorshipBeanResource> call, Throwable t) {
+                             errorDialog(dialog);
+                         }
+                     }
+        );
+    }
 }

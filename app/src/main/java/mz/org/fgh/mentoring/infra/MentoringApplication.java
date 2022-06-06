@@ -21,6 +21,8 @@ import java.io.IOException;
 
 import io.fabric.sdk.android.Fabric;
 import mz.org.fgh.mentoring.activities.BaseAuthenticateActivity;
+import mz.org.fgh.mentoring.activities.ListMentorshipActivity;
+import mz.org.fgh.mentoring.activities.MentoringActivity;
 import mz.org.fgh.mentoring.activities.SessionsReportActivity;
 import mz.org.fgh.mentoring.component.DaggerMentoringComponent;
 import mz.org.fgh.mentoring.component.MentoringComponent;
@@ -44,7 +46,7 @@ public class MentoringApplication extends Application implements LifecycleObserv
     protected void onAppSentToBackground() {
         Log.d(getClass().getSimpleName(), "Application event ON_START");
         if(BaseAuthenticateActivity.instance != null &&
-                !(BaseAuthenticateActivity.instance instanceof SessionsReportActivity)) {
+                !(BaseAuthenticateActivity.instance instanceof SessionsReportActivity) && !MentoringActivity.active && !ListMentorshipActivity.active) {
             Intent intent = new Intent(BaseAuthenticateActivity.instance, SessionsReportActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);

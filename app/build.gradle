@@ -65,4 +65,7 @@ dependencies {
     }
 
     implementation "android.arch.lifecycle:extensions:$lifecycle_version"
+    // https://mvnrepository.com/artifact/com.squareup.okhttp/okhttp
+    implementation group: 'com.squareup.okhttp', name: 'okhttp', version: '2.7.5'
+
 }

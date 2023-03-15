@@ -44,7 +44,7 @@ public class HealthFacilitySyncServiceImpl implements SyncService, HealthFacilit
         MentoringApplication application = (MentoringApplication) activity.getApplication();
         Retrofit retrofit = application.getRetrofit();
         SyncDataService syncDataService = retrofit.create(SyncDataService.class);
-        Call<GenericWrapper> call = syncDataService.healthFacilities();
+        Call<GenericWrapper> call = syncDataService.healthFacilities(application.getAuth().getUser().getUuid());
 
         final ProgressDialog dialog = ProgressDialog.show(activity, "Aguarde", "A receber dados....", true, true);
 
@@ -77,25 +77,28 @@ public class HealthFacilitySyncServiceImpl implements SyncService, HealthFacilit
     @Override
     public void processHealthFacilities(List<HealthFacility> healthFacilities) {
 
-        //TODO: remove when implement Injection in all services
-        if (activity != null) {
-            districtDAO = new DistrictDAOImpl(activity);
-            healthFacilityDAO = new HealthFacilityDAOImpl(activity);
-        }
 
-        for (HealthFacility healthFacility : healthFacilities) {
-
-            if (!districtDAO.exist(healthFacility.getDistrict().getUuid())) {
-                districtDAO.create(healthFacility.getDistrict());
+        if (healthFacilities != null && !healthFacilities.isEmpty() && healthFacilities.size() > 0) {
+            //TODO: remove when implement Injection in all services
+            if (activity != null) {
+                districtDAO = new DistrictDAOImpl(activity);
+                healthFacilityDAO = new HealthFacilityDAOImpl(activity);
             }
 
-            if (!healthFacilityDAO.exist(healthFacility.getUuid())) {
-                healthFacilityDAO.create(healthFacility);
-            }
-        }
+                for (HealthFacility healthFacility : healthFacilities) {
 
-        districtDAO.close();
-        healthFacilityDAO.close();
+                    if (!districtDAO.exist(healthFacility.getDistrict().getUuid())) {
+                        districtDAO.create(healthFacility.getDistrict());
+                    }
+
+                    if (!healthFacilityDAO.exist(healthFacility.getUuid())) {
+                        healthFacilityDAO.create(healthFacility);
+                    }
+                }
+
+            districtDAO.close();
+            healthFacilityDAO.close();
+        }
     }
 
     @Override

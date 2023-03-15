@@ -14,7 +14,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -76,12 +78,15 @@ public class MainActivity extends BaseAuthenticateActivity implements AdapterVie
 
     private void loadMainItems() {
 
-        ItemAdapter itemAdapter =
-                new ItemAdapter(this, Arrays.asList(new MentoringItem(getString(R.string.mentoring_process), R.mipmap.ic_process, ItemType.MENTORING_PROCESS),
-                        new MentoringItem(getString(R.string.tudoreds), R.mipmap.ic_tutored, ItemType.TUDOREDS),
-                        new MentoringItem(getString(R.string.indicators), R.mipmap.ic_indicators, ItemType.INDICATORS),
-                        new MentoringItem(getString(R.string.reports), R.mipmap.ic_report, ItemType.REPORTS)));
-
+        List<MentoringItem> mentoringItemList = new ArrayList<>();
+        mentoringItemList.add(new MentoringItem(getString(R.string.mentoring_process), R.mipmap.ic_process, ItemType.MENTORING_PROCESS));
+        mentoringItemList.add(new MentoringItem(getString(R.string.tudoreds), R.mipmap.ic_tutored, ItemType.TUDOREDS));
+        if (application.getAuth().getUser().getTutor().getPartner() != null &&
+                application.getAuth().getUser().getTutor().getPartner().getName().equalsIgnoreCase("FGH")) {
+            mentoringItemList.add(new MentoringItem(getString(R.string.indicators), R.mipmap.ic_indicators, ItemType.INDICATORS));
+        }
+        mentoringItemList.add(new MentoringItem(getString(R.string.reports), R.mipmap.ic_report, ItemType.REPORTS));
+        ItemAdapter itemAdapter = new ItemAdapter(this, mentoringItemList);
         listItems.setAdapter(itemAdapter);
     }
 

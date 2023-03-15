@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric.sdk.android.Fabric;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import io.fabric.sdk.android.Fabric;
 import mz.org.fgh.mentoring.activities.BaseAuthenticateActivity;
@@ -28,6 +29,7 @@ import mz.org.fgh.mentoring.component.DaggerMentoringComponent;
 import mz.org.fgh.mentoring.component.MentoringComponent;
 import mz.org.fgh.mentoring.module.MentoringModule;
 import mz.org.fgh.mentoring.util.ServerConfig;
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
@@ -75,8 +77,16 @@ public class MentoringApplication extends Application implements LifecycleObserv
         mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true)
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-        retrofit = new Retrofit.Builder().baseUrl(serverConfig.getProtocol() + "://" + serverConfig.getAddress() +
-                serverConfig.getService()).addConverterFactory(JacksonConverterFactory.create(mapper))
+        final OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .connectTimeout(1, TimeUnit.MINUTES)
+                .readTimeout(60, TimeUnit.SECONDS)
+                .writeTimeout(60, TimeUnit.SECONDS)
+                .build();
+
+        retrofit = new Retrofit.Builder()
+                .baseUrl(serverConfig.getProtocol() + "://" + serverConfig.getAddress() + serverConfig.getService())
+                .client(okHttpClient)
+                .addConverterFactory(JacksonConverterFactory.create(mapper))
                 .build();
     }
 

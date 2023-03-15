@@ -19,8 +19,8 @@ import retrofit2.http.QueryMap;
  */
 public interface SyncDataService {
 
-    @GET("healthfacilities")
-    Call<GenericWrapper> healthFacilities();
+    @GET("healthfacilities/tutor/{uuid}")
+    Call<GenericWrapper> healthFacilities(@Path("uuid") final String uuid);
 
     @GET("careers")
     Call<GenericWrapper> careers();

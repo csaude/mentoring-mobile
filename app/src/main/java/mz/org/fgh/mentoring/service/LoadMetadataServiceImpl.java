@@ -56,6 +56,7 @@ public class LoadMetadataServiceImpl implements LoadMetadataService {
         progressDialog.show();
 
         SyncDataService syncDataService = retrofit.create(SyncDataService.class);
+
         Call<GenericWrapper> call = syncDataService.loadMetadata(userContext.getUuid());
 
         call.enqueue(new Callback<GenericWrapper>() {

@@ -15,6 +15,8 @@ public class Tutor extends GenericEntity {
 
     private String phoneNumber;
 
+    private Partner partner;
+
     public String getName() {
         return name;
     }
@@ -45,5 +47,13 @@ public class Tutor extends GenericEntity {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public Partner getPartner() {
+        return partner;
+    }
+
+    public void setPartner(Partner partner) {
+        this.partner = partner;
     }
 }

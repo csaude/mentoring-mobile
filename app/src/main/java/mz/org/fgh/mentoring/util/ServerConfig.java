@@ -5,9 +5,12 @@ package mz.org.fgh.mentoring.util;
  */
 public enum ServerConfig {
 
-    ACCOUNT_MANAGER("https", "prod.fgh.org.mz", "/account-manager-web/services/"),
+    ACCOUNT_MANAGER("https", "mentdev.fgh.org.mz", "/account-manager-web/services/"),
 
-    MENTORING("https", "prod.fgh.org.mz", "/mentoring-integ/services/");
+    //MENTORING("https", "mentdev.fgh.org.mz", "/mentoring-integ/services/");
+
+
+    MENTORING("http", "10.0.2.2:8080", "/mentoring_integ_war/services/");
 
     private String protocol;
     private String address;

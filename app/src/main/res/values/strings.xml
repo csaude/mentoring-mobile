@@ -131,4 +131,13 @@
     <string name="remeber_send_data_to_server">Possui 5 ou mais registos de tutoria no celular não se esqueça de enviar ao servidor em breve!</string>
     <string name="delete_confirmation">Deseja remover a(s) tutoria(s)?</string>
     <string name="sync_confirmation">Deseja enviar a(s) tutoria(s)?</string>
+
+    <string name="settings_synced_with_success">Configurações sincronizadas com sucesso!</string>
+
+    <string name="session_submission_state">Período de submissão</string>
+    <string name="session_submission_state_expired">Período de submissão expirado.</string>
+    <string name="session_submission_state_valid">Período de submissão válido.</string>
+
+    <string name="session_submission_state_expired_alert">O período de submissão da tutoria está expirado. Não poderá enviar esta tutoria. Deseja cancelar este processo?</string>
+
 </resources>

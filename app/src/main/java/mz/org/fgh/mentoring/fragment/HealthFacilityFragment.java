@@ -16,28 +16,38 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.xml.datatype.Duration;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnItemSelected;
+import mz.org.fgh.mentoring.AlertListner;
 import mz.org.fgh.mentoring.R;
+import mz.org.fgh.mentoring.activities.ListMentorshipActivity;
 import mz.org.fgh.mentoring.component.MentoringComponent;
 import mz.org.fgh.mentoring.config.dao.DistrictDAO;
 import mz.org.fgh.mentoring.config.dao.HealthFacilityDAO;
+import mz.org.fgh.mentoring.config.dao.SettingDAO;
 import mz.org.fgh.mentoring.config.model.Cabinet;
 import mz.org.fgh.mentoring.config.model.District;
 import mz.org.fgh.mentoring.config.model.Form;
 import mz.org.fgh.mentoring.config.model.FormType;
 import mz.org.fgh.mentoring.config.model.HealthFacility;
+import mz.org.fgh.mentoring.config.model.Setting;
+import mz.org.fgh.mentoring.dialog.AlertDialogManager;
 import mz.org.fgh.mentoring.event.CabinetEvent;
 import mz.org.fgh.mentoring.event.DoorEvent;
 import mz.org.fgh.mentoring.event.ErrorEvent;
@@ -109,6 +119,9 @@ public class HealthFacilityFragment extends BaseFragment implements DatePickerDi
     HealthFacilityDAO healthFacilityDAO;
 
     @Inject
+    SettingDAO settingDAO;
+
+    @Inject
     EventBus eventBus;
 
     @Inject
@@ -140,6 +153,8 @@ public class HealthFacilityFragment extends BaseFragment implements DatePickerDi
     private String door;
 
     private String timeOfDay;
+
+    private AlertDialogManager dialogManager;
 
     @Override
     public int getResourceId() {
@@ -175,6 +190,8 @@ public class HealthFacilityFragment extends BaseFragment implements DatePickerDi
 
         configureDoorAndTimeOfDaySpinner();
         configureCustomLabels();
+
+        dialogManager = new AlertDialogManager(this.getActivity());
     }
 
     private void configureCabinetSpinner() {
@@ -406,6 +423,43 @@ public class HealthFacilityFragment extends BaseFragment implements DatePickerDi
             return;
         }
 
+        Setting setting = this.settingDAO.findByDesignation("SessionLimitDate");
+        int settingValue = setting.getValue();
+
+        Calendar calendar = Calendar.getInstance();
+        Date currentDate = new Date();
+        calendar.setTime(currentDate);
+        int currentYear = calendar.get(Calendar.YEAR);
+        int currentMonth = calendar.get(Calendar.MONTH) + 1;
+        String dateInString = settingValue + "-" + currentMonth + "-" + currentYear;
+        Date sessionSubmissionLimitDate = DateUtil.parse(dateInString, DateUtil.NORMAL_PATTERN);
+
+        Calendar subCalendar = Calendar.getInstance();
+        subCalendar.setTime(sessionSubmissionLimitDate);
+
+        Calendar performeCalendar = Calendar.getInstance();
+
+        Date performedDateValue = DateUtil.parse(performedDate.getText().toString(), DateUtil.NORMAL_PATTERN);
+        performeCalendar.setTime(performedDateValue);
+
+        int performedDateMonth = performeCalendar.get(Calendar.MONTH) + 1 ;
+        int submissionDateMonth = subCalendar.get(Calendar.MONTH) + 1;
+        int performedDateYear = performeCalendar.get(Calendar.YEAR);
+        int submissionDateYear = subCalendar.get(Calendar.YEAR);
+
+        boolean isValidSubmissionPeriod = sessionSubmissionLimitDate.after(performedDateValue) &&
+                (performedDateMonth == submissionDateMonth
+                        && performedDateYear == submissionDateYear );
+
+        if(!isValidSubmissionPeriod) {
+            dialogManager.showAlert(getString(R.string.session_submission_state_expired_alert), new AlertListner() {
+
+               @Override
+                public void perform() {
+                  HealthFacilityFragment.this.getActivity().finish();
+                }
+            });
+        }
         /**
          * This validation is applicable only for forms different of 'Monitoria do ATS'
          */

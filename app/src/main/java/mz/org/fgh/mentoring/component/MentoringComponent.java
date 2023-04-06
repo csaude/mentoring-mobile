@@ -1,39 +1,13 @@
 package mz.org.fgh.mentoring.component;
 
-import javax.inject.Singleton;
-
 import dagger.Component;
-import mz.org.fgh.mentoring.activities.ChangePasswordActivity;
-import mz.org.fgh.mentoring.activities.IndicatorActivity;
-import mz.org.fgh.mentoring.activities.ListIndicatorsActivity;
-import mz.org.fgh.mentoring.activities.ListMentorshipActivity;
-import mz.org.fgh.mentoring.activities.ListTutoredActivity;
-import mz.org.fgh.mentoring.activities.LoginActivity;
-import mz.org.fgh.mentoring.activities.MainActivity;
-import mz.org.fgh.mentoring.activities.MentoringActivity;
-import mz.org.fgh.mentoring.activities.ReportActivity;
-import mz.org.fgh.mentoring.activities.ResetPasswordActivity;
-import mz.org.fgh.mentoring.activities.SessionsReportActivity;
-import mz.org.fgh.mentoring.activities.TutoredActivity;
+import mz.org.fgh.mentoring.activities.*;
+import mz.org.fgh.mentoring.adapter.MentorshipAdapter;
 import mz.org.fgh.mentoring.adapter.QuestionAdapter;
-import mz.org.fgh.mentoring.fragment.BaseFragment;
-import mz.org.fgh.mentoring.fragment.BooleanFragment;
-import mz.org.fgh.mentoring.fragment.ConfirmationFragment;
-import mz.org.fgh.mentoring.fragment.FormsFragment;
-import mz.org.fgh.mentoring.fragment.HealthFacilityFragment;
-import mz.org.fgh.mentoring.fragment.IndicatorHealthFacilityFragment;
-import mz.org.fgh.mentoring.fragment.IterationTypeFragment;
-import mz.org.fgh.mentoring.fragment.NumericFragment;
-import mz.org.fgh.mentoring.fragment.PageFragment;
-import mz.org.fgh.mentoring.fragment.PeriodFragment;
-import mz.org.fgh.mentoring.fragment.QuestionFragment;
-import mz.org.fgh.mentoring.fragment.ReportCurrentStageFragment;
-import mz.org.fgh.mentoring.fragment.ReportTypeFragment;
-import mz.org.fgh.mentoring.fragment.SaveFragment;
-import mz.org.fgh.mentoring.fragment.TextFragment;
-import mz.org.fgh.mentoring.fragment.SessionReportFragment;
-import mz.org.fgh.mentoring.fragment.TutoredFragment;
+import mz.org.fgh.mentoring.fragment.*;
 import mz.org.fgh.mentoring.module.MentoringModule;
+
+import javax.inject.Singleton;
 
 /**
  * Created by Stélio Moiane on 6/28/17.
@@ -97,4 +71,6 @@ public interface MentoringComponent {
     void inject(SessionsReportActivity activity);
 
     void inject(SessionReportFragment fragment);
+
+    void inject(MentorshipAdapter adapter);
 }

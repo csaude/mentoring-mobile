@@ -45,6 +45,9 @@ public class LoadMetadataServiceImpl implements LoadMetadataService {
     FormTargetService formTargetService;
 
     @Inject
+    SettingSyncService settingSyncService;
+
+    @Inject
     public LoadMetadataServiceImpl() {
     }
 
@@ -72,6 +75,7 @@ public class LoadMetadataServiceImpl implements LoadMetadataService {
 
                 healthFacilitySyncService.processHealthFacilities(data.getHealthFacilities());
                 careerSyncService.processCarres(data.getCareers());
+                settingSyncService.processSettings(data.getSettings());
                 if(data.getFormQuestions() != null) {
                     formQuestionSyncService.processFormQuestions(data.getFormQuestions());
                 }

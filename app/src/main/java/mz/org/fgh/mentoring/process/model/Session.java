@@ -1,15 +1,16 @@
 package mz.org.fgh.mentoring.process.model;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 import mz.org.fgh.mentoring.config.model.Cabinet;
 import mz.org.fgh.mentoring.config.model.Form;
 import mz.org.fgh.mentoring.config.model.HealthFacility;
 import mz.org.fgh.mentoring.model.GenericEntity;
 import mz.org.fgh.mentoring.model.Tutored;
 import mz.org.fgh.mentoring.util.DateUtil;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by steliomo on 1/24/18.
@@ -39,6 +40,8 @@ public class Session extends GenericEntity {
 
     /*Include tutored metadata(name) on Session, this will be used to displayed on Sessions list.*/
     private Tutored tutored;
+
+    private Boolean sessionSubmitionState;
 
     public Session() {
         this.mentorships = new ArrayList<>();
@@ -156,6 +159,32 @@ public class Session extends GenericEntity {
 
     public void setTutored(Tutored tutored) {
         this.tutored = tutored;
+    }
+
+    public Boolean getSessionSubmitionState() {
+        return sessionSubmitionState;
+    }
+
+    public void setSessionSubmitionState(Boolean sessionSubmitionState) {
+        this.sessionSubmitionState = sessionSubmitionState;
+    }
+
+    public boolean isSessionAvailableToSync(final Date sessionSubmissionLimitDate){
+        Calendar performeCalendar = Calendar.getInstance();
+        Date performedDateValue = DateUtil.parse(this.getPerformedDate(), DateUtil.NORMAL_PATTERN);
+        performeCalendar.setTime(performedDateValue);
+
+        Calendar subCalendar = Calendar.getInstance();
+        subCalendar.setTime(sessionSubmissionLimitDate);
+
+        int performedDateMonth = performeCalendar.get(Calendar.MONTH) + 1 ;
+        int submissionDateMonth = subCalendar.get(Calendar.MONTH) + 1;
+        int performedDateYear = performeCalendar.get(Calendar.YEAR);
+        int submissionDateYear = subCalendar.get(Calendar.YEAR);
+        boolean isValidSubmissionPeriod = sessionSubmissionLimitDate.after(performedDateValue) &&
+                (performedDateMonth == submissionDateMonth
+                        && performedDateYear == submissionDateYear );
+        return isValidSubmissionPeriod;
     }
 
 }

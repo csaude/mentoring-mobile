@@ -1,9 +1,6 @@
 package mz.org.fgh.mentoring.config.model;
 
-import mz.org.fgh.mentoring.service.CareerSyncServiceImpl;
-import mz.org.fgh.mentoring.service.FormQuestionSyncServiceImpl;
-import mz.org.fgh.mentoring.service.HealthFacilitySyncServiceImpl;
-import mz.org.fgh.mentoring.service.SyncService;
+import mz.org.fgh.mentoring.service.*;
 
 /**
  * Created by Stélio Moiane on 11/12/16.
@@ -14,7 +11,9 @@ public enum Location {
 
     HEALTH_FACILITIES("Unidades Sanitárias", new HealthFacilitySyncServiceImpl()),
 
-    FORMS("Formulários", new FormQuestionSyncServiceImpl());
+    FORMS("Formulários", new FormQuestionSyncServiceImpl()),
+
+    SETTINGS("Configurações", new SettingSyncServiceImpl());
 
     private String name;
     private SyncService syncService;

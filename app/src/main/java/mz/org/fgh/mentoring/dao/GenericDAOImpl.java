@@ -5,20 +5,19 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import mz.org.fgh.mentoring.model.GenericEntity;
+import mz.org.fgh.mentoring.util.DateUtil;
 
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-
-import mz.org.fgh.mentoring.model.GenericEntity;
-import mz.org.fgh.mentoring.util.DateUtil;
 
 /**
  * Created by Stélio Moiane on 11/9/16.
  */
 public abstract class GenericDAOImpl<T extends GenericEntity> extends SQLiteOpenHelper implements GenericDAO<T> {
 
-    private static final String name = "mentoringdb";
+    private static final String name = "mentoring.db";
     private static final int version = 4;
 
     public GenericDAOImpl(Context context) {
@@ -53,6 +52,7 @@ public abstract class GenericDAOImpl<T extends GenericEntity> extends SQLiteOpen
         db.execSQL(ALTER_MENTORSHIP_TABLE_ADD_TIME_OF_DAY_COLUMN);
         db.execSQL(ALTER_MENTORSHIP_TABLE_ADD_DOOR_COLUMN);
         db.execSQL(ALTER_SESSION_TABLE_ADD_TUTORED_COLUMN);
+        db.execSQL(SETTINGS_TABLE);
     }
 
     @Override

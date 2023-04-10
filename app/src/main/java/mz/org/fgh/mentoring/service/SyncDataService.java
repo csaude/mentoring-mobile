@@ -1,18 +1,12 @@
 package mz.org.fgh.mentoring.service;
 
-import java.util.List;
-import java.util.Map;
-
 import mz.org.fgh.mentoring.model.GenericWrapper;
 import mz.org.fgh.mentoring.model.TutoredBeanResource;
-import mz.org.fgh.mentoring.process.model.Mentorship;
 import mz.org.fgh.mentoring.process.model.MentorshipBeanResource;
 import retrofit2.Call;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.POST;
-import retrofit2.http.Path;
-import retrofit2.http.QueryMap;
+import retrofit2.http.*;
+
+import java.util.Map;
 
 /**
  * Created by Stélio Moiane on 10/25/16.
@@ -39,4 +33,7 @@ public interface SyncDataService {
 
     @GET("mentorships")
     Call<GenericWrapper> fetchMentorships(@QueryMap(encoded = true) Map<String, String> options);
+
+    @GET("settings/tutor/{uuid}")
+    Call<GenericWrapper> settings(@Path("uuid") final String uuid);
 }

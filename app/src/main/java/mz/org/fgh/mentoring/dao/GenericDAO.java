@@ -2,11 +2,10 @@ package mz.org.fgh.mentoring.dao;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-
-import java.util.List;
-
 import mz.org.fgh.mentoring.config.model.FormType;
 import mz.org.fgh.mentoring.model.GenericEntity;
+
+import java.util.List;
 
 /**
  * Created by Stélio Moiane on 11/9/16.
@@ -64,6 +63,8 @@ public interface GenericDAO<T extends GenericEntity> {
     String ALTER_MENTORSHIP_TABLE_ADD_DOOR_COLUMN = "ALTER TABLE mentorships ADD COLUMN door TEXT";
 
     String ALTER_SESSION_TABLE_ADD_TUTORED_COLUMN = "ALTER TABLE sessions ADD COLUMN tutored_uuid TEXT";
+
+    String SETTINGS_TABLE = "CREATE TABLE settings(id INTEGER PRIMARY KEY, designation TEXT, value INTEGER, uuid TEXT UNIQUE, created_at TEXT, life_cycle_status TEXT);";
 
     String getTableName();
 

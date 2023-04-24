@@ -424,41 +424,44 @@ public class HealthFacilityFragment extends BaseFragment implements DatePickerDi
         }
 
         Setting setting = this.settingDAO.findByDesignation("SessionLimitDate");
-        int settingValue = setting.getValue();
 
-        Calendar calendar = Calendar.getInstance();
-        Date currentDate = new Date();
-        calendar.setTime(currentDate);
-        int currentYear = calendar.get(Calendar.YEAR);
-        int currentMonth = calendar.get(Calendar.MONTH) + 1;
-        String dateInString = settingValue + "-" + currentMonth + "-" + currentYear;
-        Date sessionSubmissionLimitDate = DateUtil.parse(dateInString, DateUtil.NORMAL_PATTERN);
+        if (setting != null) {
+            int settingValue = setting.getValue();
 
-        Calendar subCalendar = Calendar.getInstance();
-        subCalendar.setTime(sessionSubmissionLimitDate);
+            Calendar calendar = Calendar.getInstance();
+            Date currentDate = new Date();
+            calendar.setTime(currentDate);
+            int currentYear = calendar.get(Calendar.YEAR);
+            int currentMonth = calendar.get(Calendar.MONTH) + 1;
+            String dateInString = settingValue + "-" + currentMonth + "-" + currentYear;
+            Date sessionSubmissionLimitDate = DateUtil.parse(dateInString, DateUtil.NORMAL_PATTERN);
 
-        Calendar performeCalendar = Calendar.getInstance();
+            Calendar subCalendar = Calendar.getInstance();
+            subCalendar.setTime(sessionSubmissionLimitDate);
 
-        Date performedDateValue = DateUtil.parse(performedDate.getText().toString(), DateUtil.NORMAL_PATTERN);
-        performeCalendar.setTime(performedDateValue);
+            Calendar performeCalendar = Calendar.getInstance();
 
-        int performedDateMonth = performeCalendar.get(Calendar.MONTH) + 1 ;
-        int submissionDateMonth = subCalendar.get(Calendar.MONTH) + 1;
-        int performedDateYear = performeCalendar.get(Calendar.YEAR);
-        int submissionDateYear = subCalendar.get(Calendar.YEAR);
+            Date performedDateValue = DateUtil.parse(performedDate.getText().toString(), DateUtil.NORMAL_PATTERN);
+            performeCalendar.setTime(performedDateValue);
 
-        boolean isValidSubmissionPeriod = sessionSubmissionLimitDate.after(performedDateValue) &&
-                (performedDateMonth == submissionDateMonth
-                        && performedDateYear == submissionDateYear );
+            int performedDateMonth = performeCalendar.get(Calendar.MONTH) + 1;
+            int submissionDateMonth = subCalendar.get(Calendar.MONTH) + 1;
+            int performedDateYear = performeCalendar.get(Calendar.YEAR);
+            int submissionDateYear = subCalendar.get(Calendar.YEAR);
 
-        if(!isValidSubmissionPeriod) {
-            dialogManager.showAlert(getString(R.string.session_submission_state_expired_alert), new AlertListner() {
+            boolean isValidSubmissionPeriod = sessionSubmissionLimitDate.after(performedDateValue) &&
+                    (performedDateMonth == submissionDateMonth
+                            && performedDateYear == submissionDateYear);
 
-               @Override
-                public void perform() {
-                  HealthFacilityFragment.this.getActivity().finish();
-                }
-            });
+            if (!isValidSubmissionPeriod) {
+                dialogManager.showAlert(getString(R.string.session_submission_state_expired_alert), new AlertListner() {
+
+                    @Override
+                    public void perform() {
+                        HealthFacilityFragment.this.getActivity().finish();
+                    }
+                });
+            }
         }
         /**
          * This validation is applicable only for forms different of 'Monitoria do ATS'

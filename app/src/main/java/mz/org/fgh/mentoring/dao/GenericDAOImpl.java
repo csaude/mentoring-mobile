@@ -57,16 +57,21 @@ public abstract class GenericDAOImpl<T extends GenericEntity> extends SQLiteOpen
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL(FORM_TARGETS_TABLE);
-        db.execSQL(ALTER_MENTORSHIP_TABLE_ADD_ITERATION_TYPE_COLUMN);
-        db.execSQL(ALTER_MENTORSHIP_TABLE_ADD_ITERATION_NUMBER_COLUMN);
-        db.execSQL(ALTER_FORM_TABLE_ADD_PATIENT_TARGET);
-        db.execSQL(ALTER_FORM_TABLE_ADD_FILE_TARGET);
-        db.execSQL(ALTER_FORM_QUESTION_ADD_APPLICABLE);
-        db.execSQL(ALTER_TUTORED_TABLE_ADD_LIFE_CYCLE_STATUS);
-        db.execSQL(ALTER_MENTORSHIP_TABLE_ADD_TIME_OF_DAY_COLUMN);
-        db.execSQL(ALTER_MENTORSHIP_TABLE_ADD_DOOR_COLUMN);
-        db.execSQL(ALTER_SESSION_TABLE_ADD_TUTORED_COLUMN);
+        if (newVersion <= 4) {
+            db.execSQL(FORM_TARGETS_TABLE);
+            db.execSQL(ALTER_MENTORSHIP_TABLE_ADD_ITERATION_TYPE_COLUMN);
+            db.execSQL(ALTER_MENTORSHIP_TABLE_ADD_ITERATION_NUMBER_COLUMN);
+            db.execSQL(ALTER_FORM_TABLE_ADD_PATIENT_TARGET);
+            db.execSQL(ALTER_FORM_TABLE_ADD_FILE_TARGET);
+            db.execSQL(ALTER_FORM_QUESTION_ADD_APPLICABLE);
+            db.execSQL(ALTER_TUTORED_TABLE_ADD_LIFE_CYCLE_STATUS);
+            db.execSQL(ALTER_MENTORSHIP_TABLE_ADD_TIME_OF_DAY_COLUMN);
+            db.execSQL(ALTER_MENTORSHIP_TABLE_ADD_DOOR_COLUMN);
+            db.execSQL(ALTER_SESSION_TABLE_ADD_TUTORED_COLUMN);
+        } else if (newVersion == 5) {
+            db.execSQL(SETTINGS_TABLE);
+
+        }
     }
 
     @Override

@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import mz.org.fgh.mentoring.config.model.Setting;
 import mz.org.fgh.mentoring.dao.GenericDAOImpl;
 import mz.org.fgh.mentoring.model.LifeCycleStatus;
+import mz.org.fgh.mentoring.util.Utilities;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +64,8 @@ public class SettingDAOImpl extends GenericDAOImpl<Setting> implements SettingDA
 
         database.close();
         cursor.close();
+        if (!Utilities.listHasElements((ArrayList<?>) settings)) return null;
+
         return settings.get(0);
     }
 

@@ -70,7 +70,12 @@ public class MentorshipSyncServiceImpl implements SyncService {
 
         List<Session> sessionsToSync = sessionService.findAllSessionsToSync();
 
-        List<Session> validSessions = getSessionWithValidSubmissionPeriod(sessionsToSync);
+        Setting setting = this.settingDAO.findByDesignation("SessionLimitDate");
+        List<Session> validSessions;
+
+        if (setting != null) {
+            validSessions = getSessionWithValidSubmissionPeriod(sessionsToSync);
+        } else validSessions = sessionsToSync;
 
         MentorshipBeanResource mentorshipBeanResource = prepareSyncData(validSessions);
 

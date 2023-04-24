@@ -70,22 +70,23 @@ public class MentorshipAdapter extends BaseAbstractAdapter {
         Session session = sessions.get(position);
 
         Setting setting = this.settingDAO.findByDesignation("SessionLimitDate");
-        int settingValue = setting.getValue();
+        if (setting != null) {
+            int settingValue = setting.getValue();
 
-        Calendar calendar = Calendar.getInstance();
-        Date currentDate = new Date();
-        calendar.setTime(currentDate);
-        int currentYear = calendar.get(Calendar.YEAR);
-        int currentMonth = calendar.get(Calendar.MONTH) + 1;
-        String dateInString = settingValue + "-" + currentMonth + "-" + currentYear;
-        Date sessionSubmissionLimitDate = DateUtil.parse(dateInString, DateUtil.NORMAL_PATTERN);
+            Calendar calendar = Calendar.getInstance();
+            Date currentDate = new Date();
+            calendar.setTime(currentDate);
+            int currentYear = calendar.get(Calendar.YEAR);
+            int currentMonth = calendar.get(Calendar.MONTH) + 1;
+            String dateInString = settingValue + "-" + currentMonth + "-" + currentYear;
+            Date sessionSubmissionLimitDate = DateUtil.parse(dateInString, DateUtil.NORMAL_PATTERN);
 
-        if(sessionSubmissionLimitDate!=null){
-            session.setSessionSubmitionState(session.isSessionAvailableToSync(sessionSubmissionLimitDate));
-            sessionSubmissionState.setText((session.getSessionSubmitionState()? context.getString(R.string.session_submission_state_valid) : context.getString(R.string.session_submission_state_expired)) + " Data da Tutoria: " + session.getPerformedDate() );
-            sessionSubmissionState.setTextColor(session.getSessionSubmitionState()? Color.rgb(1, 50, 32) : Color.rgb(114, 37, 7) );
-       }
-
+            if (sessionSubmissionLimitDate != null) {
+                session.setSessionSubmitionState(session.isSessionAvailableToSync(sessionSubmissionLimitDate));
+                sessionSubmissionState.setText((session.getSessionSubmitionState() ? context.getString(R.string.session_submission_state_valid) : context.getString(R.string.session_submission_state_expired)) + " Data da Tutoria: " + session.getPerformedDate());
+                sessionSubmissionState.setTextColor(session.getSessionSubmitionState() ? Color.rgb(1, 50, 32) : Color.rgb(114, 37, 7));
+            }
+        }
         formName.setText(session.getForm().getName());
         sessionStatus.setText(session.getStatus().equals(SessionStatus.COMPLETE) ? context.getString(R.string.complete): context.getString(R.string.incomplete));
         tutoredName.setText(session.getTutored().getName());

@@ -7,10 +7,10 @@ public enum ServerConfig {
 
     ACCOUNT_MANAGER("https", "mentdev.fgh.org.mz", "/account-manager-web/services/"),
 
-    //MENTORING("https", "mentdev.fgh.org.mz", "/mentoring-integ/services/");
+    MENTORING("https", "mentdev.fgh.org.mz", "/mentoring-integ/services/");
 
 
-    MENTORING("http", "10.0.2.2:8080", "/mentoring_integ_war/services/");
+    //MENTORING("http", "10.0.2.2:8080", "/mentoring_integ/services/");
 
     private String protocol;
     private String address;

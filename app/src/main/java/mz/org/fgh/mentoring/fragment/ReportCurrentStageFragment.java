@@ -56,6 +56,8 @@ public class ReportCurrentStageFragment extends BaseFragment {
 
     private String getAchievement(ReportDelegate delegate) {
 
+        if (delegate.getTarget() == 0) return "0";
+
         BigDecimal value = new BigDecimal(delegate.getTotalPerformed()).multiply(new BigDecimal(100));
         value = value.divide(new BigDecimal(delegate.getTarget()), 2, BigDecimal.ROUND_CEILING);
 

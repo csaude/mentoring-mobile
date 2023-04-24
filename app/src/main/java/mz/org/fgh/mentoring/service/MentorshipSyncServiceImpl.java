@@ -4,16 +4,12 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.widget.Toast;
-
-import java.util.List;
-
-import javax.inject.Inject;
-import javax.inject.Named;
-
 import mz.org.fgh.mentoring.activities.BaseActivity;
 import mz.org.fgh.mentoring.activities.ListMentorshipActivity;
 import mz.org.fgh.mentoring.config.dao.AnswerDAO;
+import mz.org.fgh.mentoring.config.dao.SettingDAO;
 import mz.org.fgh.mentoring.config.model.Answer;
+import mz.org.fgh.mentoring.config.model.Setting;
 import mz.org.fgh.mentoring.config.model.Tutor;
 import mz.org.fgh.mentoring.dto.MentorshipHelper;
 import mz.org.fgh.mentoring.dto.SessionDTO;
@@ -22,10 +18,19 @@ import mz.org.fgh.mentoring.infra.UserContext;
 import mz.org.fgh.mentoring.process.model.Mentorship;
 import mz.org.fgh.mentoring.process.model.MentorshipBeanResource;
 import mz.org.fgh.mentoring.process.model.Session;
+import mz.org.fgh.mentoring.util.DateUtil;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Stélio Moiane on 4/2/17.
@@ -40,6 +45,9 @@ public class MentorshipSyncServiceImpl implements SyncService {
 
     @Inject
     AnswerDAO answerDAO;
+
+    @Inject
+    SettingDAO settingDAO;
 
     @Inject
     @Named("mentoring")
@@ -62,7 +70,10 @@ public class MentorshipSyncServiceImpl implements SyncService {
 
         List<Session> sessionsToSync = sessionService.findAllSessionsToSync();
 
-        MentorshipBeanResource mentorshipBeanResource = prepareSyncData(sessionsToSync);
+        List<Session> validSessions = getSessionWithValidSubmissionPeriod(sessionsToSync);
+
+        MentorshipBeanResource mentorshipBeanResource = prepareSyncData(validSessions);
+
         SyncDataService syncDataService = retrofit.create(SyncDataService.class);
 
         Call<MentorshipBeanResource> call = syncDataService.syncMentorships(mentorshipBeanResource);
@@ -168,10 +179,11 @@ public class MentorshipSyncServiceImpl implements SyncService {
             Toast.makeText(activity, "Nenhum dado disponivel para sincronizar!", Toast.LENGTH_SHORT).show();
             return;
         }
+        List<Session> sessionsToSync = sessionService.findAllSessionsToSync();
 
-        List<Session> sessionsToSync = sessionService.findSessionsByUuids(uuid);
+        List<Session> validSessions = getSessionWithValidSubmissionPeriod(sessionsToSync);
 
-        MentorshipBeanResource mentorshipBeanResource = prepareSyncData(sessionsToSync);
+        MentorshipBeanResource mentorshipBeanResource = prepareSyncData(validSessions);
         SyncDataService syncDataService = retrofit.create(SyncDataService.class);
 
         Call<MentorshipBeanResource> call = syncDataService.syncMentorships(mentorshipBeanResource);
@@ -199,7 +211,7 @@ public class MentorshipSyncServiceImpl implements SyncService {
 
                              new AlertDialog.Builder(activity)
                                      .setTitle("Tutorias enviadas")
-                                     .setMessage(sessionUuids.size() ==1 ? "1 Sessão de Tutoria foi enviada com sucesso!" : sessionUuids.size()+" Sessões de Tutoria foram enviadas com sucesso!")
+                                     .setMessage(sessionUuids.size() == 1 ? "1 Sessão de Tutoria foi enviada com sucesso!" : sessionUuids.size() + " Sessões de Tutoria foram enviadas com sucesso!")
                                      .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                          public void onClick(DialogInterface dialog, int which) {
                                              ((ListMentorshipActivity) activity).setMentorships();
@@ -216,5 +228,31 @@ public class MentorshipSyncServiceImpl implements SyncService {
                          }
                      }
         );
+    }
+
+    private Date getSessionSubmissionLimitDate() {
+        Setting setting = this.settingDAO.findByDesignation("SessionLimitDate");
+        int settingValue = setting.getValue();
+
+        Calendar calendar = Calendar.getInstance();
+        Date currentDate = new Date();
+        calendar.setTime(currentDate);
+        int currentYear = calendar.get(Calendar.YEAR);
+        int currentMonth = calendar.get(Calendar.MONTH) + 1;
+        String dateInString = settingValue + "-" + currentMonth + "-" + currentYear;
+        Date sessionSubmissionLimitDate = DateUtil.parse(dateInString, DateUtil.NORMAL_PATTERN);
+        return sessionSubmissionLimitDate;
+    }
+
+    private List<Session> getSessionWithValidSubmissionPeriod(List<Session> sessions) {
+        Date sessionSubmissionLimitDate = getSessionSubmissionLimitDate();
+        List<Session> validSessions = new ArrayList<Session>(0);
+        for (Session session: sessions) {
+          boolean isSessionSubmissionValid = session.isSessionAvailableToSync(sessionSubmissionLimitDate);
+            if(isSessionSubmissionValid){
+                validSessions.add(session);
+            }
+        }
+        return validSessions;
     }
 }

@@ -6,19 +6,14 @@ import android.support.v7.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.CheckedTextView;
-import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.*;
+import mz.org.fgh.mentoring.R;
+import mz.org.fgh.mentoring.callback.ConfigCallback;
+import mz.org.fgh.mentoring.config.model.Location;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import mz.org.fgh.mentoring.R;
-import mz.org.fgh.mentoring.callback.ConfigCallback;
-import mz.org.fgh.mentoring.config.model.Location;
 
 public class ConfigurationActivity extends BaseAuthenticateActivity {
 
@@ -33,7 +28,7 @@ public class ConfigurationActivity extends BaseAuthenticateActivity {
 
         configItems = (ListView) findViewById(R.id.config_items);
 
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_single_choice, Arrays.asList(Location.HEALTH_FACILITIES, Location.CAREERS, Location.FORMS));
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_single_choice, Arrays.asList(Location.HEALTH_FACILITIES, Location.CAREERS, Location.FORMS, Location.SETTINGS));
         configItems.setAdapter(adapter);
 
         configItems.setChoiceMode(ListView.CHOICE_MODE_SINGLE);

@@ -1,16 +1,10 @@
 package mz.org.fgh.mentoring.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import mz.org.fgh.mentoring.config.model.*;
+import mz.org.fgh.mentoring.process.model.Mentorship;
 
 import java.util.List;
-
-import mz.org.fgh.mentoring.config.model.Cabinet;
-import mz.org.fgh.mentoring.config.model.Career;
-import mz.org.fgh.mentoring.config.model.FormQuestion;
-import mz.org.fgh.mentoring.config.model.FormTarget;
-import mz.org.fgh.mentoring.config.model.HealthFacility;
-import mz.org.fgh.mentoring.config.model.PerformedSession;
-import mz.org.fgh.mentoring.process.model.Mentorship;
 
 /**
  * Created by Stélio Moiane on 10/25/16.
@@ -28,6 +22,8 @@ public class GenericWrapper {
     private List<Cabinet> cabinets;
 
     private List<FormTarget> formTargets;
+
+    private List<Setting> settings;
 
     @JsonProperty("performedSession")
     private List<PerformedSession> performedSessions;
@@ -65,5 +61,9 @@ public class GenericWrapper {
 
     public List<Mentorship> getMentorships() {
         return mentorships;
+    }
+
+    public List<Setting> getSettings() {
+        return this.settings;
     }
 }

@@ -74,4 +74,11 @@
 
     <string name="delete_confirmation">Deseja remover a(s) tutoria(s)?</string>
     <string name="sync_confirmation">Deseja enviar a(s) tutoria(s)?</string>
+
+    <string name="session_submission_state">Submission period</string>
+    <string name="session_submission_state_expired">Submission period expired.</string>
+    <string name="session_submission_state_valid">Submission period valid.</string>
+
+    <string name="session_submission_state_expired_alert">Tutorial submission period has expired. You will not be able to send this tutorial. Do you want to cancel this process?</string>
+
 </resources>

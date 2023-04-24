@@ -2,43 +2,27 @@ package mz.org.fgh.mentoring.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
-import android.view.ActionMode;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
+import android.view.*;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import javax.inject.Inject;
-import javax.inject.Named;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 import mz.org.fgh.mentoring.AlertListner;
 import mz.org.fgh.mentoring.R;
 import mz.org.fgh.mentoring.adapter.MentorshipAdapter;
 import mz.org.fgh.mentoring.component.MentoringComponent;
-import mz.org.fgh.mentoring.config.dao.AnswerDAOImpl;
+import mz.org.fgh.mentoring.config.dao.SettingDAO;
 import mz.org.fgh.mentoring.dialog.AlertDialogManager;
-import mz.org.fgh.mentoring.model.LifeCycleStatus;
-import mz.org.fgh.mentoring.model.Tutored;
-import mz.org.fgh.mentoring.process.dao.MentorshipDAOImpl;
-import mz.org.fgh.mentoring.process.model.Mentorship;
 import mz.org.fgh.mentoring.process.model.Session;
-import mz.org.fgh.mentoring.service.MentorshipSyncServiceImpl;
 import mz.org.fgh.mentoring.service.SessionService;
 import mz.org.fgh.mentoring.service.SyncService;
-import mz.org.fgh.mentoring.util.DateUtil;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ListMentorshipActivity extends BaseAuthenticateActivity implements View.OnClickListener {
 
@@ -51,6 +35,9 @@ public class ListMentorshipActivity extends BaseAuthenticateActivity implements 
     @Inject
     @Named("sessions")
     SyncService syncService;
+
+    @Inject
+    SettingDAO settingDAO;
 
     private boolean isActionMode;
 
@@ -105,7 +92,7 @@ public class ListMentorshipActivity extends BaseAuthenticateActivity implements 
 
     public void setMentorships() {
         sessions = sessionService.findAllSessions();
-        MentorshipAdapter adapter = new MentorshipAdapter(this, sessions);
+        MentorshipAdapter adapter = new MentorshipAdapter(this, sessions, settingDAO);
 
         /**
          * After reaching 5 sessions without sending to the server

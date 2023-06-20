@@ -237,16 +237,7 @@ public class MentorshipSyncServiceImpl implements SyncService {
 
     private Date getSessionSubmissionLimitDate() {
         Setting setting = this.settingDAO.findByDesignation("SessionLimitDate");
-        int settingValue = setting.getValue();
-
-        Calendar calendar = Calendar.getInstance();
-        Date currentDate = new Date();
-        calendar.setTime(currentDate);
-        int currentYear = calendar.get(Calendar.YEAR);
-        int currentMonth = calendar.get(Calendar.MONTH) + 1;
-        String dateInString = settingValue + "-" + currentMonth + "-" + currentYear;
-        Date sessionSubmissionLimitDate = DateUtil.parse(dateInString, DateUtil.NORMAL_PATTERN);
-        return sessionSubmissionLimitDate;
+        return setting.getValue();
     }
 
     private List<Session> getSessionWithValidSubmissionPeriod(List<Session> sessions) {

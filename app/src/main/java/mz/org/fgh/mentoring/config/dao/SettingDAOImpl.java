@@ -9,7 +9,10 @@ import mz.org.fgh.mentoring.dao.GenericDAOImpl;
 import mz.org.fgh.mentoring.model.LifeCycleStatus;
 import mz.org.fgh.mentoring.util.Utilities;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -31,9 +34,10 @@ public class SettingDAOImpl extends GenericDAOImpl<Setting> implements SettingDA
     @Override
     public ContentValues getContentValues(Setting setting) {
         ContentValues values = new ContentValues();
-
         values.put("designation", setting.getDesignation());
-        values.put("value", setting.getValue());
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String settingValue = formatter.format(setting.getValue());
+        values.put("value", settingValue);
         values.put("uuid", setting.getUuid());
         values.put("life_cycle_status", setting.getLifeCycleStatus().name());
 
@@ -46,7 +50,11 @@ public class SettingDAOImpl extends GenericDAOImpl<Setting> implements SettingDA
 
         setting.setId(cursor.getLong(cursor.getColumnIndex("id")));
         setting.setDesignation(cursor.getString(cursor.getColumnIndex("designation")));
-        setting.setValue(cursor.getInt(cursor.getColumnIndex("value")));
+        try {
+            SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+            Date settingValue = formatter.parse(cursor.getString(cursor.getColumnIndex("value")));
+            setting.setValue(settingValue);
+        } catch (ParseException parseException){}
         setting.setUuid(cursor.getString(cursor.getColumnIndex("uuid")));
         setting.setLifeCycleStatus(LifeCycleStatus.valueOf(cursor.getString(cursor.getColumnIndex("life_cycle_status"))));
 

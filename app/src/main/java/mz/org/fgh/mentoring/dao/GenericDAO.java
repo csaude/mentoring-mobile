@@ -64,7 +64,7 @@ public interface GenericDAO<T extends GenericEntity> {
 
     String ALTER_SESSION_TABLE_ADD_TUTORED_COLUMN = "ALTER TABLE sessions ADD COLUMN tutored_uuid TEXT";
 
-    String SETTINGS_TABLE = "CREATE TABLE settings(id INTEGER PRIMARY KEY, designation TEXT, value INTEGER, uuid TEXT UNIQUE, created_at TEXT, life_cycle_status TEXT);";
+    String SETTINGS_TABLE = "CREATE TABLE settings(id INTEGER PRIMARY KEY, designation TEXT, value TEXT, uuid TEXT UNIQUE, created_at TEXT, life_cycle_status TEXT);";
 
     String getTableName();
 

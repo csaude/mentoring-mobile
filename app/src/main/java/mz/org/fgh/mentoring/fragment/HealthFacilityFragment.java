@@ -426,33 +426,21 @@ public class HealthFacilityFragment extends BaseFragment implements DatePickerDi
         Setting setting = this.settingDAO.findByDesignation("SessionLimitDate");
 
         if (setting != null) {
-            int settingValue = setting.getValue();
-
-            Calendar calendar = Calendar.getInstance();
-            Date currentDate = new Date();
-            calendar.setTime(currentDate);
-            int currentYear = calendar.get(Calendar.YEAR);
-            int currentMonth = calendar.get(Calendar.MONTH) + 1;
-            String dateInString = settingValue + "-" + currentMonth + "-" + currentYear;
-            Date sessionSubmissionLimitDate = DateUtil.parse(dateInString, DateUtil.NORMAL_PATTERN);
-
+            Date sessionSubmissionLimitDate = setting.getValue();
             Calendar subCalendar = Calendar.getInstance();
             subCalendar.setTime(sessionSubmissionLimitDate);
 
-            Calendar performeCalendar = Calendar.getInstance();
-
             Date performedDateValue = DateUtil.parse(performedDate.getText().toString(), DateUtil.NORMAL_PATTERN);
+            Calendar performeCalendar = Calendar.getInstance();
             performeCalendar.setTime(performedDateValue);
 
             int performedDateMonth = performeCalendar.get(Calendar.MONTH) + 1;
             int submissionDateMonth = subCalendar.get(Calendar.MONTH) + 1;
             int performedDateYear = performeCalendar.get(Calendar.YEAR);
             int submissionDateYear = subCalendar.get(Calendar.YEAR);
-
             boolean isValidSubmissionPeriod = sessionSubmissionLimitDate.after(performedDateValue) &&
                     (performedDateMonth == submissionDateMonth
                             && performedDateYear == submissionDateYear);
-
             if (!isValidSubmissionPeriod) {
                 dialogManager.showAlert(getString(R.string.session_submission_state_expired_alert), new AlertListner() {
 

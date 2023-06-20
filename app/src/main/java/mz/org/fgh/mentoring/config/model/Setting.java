@@ -2,13 +2,16 @@ package mz.org.fgh.mentoring.config.model;
 
 import mz.org.fgh.mentoring.model.GenericEntity;
 
+import java.time.LocalDateTime;
+import java.util.Date;
+
 public class Setting extends GenericEntity {
 
     private String designation;
 
     private String uuid;
 
-    private Integer value;
+    private Date value;
 
     public Setting() {
     }
@@ -31,11 +34,11 @@ public class Setting extends GenericEntity {
         this.uuid = uuid;
     }
 
-    public Integer getValue() {
+    public Date getValue() {
         return value;
     }
 
-    public void setValue(Integer value) {
+    public void setValue(Date value) {
         this.value = value;
     }
 

@@ -18,6 +18,7 @@
 
     <string name="title_activity_list_mentorship">Mentoring Sessions</string>
     <string name="title_activity_tutor_update">User Details</string>
+    <string name="title_activity_indicator_collection">Collection of Indicators</string>
 
     <string name="tutored_must_be_selected">The tutored must be selected!</string>
     <string name="form_must_be_selected">The form must be selected!</string>
@@ -45,19 +46,19 @@
     <string name="no">No</string>
     <string name="referred_month">Referred Month</string>
     <string name="select">Select...</string>
-    <string name="reset_password">Inicializar a Senha</string>
-    <string name="forget_password">Esqueceu a Senha?</string>
-    <string name="reset_password_text">Por fovor informe o seu email para que a sua senha seja devidamente actualizada</string>
-    <string name="iteration_times">vez (es) foi (ram) preenchida (as). O utilizador deseja continuar?</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="forget_password">Forgot password?</string>
+    <string name="reset_password_text">Please enter your email so that your password is properly updated.</string>
+    <string name="iteration_times">Time(s) was(were) filled in. Does the user want to continue?</string>
     <string name="wait">Wait</string>
-    <string name="processing">A processar o pedido....</string>
-    <string name="reset_password_success">A Senha foi inicializada com sucesso. Consulte o seu email</string>
-    <string name="reset_password_error">Não foi possivel inicializar a senha. Por favor tente novamente</string>
+    <string name="processing">Processing the order....</string>
+    <string name="reset_password_success">The Password has been successfully initialized. Check your email</string>
+    <string name="reset_password_error">Unable to initialize password. Please try again</string>
     <string name="version">© 2022 © v1.5.4</string>
-    <string name="no_result">Sem Resultado</string>
-    <string name="no_result_found">Nenhum resultado foi encontrado</string>
-    <string name="server_error_comunication">Erro de comunicação com o servidor! Tente novamente.</string>
-    <string name="the_iteration_type_must_be_selected">O Tipo de Iteração deve ser Indicado</string>
+    <string name="no_result">No results</string>
+    <string name="no_result_found">No results were found.</string>
+    <string name="server_error_comunication">Communication error with the server! Try again.</string>
+    <string name="the_iteration_type_must_be_selected">The Type of Iteration must be Indicated</string>
     <string name="sessions_bar_chart_title">Current Month Results</string>
     <string name="loading_metadata">Loading metadata...</string>
     <string name="could_not_load_metadata">Could not load metadata. Try later...</string>
@@ -67,18 +68,65 @@
     <string name="remaining">Remaining</string>
     <string name="percentage_minimum">% Minimum</string>
     <string name="percentage_min">% Min</string>
-    <string name="no_data_found">Nenhum dado encontrado!</string>
+    <string name="no_data_found">No data found!</string>
 
-    <string name="door_must_be_selected">A porta deve ser seleccionada</string>
-    <string name="time_of_day_must_be_selected">O horário deve ser seleccionado</string>
+    <string name="door_must_be_selected">A door must be selected</string>
+    <string name="time_of_day_must_be_selected">The timetable must be selected</string>
+    <string name="attended_must_be_greather_than_previous">Previous HIV+ must not be greater than the number of users assisted in the sector.</string>
+    <string name="previous_must_be_greather_than_previous_and_tested">The Tested plus the previous must not be greater than the number of users assisted in the sector.</string>
+    <string name="tested_must_be_greather_than_positive">Positives must not be larger than tested.</string>
+    <string name="positive_must_be_greather_than_enrolled">Enrollees must not be greater than positives.</string>
+    <string name="remeber_send_data_to_server">Have 5 or more tutoring records on your cell phone do not forget to upload to the server soon!</string>
+    <string name="delete_confirmation">Do want to remove the tutorial(s)?</string>
+    <string name="sync_confirmation">Do you want to send the tutorial(s)?</string>
 
-    <string name="delete_confirmation">Deseja remover a(s) tutoria(s)?</string>
-    <string name="sync_confirmation">Deseja enviar a(s) tutoria(s)?</string>
+    <string name="settings_synced_with_success">Settings synced successfully!</string>
 
     <string name="session_submission_state">Submission period</string>
     <string name="session_submission_state_expired">Submission period expired.</string>
     <string name="session_submission_state_valid">Submission period valid.</string>
 
     <string name="session_submission_state_expired_alert">Tutorial submission period has expired. You will not be able to send this tutorial. Do you want to cancel this process?</string>
+
+    <string name="reason_must_be_informed">The reason must be stated</string>
+    <string name="session_termination_reason">Reason for terminating the session (The user has not completed the minimum number of times requested in the form)</string>
+    <string name="iterations">Iterations</string>
+    <string name="complete">Complete</string>
+    <string name="incomplete">Incomplete</string>
+    <string name="cabinet_must_be_selected">The cabinet must be selected</string>
+    <string name="all_questions_must_be_answered">All questions must be answered</string>
+
+    <string name="health_facility">Health Facility</string>
+    <string name="tutored">Tutored</string>
+    <string name="form">Form</string>
+    <string name="confirmation">Confirmation</string>
+    <string name="submission">Submition</string>
+
+    <string name="send">Send</string>
+    <string name="of">of</string>
+    <string name="province_must_be_selected">A province must be selected</string>
+    <string name="district_must_be_selected">A district must be selected</string>
+    <string name="district">District</string>
+    <string name="total">Total</string>
+
+    <string name="server_error">Communication error</string>
+
+    <string name="start_time_must_be_selected">Start time must be indicated</string>
+    <string name="end_time_must_be_selected">End time must be indicated</string>
+    <string name="start_time_must_not_be_lower_than_end_time">The start time must not be greater than or equal to the end date</string>
+    <string name="iteration_type">Iteration Type</string>
+    <string name="patient_iterations_exceeded">The number of iterations for patients has reached the limit</string>
+    <string name="file_iterations_exceeded">The number of iterations for clinical processes has reached the limit</string>
+    <string name="file">Master Card</string>
+    <string name="patient">Patient</string>
+    <string name="close_confirmation">Are you sure you want to stop the session?</string>
+    <string name="ok">Ok</string>
+    <string name="metadata_cannot_be_changed">Metadata such as: Form, Tutoring and Dates cannot be changed because there is an iteration (of patient or clinical process)!</string>
+    <string name="itens_selected">Item(s) selected...</string>
+    <string name="all_sessions_must_be_sync">All tutoring sessions must be synchronized!</string>
+    <string name="no_data_to_sync">No data to sync!</string>
+    <string name="tudoreds_synced_with_success">Tutors synchronized successfully!</string>
+    <string name="point_of_situation">State point</string>
+    <string name="per_period">By Period</string>
 
 </resources>

@@ -51,13 +51,10 @@
     <string name="none_answer_was_seleted">Nenhuma resposta foi seleccionada</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="the_value_is_empty">Campo obrigatório</string>
     <string name="yes">Sim</string>
     <string name="no">Não</string>
     <string name="referred_month">Mês de referência:</string>
-    <string name="terminate">Terminar</string>
-    <string name="go_ahead">Continuar</string>
 
     <string name="reason_must_be_informed"> O motivo deve ser informado</string>
     <string name="session_termination_reason">Motivo para o término da sessão (O utilizador não preencheu o número mínimo de vezes solicitado no formulário)</string>
@@ -139,5 +136,4 @@
     <string name="session_submission_state_valid">Período de submissão válido.</string>
 
     <string name="session_submission_state_expired_alert">O período de submissão da tutoria está expirado. Não poderá enviar esta tutoria. Deseja cancelar este processo?</string>
-
 </resources>

@@ -239,7 +239,7 @@ public class HealthFacilityFragment extends BaseFragment implements DatePickerDi
         timeOfDaySpinner.setVisibility(View.GONE);
         timeOfDayTxt.setVisibility(View.GONE);
 
-        if (form != null && form.getUuid().equals("122399f86199439cbbfe3deef149be87")) {
+        if (form != null && form.getUuid() != null && form.getUuid().equals("122399f86199439cbbfe3deef149be87")) {
             doorSpinner.setVisibility(View.VISIBLE);
             doorTxt.setVisibility(View.VISIBLE);
             startTime.setVisibility(View.GONE);
@@ -434,13 +434,8 @@ public class HealthFacilityFragment extends BaseFragment implements DatePickerDi
             Calendar performeCalendar = Calendar.getInstance();
             performeCalendar.setTime(performedDateValue);
 
-            int performedDateMonth = performeCalendar.get(Calendar.MONTH) + 1;
-            int submissionDateMonth = subCalendar.get(Calendar.MONTH) + 1;
-            int performedDateYear = performeCalendar.get(Calendar.YEAR);
-            int submissionDateYear = subCalendar.get(Calendar.YEAR);
-            boolean isValidSubmissionPeriod = sessionSubmissionLimitDate.after(performedDateValue) &&
-                    (performedDateMonth == submissionDateMonth
-                            && performedDateYear == submissionDateYear);
+            boolean isValidSubmissionPeriod = sessionSubmissionLimitDate.after(performedDateValue);
+
             if (!isValidSubmissionPeriod) {
                 dialogManager.showAlert(getString(R.string.session_submission_state_expired_alert), new AlertListner() {
 

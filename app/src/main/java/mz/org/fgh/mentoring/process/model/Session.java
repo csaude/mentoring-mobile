@@ -177,13 +177,7 @@ public class Session extends GenericEntity {
         Calendar subCalendar = Calendar.getInstance();
         subCalendar.setTime(sessionSubmissionLimitDate);
 
-        int performedDateMonth = performeCalendar.get(Calendar.MONTH) + 1 ;
-        int submissionDateMonth = subCalendar.get(Calendar.MONTH) + 1;
-        int performedDateYear = performeCalendar.get(Calendar.YEAR);
-        int submissionDateYear = subCalendar.get(Calendar.YEAR);
-        boolean isValidSubmissionPeriod = sessionSubmissionLimitDate.after(performedDateValue) &&
-                (performedDateMonth == submissionDateMonth
-                        && performedDateYear == submissionDateYear );
+        boolean isValidSubmissionPeriod = sessionSubmissionLimitDate.after(performedDateValue);
         return isValidSubmissionPeriod;
     }
 

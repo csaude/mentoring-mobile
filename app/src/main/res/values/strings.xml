@@ -85,7 +85,7 @@
     <string name="district">Distrito</string>
     <string name="total">Total</string>
 
-    <string name="version">© 2022 © v1.5.4</string>
+    <string name="version">© 2023 © v1.6.0</string>
     <string name="no_result">Sem Resultado</string>
     <string name="no_result_found">Nenhum resultado foi encontrado</string>
     <string name="server_error">Erro de comunicação</string>
@@ -136,4 +136,6 @@
     <string name="session_submission_state_valid">Período de submissão válido.</string>
 
     <string name="session_submission_state_expired_alert">O período de submissão da tutoria está expirado. Não poderá enviar esta tutoria. Deseja cancelar este processo?</string>
+    <string name="terminate">Terminar</string>
+    <string name="go_ahead">Continuar</string>
 </resources>

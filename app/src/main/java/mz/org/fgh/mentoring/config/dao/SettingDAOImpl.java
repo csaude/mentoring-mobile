@@ -51,7 +51,7 @@ public class SettingDAOImpl extends GenericDAOImpl<Setting> implements SettingDA
         setting.setId(cursor.getLong(cursor.getColumnIndex("id")));
         setting.setDesignation(cursor.getString(cursor.getColumnIndex("designation")));
         try {
-            SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             Date settingValue = formatter.parse(cursor.getString(cursor.getColumnIndex("value")));
             setting.setValue(settingValue);
         } catch (ParseException parseException){}

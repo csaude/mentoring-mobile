@@ -171,7 +171,7 @@ public class Session extends GenericEntity {
 
     public boolean isSessionAvailableToSync(final Date sessionSubmissionLimitDate){
         Calendar performeCalendar = Calendar.getInstance();
-        Date performedDateValue = DateUtil.parse(this.getPerformedDate(), DateUtil.NORMAL_PATTERN);
+        Date performedDateValue = this.getCreatedAt();
         performeCalendar.setTime(performedDateValue);
 
         Calendar subCalendar = Calendar.getInstance();

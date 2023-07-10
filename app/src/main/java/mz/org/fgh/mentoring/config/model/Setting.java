@@ -1,5 +1,7 @@
 package mz.org.fgh.mentoring.config.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import mz.org.fgh.mentoring.model.GenericEntity;
 
 import java.time.LocalDateTime;
@@ -11,6 +13,7 @@ public class Setting extends GenericEntity {
 
     private String uuid;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private Date value;
 
     public Setting() {

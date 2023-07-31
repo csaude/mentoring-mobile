@@ -436,7 +436,7 @@ public class HealthFacilityFragment extends BaseFragment implements DatePickerDi
 
             boolean isValidSubmissionPeriod = sessionSubmissionLimitDate.after(performedDateValue);
 
-            if (!isValidSubmissionPeriod) {
+            if (isValidSubmissionPeriod) {
                 dialogManager.showAlert(getString(R.string.session_submission_state_expired_alert), new AlertListner() {
 
                     @Override

@@ -13,7 +13,7 @@ public interface SettingDAO extends GenericDAO<Setting> {
 
     class QUERY {
         public static final String findByDesignation = "SELECT s.id, s.designation, s.value, s.life_cycle_status, s.uuid FROM " + TABLE_NAME + " s " +
-                "WHERE s.designation = ?;";
+                "WHERE s.life_cycle_status = 'ACTIVE' and s.designation = ?;";
 
         public static final String findByLifeCycleStatus = "SELECT s.id, s.designation, s.value, s.uuid, s.life_cycle_status FROM settings s WHERE s.life_cycle_status = :lifeCycleStatus;";
 

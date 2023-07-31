@@ -25,6 +25,9 @@ public class GenericWrapper {
 
     private List<Setting> settings;
 
+
+    private Setting setting;
+
     @JsonProperty("performedSession")
     private List<PerformedSession> performedSessions;
 
@@ -65,5 +68,13 @@ public class GenericWrapper {
 
     public List<Setting> getSettings() {
         return this.settings;
+    }
+
+    public Setting getSetting() {
+        return setting;
+    }
+
+    public void setSetting(Setting setting) {
+        this.setting = setting;
     }
 }

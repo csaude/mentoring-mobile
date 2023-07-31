@@ -15,6 +15,8 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 import javax.inject.Inject;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class SettingSyncServiceImpl implements SyncService, SettingSyncService {
@@ -48,7 +50,11 @@ public class SettingSyncServiceImpl implements SyncService, SettingSyncService {
                                  return;
                              }
 
-                             processSettings(data.getSettings());
+                             List<Setting> settings = new ArrayList<>();
+                             if (data.getSettings() != null && data.getSettings().size() > 0) settings.addAll(data.getSettings());
+                             if (data.getSetting() != null) settings.add(data.getSetting());
+
+                             processSettings(settings);
 
                              dialog.dismiss();
                          }
@@ -73,6 +79,8 @@ public class SettingSyncServiceImpl implements SyncService, SettingSyncService {
             for (Setting setting : settings) {
                 if (!settingDAO.exist(setting.getUuid())) {
                     settingDAO.create(setting);
+                } else {
+                    settingDAO.update(setting);
                 }
             }
 

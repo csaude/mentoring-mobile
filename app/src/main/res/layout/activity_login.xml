@@ -13,7 +13,7 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_margin="8dp"
-            android:src="@mipmap/ic_fgh_logo" />
+            android:src="@drawable/csaude" />
 
         <TextView
             android:layout_width="match_parent"

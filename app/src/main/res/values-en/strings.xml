@@ -54,7 +54,7 @@
     <string name="processing">Processing the order....</string>
     <string name="reset_password_success">The Password has been successfully initialized. Check your email</string>
     <string name="reset_password_error">Unable to initialize password. Please try again</string>
-    <string name="version">© 2023 © v1.6.1</string>
+    <string name="version">© 2024 © v1.6.3</string>
     <string name="no_result">No results</string>
     <string name="no_result_found">No results were found.</string>
     <string name="server_error_comunication">Communication error with the server! Try again.</string>

@@ -178,7 +178,7 @@ public class Session extends GenericEntity {
         subCalendar.setTime(sessionSubmissionLimitDate);
 
         boolean isValidSubmissionPeriod = sessionSubmissionLimitDate.after(performedDateValue);
-        return isValidSubmissionPeriod;
+        return !isValidSubmissionPeriod;
     }
 
 }
